@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Container,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Container, makeStyles, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,6 +7,12 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "column",
+    height: "100%",
+  },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -27,16 +29,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 0,
-  },
-  buttons: {
-    width: "30%",
-  },
-  flex: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "column",
-    height: "100%",
+    padding: 0
   },
 }));
 
@@ -54,7 +47,7 @@ const CardBody = ({
   const classes = useStyles();
   return (
     <>
-      <div className={classes.flex}>
+      <div className={classes.root}>
         <Typography variant="subtitle1" component="p">
           {description}
         </Typography>

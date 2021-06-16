@@ -5,14 +5,24 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
-  gradient: {
-    backgroundImage:
-      "linear-gradient( 109.6deg,  rgba(62,161,219,1) 11.2%, #3f51b5 100.2% )",
-  },
-  iconContainer: {
+  root: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 0,
+    padding: 16,
+    backgroundColor: "#3f51b5",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    zIndex: 200,
+    "& svg": {
+      fontSize: "2rem",
+      color: "#FFF",
+      cursor: "pointer",
+      transition: "transform .2s ease-in-out",
+    },
+    "& svg:hover": {
+      transform: "translateY(-2px)",
+    },
   },
 }));
 
@@ -22,17 +32,13 @@ const Navbar = () => {
   const [menuRightToogled, setMenuRightToogled] = useState(false);
   return (
     <>
-      <Container maxWidth="xl" className={classes.iconContainer}>
+      <Container maxWidth="xl" className={classes.root}>
         <MenuIcon
-          fontSize="large"
-          style={{ color: "#FFF" }}
-          onClick={() => setMenuLeftToogled(true)}
+          onClick={() => setMenuLeftToogled(!menuLeftToogled)}
         />
 
         <SearchIcon
-          fontSize="large"
-          style={{ color: "#FFF" }}
-          onClick={() => setMenuRightToogled(true)}
+          onClick={() => setMenuRightToogled(!menuRightToogled)}
         />
       </Container>
 

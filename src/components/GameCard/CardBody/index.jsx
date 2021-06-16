@@ -10,28 +10,36 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import BetButtonBar from "../../BetButtonBar";
 
 const useStyles = makeStyles((theme) => ({
-    expand: {
-        transform: "rotate(0deg)",
-        marginLeft: "auto",
-        transition: theme.transitions.create("transform", {
-          duration: theme.transitions.duration.shortest,
-        }),
-      },
-      expandOpen: {
-        transform: "rotate(180deg)",
-      },
-      description:{
-        marginTop: 16,
-      }
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+  },
+  description: {
+    marginTop: 16,
+  },
 }));
 
-
-const CardBody = ({isFavorite, handleAddFavorite, expanded, handleExpandClick, teamA, description, teamB, draw, id}) =>{
-
-    const classes = useStyles();
-    return (
-        <>
-        <CardActions disableSpacing>
+const CardBody = ({
+  isFavorite,
+  handleAddFavorite,
+  expanded,
+  handleExpandClick,
+  teamA,
+  description,
+  teamB,
+  draw,
+  id,
+}) => {
+  const classes = useStyles();
+  return (
+    <>
+      <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon
             style={{ color: isFavorite ? "red" : "unset" }}
@@ -51,14 +59,20 @@ const CardBody = ({isFavorite, handleAddFavorite, expanded, handleExpandClick, t
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="h6" component="p">DESCRIPTION :</Typography>
-          <Typography paragraph className={classes.description}>{description}</Typography>
-          <Typography variant="h6" component="p" >CURRENTLY IN THE POT</Typography>
+          <Typography variant="h6" component="p">
+            DESCRIPTION :
+          </Typography>
+          <Typography paragraph className={classes.description}>
+            {description}
+          </Typography>
+          <Typography variant="h6" component="p">
+            CURRENTLY IN THE POT
+          </Typography>
           <BetButtonBar teamA={teamA} teamB={teamB} draw={draw} />
         </CardContent>
       </Collapse>
-      </>
-    )
-}
+    </>
+  );
+};
 
 export default CardBody;

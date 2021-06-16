@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   overlay: {
     position: "absolute",
     textAlign: "center",
-    top: 0,
+    top: "4rem",
     zIndex: 1,
     margin: 0,
     padding: 16,
@@ -37,10 +37,6 @@ const useStyles = makeStyles((theme) => ({
       "linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,1) 66%)",
     backgroundAttachment: "fixed",
   },
-  competition: {
-    fontWeight: 600,
-    color: "#FFF",
-  }
 }));
 
 const Home = ({ favorites, setFavorites }) => {
@@ -53,15 +49,6 @@ const Home = ({ favorites, setFavorites }) => {
       <Grid container className={classes.backgroundImage}>
         <Grid container className={classes.overlay}>
           <Navbar />
-          <Grid className={classes.grid} item xs={12}>
-            <Typography
-              className={classes.competition}
-              variant="h1"
-              component="h1"
-            >
-              UEFA EURO CUP
-            </Typography>
-          </Grid>
           <Hidden mdDown>
             <Grid item lg={4}></Grid>
           </Hidden>

@@ -1,46 +1,32 @@
 import React from "react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles, Typography } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
-  menu: {
+  root: {
     height: "100vh",
     position: "fixed",
     backgroundColor: "#FFF",
     zIndex: "100",
     padding: 0,
-    top: 0,
+    top: "4rem",
     transition: "width .5s ease-in-out",
   },
-
-  menuLeft: {
+  rootLeft: {
     left: 0,
   },
-  menuRight: {
+  rootRight: {
     right: 0,
   },
-
-  menuCLosed: {
+  rootCLosed: {
     width: 0,
   },
-  menuToogledSm: {
+  rootToogledSm: {
     width: "75vw",
   },
-  menuToogledLg: {
+  rootToogledLg: {
     width: "33vw",
-  },
-  buttonShow: {
-    display: "static",
-  },
-  buttonHidden: {
-    display: "none",
-  },
-  button: {
-    top: 16,
-    left: 16,
-    position: "absolute",
   },
 }));
 
@@ -51,24 +37,15 @@ const Menu = ({ menuContent, toogled, setToogled, left }) => {
   return (
     <div
       className={clsx(
-        left ? classes.menuLeft : classes.menuRight,
-        classes.menu,
+        left ? classes.rootLeft : classes.rootRight,
+        classes.root,
         toogled
           ? matches
-            ? classes.menuToogledSm
-            : classes.menuToogledLg
-          : classes.menuClosed
+            ? classes.rootToogledSm
+            : classes.rootToogledLg
+          : classes.rootClosed
       )}
     >
-      <Close
-        fontSize="large"
-        className={clsx(
-          classes.button,
-          toogled ? classes.buttonShow : classes.buttonHidden
-        )}
-        onClick={() => setToogled(!toogled)}
-      />
-
       {toogled && (
         <Typography variant="h6" component="p">
           {menuContent}

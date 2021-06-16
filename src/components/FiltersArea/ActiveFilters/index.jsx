@@ -8,10 +8,9 @@ import Radio from "@material-ui/core/Radio";
 import React from "react";
 
 const ActiveFilters = ({ isFilterGameToActive, setFilterGameToActive }) => {
-  console.log(isFilterGameToActive);
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">Game State</FormLabel>
+      <FormLabel component="legend" color="dark">Game State</FormLabel>
       <RadioGroup row aria-label="position" name="position" defaultValue="top">
         <FormControlLabel
           value="end"
