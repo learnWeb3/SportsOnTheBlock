@@ -53,14 +53,14 @@ const GameCardDashBoard = ({
   return (
     <Card className={classes.root} id={`game-${id}`}>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           <CardMedia
             className={classes.media}
             image={media}
             title="Paella dish"
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           <CardHeader
             id={id}
             teamA={teamA}
@@ -70,7 +70,7 @@ const GameCardDashBoard = ({
             competition={competition}
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           <CardBody
             isFavorite={isFavorite}
             handleAddFavorite={handleAddFavorite}

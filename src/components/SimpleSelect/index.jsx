@@ -31,7 +31,7 @@ const SimpleSelect = ({
   return (
     <>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-label">Competions</InputLabel>
+        <InputLabel id="demo-simple-select-label">competitions</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"

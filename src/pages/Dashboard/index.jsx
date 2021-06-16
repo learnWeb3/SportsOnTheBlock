@@ -11,7 +11,6 @@ import Navbar from "../../components/NavBar";
 const useStyles = makeStyles((theme) => ({
   gradient: {
     backgroundImage: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
-    padding: 16,
     top: "4rem",
     position: "relative",
   },
@@ -46,9 +45,11 @@ const Dashboard = ({ favorites, setFavorites }) => {
           <MainMetrics
             userCount={10}
             totalFunds={5}
-            competionCount={9}
+            competitionCount={9}
             gameCount={18}
             avgGamePerCompetition={9}
+            transactionCount={200}
+            avgTransactionCountPerAddress={3}
           />
           <FiltersArea
             competitions={competitons}
