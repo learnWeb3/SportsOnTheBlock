@@ -1,20 +1,12 @@
 import React, { useContext, useState } from "react";
 import EthProviderContext from "../../context/EthProviderContext";
-import {
-  Grid,
-  Hidden,
-  makeStyles,
-  Typography,
-  Container,
-} from "@material-ui/core";
+import { Grid, Hidden, makeStyles, Typography } from "@material-ui/core";
 import GameCard from "../../components/GameCard";
 import uefaBackground from "./img/euro_fixtures.jpg";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import Menu from "../../components/Menu";
 
 // TEST ONLY
 import { gamesMockup } from "./data/games";
+import Navbar from "../../components/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -48,45 +40,19 @@ const useStyles = makeStyles((theme) => ({
   competition: {
     fontWeight: 600,
     color: "#FFF",
-  },
-  iconContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: 0,
-  },
+  }
 }));
 
 const Home = ({ favorites, setFavorites }) => {
-  const [menuLeftToogled, setMenuLeftToogled] = useState(false);
-  const [menuRightToogled, setMenuRightToogled] = useState(false);
-
   const classes = useStyles();
   const [games, setGame] = useState(gamesMockup);
   const EthProvider = useContext(EthProviderContext);
 
   return (
     <>
-      <Menu
-        left={true}
-        toogled={menuLeftToogled}
-        setToogled={setMenuLeftToogled}
-      />
-      <Menu toogled={menuRightToogled} setToogled={setMenuRightToogled} />
       <Grid container className={classes.backgroundImage}>
         <Grid container className={classes.overlay}>
-          <Container maxWidth="xl" className={classes.iconContainer}>
-            <MenuIcon
-              fontSize="large"
-              style={{ color: "#FFF" }}
-              onClick={() => setMenuLeftToogled(true)}
-            />
-
-            <SearchIcon
-              fontSize="large"
-              style={{ color: "#FFF" }}
-              onClick={() => setMenuRightToogled(true)}
-            />
-          </Container>
+          <Navbar />
           <Grid className={classes.grid} item xs={12}>
             <Typography
               className={classes.competition}

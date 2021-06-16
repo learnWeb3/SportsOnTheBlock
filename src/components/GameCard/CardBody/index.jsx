@@ -7,6 +7,7 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import BetButtonBar from "../../BetButtonBar";
 
 const useStyles = makeStyles((theme) => ({
     expand: {
@@ -18,17 +19,6 @@ const useStyles = makeStyles((theme) => ({
       },
       expandOpen: {
         transform: "rotate(180deg)",
-      },
-      buttons: {
-        width: "30%",
-      },
-      buttonBar: {
-        marginTop: 16,
-        width: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 0,
       },
       description:{
         marginTop: 16,
@@ -64,29 +54,7 @@ const CardBody = ({isFavorite, handleAddFavorite, expanded, handleExpandClick, t
           <Typography variant="h6" component="p">DESCRIPTION :</Typography>
           <Typography paragraph className={classes.description}>{description}</Typography>
           <Typography variant="h6" component="p" >CURRENTLY IN THE POT</Typography>
-          <Container className={classes.buttonBar}>
-            <Button
-              className={classes.buttons}
-              variant="contained"
-              color="secondary"
-            >
-              {teamA.betValue} ETH
-            </Button>
-            <Button
-              className={classes.buttons}
-              variant="contained"
-              color="primary"
-            >
-              {draw.betValue} ETH
-            </Button>
-            <Button
-              className={classes.buttons}
-              variant="contained"
-              color="secondary"
-            >
-              {teamB.betValue} ETH
-            </Button>
-          </Container>
+          <BetButtonBar teamA={teamA} teamB={teamB} draw={draw} />
         </CardContent>
       </Collapse>
       </>

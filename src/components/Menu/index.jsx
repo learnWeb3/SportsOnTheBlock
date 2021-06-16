@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     top: 16,
     left: 16,
-    position: "relative",
+    position: "absolute",
   },
 }));
 

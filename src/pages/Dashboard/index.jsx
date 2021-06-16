@@ -6,19 +6,17 @@ import GameCardDashboard from "../../components/GameCardDashBoard";
 import FiltersArea from "../../components/FiltersArea";
 import MainMetrics from "../../components/MainMetrics";
 import { Container, makeStyles } from "@material-ui/core";
-import Menu from "../../components/Menu";
+import Navbar from "../../components/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   gradient: {
     backgroundImage:
       "linear-gradient( 109.6deg,  rgba(62,161,219,1) 11.2%, #3f51b5 100.2% )",
-  },
+  }
 }));
 
 const Dashboard = ({ favorites, setFavorites }) => {
   const classes = useStyles();
-  const [menuLeftToogled, setMenuLeftToogled] = useState(false);
-  const [menuRightToogled, setMenuRightToogled] = useState(false);
 
   const [competitons, setCompetitions] = useState([
     { id: 1, name: "Eurocup" },
@@ -41,13 +39,7 @@ const Dashboard = ({ favorites, setFavorites }) => {
 
   return (
     <div className={classes.gradient}>
-      <Menu
-        left={true}
-        toogled={menuLeftToogled}
-        setToogled={setMenuLeftToogled}
-      />
-      <Menu toogled={menuRightToogled} setToogled={setMenuRightToogled} />
-
+      <Navbar/>
       <Container maxWidth="lg">
         <MainMetrics
           userCount={10}

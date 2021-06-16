@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Container, makeStyles, Typography, Button } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
+import BetButtonBar from "../../BetButtonBar";
 
 const useStyles = makeStyles((theme) => ({
   gameHeader: {
@@ -10,17 +11,6 @@ const useStyles = makeStyles((theme) => ({
   },
   dark: {
     color: "#212121",
-  },
-  buttons: {
-    width: "30%",
-  },
-  buttonBar: {
-    marginTop: 16,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 0,
   },
 }));
 
@@ -54,29 +44,7 @@ const CardHeader = ({ teamA, teamB, datetime, draw, competition }) => {
           {moment(datetime).format("ddd MM YYYY HH:SS")}
         </Typography>
       </Container>
-      <Container className={classes.buttonBar}>
-          <Button
-            className={classes.buttons}
-            variant="contained"
-            color="secondary"
-          >
-            {teamA.betValue} ETH
-          </Button>
-          <Button
-            className={classes.buttons}
-            variant="contained"
-            color="primary"
-          >
-            {draw.betValue} ETH
-          </Button>
-          <Button
-            className={classes.buttons}
-            variant="contained"
-            color="secondary"
-          >
-            {teamB.betValue} ETH
-          </Button>
-        </Container>
+      <BetButtonBar teamA={teamA} teamB={teamB} draw={draw} />
     </CardContent>
   );
 };
