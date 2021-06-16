@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import detectEthereumProvider from "@metamask/detect-provider";
 import EthProviderContext from "./context/EthProviderContext";
-import Home from "./pages/Home";
+import Home from "./pages/Home/index.jsx";
+import Faq from "./pages/Faq/index.jsx";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const [Ethprovider, setEthProvider] = useState();
   const [favorites, setFavorites] = useState();
   const handleNewFavorite = (newFavorites) => {
-      setFavorites(newFavorites)
+    setFavorites(newFavorites);
   };
   useEffect(() => {
     const getAndSetEthProvider = async () => {
@@ -19,7 +22,7 @@ const App = () => {
       if (localFavorites) {
         localFavorites = JSON.parse(localFavorites);
         setFavorites(localFavorites);
-      }else{
+      } else {
         localStorage.setItem("favoriteGames", JSON.stringify([]));
         setFavorites([]);
       }
@@ -30,12 +33,29 @@ const App = () => {
 
   return (
     <EthProviderContext.Provider value={Ethprovider}>
-      {favorites && (
-        <Home
-          setFavorites={(newFavorites) => handleNewFavorite(newFavorites)}
-          favorites={favorites}
-        />
-      )}
+      <Router>
+        <Switch>
+          <Route exact path="/faq">
+            <Faq />
+          </Route>
+          <Route exact path="/dashboard">
+            {favorites && (
+              <Dashboard
+                setFavorites={(newFavorites) => handleNewFavorite(newFavorites)}
+                favorites={favorites}
+              />
+            )}
+          </Route>
+          <Route exact path="/">
+            {favorites && (
+              <Home
+                setFavorites={(newFavorites) => handleNewFavorite(newFavorites)}
+                favorites={favorites}
+              />
+            )}
+          </Route>
+        </Switch>
+      </Router>
     </EthProviderContext.Provider>
   );
 };
