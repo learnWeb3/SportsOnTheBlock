@@ -1,5 +1,11 @@
 import React from "react";
-import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  makeStyles,
+  Typography,
+  Paper,
+} from "@material-ui/core";
 import CoinIcon from "../../components/icons/CoinIcon";
 import MetamaskIcon from "../../components/icons/MetamaskIcon";
 import TrophyIcon from "../../components/icons/TrophyIcon";
@@ -20,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 16,
     paddingBottom: 16,
   },
+  title: {
+    width: "100%",
+    textAlign: 'center',
+    padding: 16
+  }
 }));
 
 const Faq = () => {
@@ -30,9 +41,11 @@ const Faq = () => {
       <div className={classes.gradient}>
         <Container maxWidth="lg">
           <Grid container className={classes.grid}>
-            <Typography variant="h2" component="h1">
-              Getting started
-            </Typography>
+            <Paper className={classes.title}>
+              <Typography variant="h2" component="h1">
+                Getting started
+              </Typography>
+            </Paper>
             <PanelIcon
               icon={MetamaskIcon}
               title="Metamask Setup"
