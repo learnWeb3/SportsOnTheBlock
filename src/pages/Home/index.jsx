@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import EthProviderContext from "../../context/EthProviderContext";
 import { Grid, Hidden, makeStyles, Typography } from "@material-ui/core";
 import GameCard from "../../components/GameCard";
-import uefaBackground from "./img/euro_fixtures.jpg";
+import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 
 // TEST ONLY
 import { gamesMockup } from "./data/games";
@@ -15,52 +15,110 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   backgroundImage: {
-    backgroundImage: `url(${uefaBackground})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundSize: "100% 100%",
+    backgroundPosition: "bottom",
     backgroundAttachment: "fixed",
     position: "relative",
     zIndex: 0,
     margin: 0,
     padding: 0,
-    minHeight: "66vh",
+    minHeight: "75vh",
     width: "100%",
   },
   overlay: {
-    position: "absolute",
+    position: "fixed",
     textAlign: "center",
     top: "4rem",
     zIndex: 1,
     margin: 0,
     padding: 16,
-    background:
-      "linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,1) 66%)",
     backgroundAttachment: "fixed",
+    background:
+      "linear-gradient(rgba(0,0,0,.5) 0%, rgba(0,0,0,.5) 75%, #d7e1ec 75%, #d7e1ec 100%)",
+  },
+  competitonLabel: {
+    color: "#FFF",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "start",
+    "& svg": {
+      fontSize: "2rem",
+      marginRight: 8,
+    },
+  },
+  scroll: {
+    display: "block",
+    overflow: "auto",
+    height: "90vh",
+    paddingLeft: 1,
+    paddingRight: 16,
+    paddingTop: 0,
+    paddingBottom: "5rem",
   },
 }));
 
 const Home = ({ favorites, setFavorites }) => {
   const classes = useStyles();
+  const [competitions, setCompetitions] = useState([
+    {
+      id: 1,
+      name: "Eurocup",
+      cover:
+        "https://editorial.uefa.com/resources/0263-10dff08e7ac1-a7342e03bf38-1000/euro_date_announcement_2.jpg",
+    },
+    {
+      id: 2,
+      name: "Premier League",
+      cover:
+        "https://e0.365dm.com/21/06/768x432/skysports-premier-league-fixtures_5415976.jpg?20210615153658",
+    },
+  ]);
+  const [competition, setCompetition] = useState({
+    id: 1,
+    name: "Eurocup",
+    cover:
+      "https://editorial.uefa.com/resources/0263-10dff08e7ac1-a7342e03bf38-1000/euro_date_announcement_2.jpg",
+  });
   const [games, setGame] = useState(gamesMockup);
   const EthProvider = useContext(EthProviderContext);
 
   return (
     <>
-      <Grid container className={classes.backgroundImage}>
+      <Grid
+        container
+        className={classes.backgroundImage}
+        style={{ backgroundImage: `url(${competition.cover})` }}
+      >
         <Grid container className={classes.overlay}>
-          <Navbar />
+          <Navbar
+            competition={competition}
+            setCompetition={(selectedCompetition) =>
+              setCompetition(selectedCompetition)
+            }
+            competitions={competitions}
+            menuRightDisplayed={true}
+          />
           <Hidden mdDown>
-            <Grid item lg={4}></Grid>
+            <Grid item lg={4}>
+              <div className={classes.competitonLabel}>
+                <SportsSoccerIcon />
+                <Typography variant="h4" component="h2">
+                  {competition.name}
+                </Typography>
+              </div>
+            </Grid>
           </Hidden>
           <Grid item xs={12} lg={4}>
-            {games?.map((game) => (
-              <GameCard
-                key={`game-${game.id}`}
-                setFavorites={(newFavorites) => setFavorites(newFavorites)}
-                favorites={favorites}
-                game={game}
-              />
-            ))}
+            <div className={classes.scroll}>
+              {games?.map((game) => (
+                <GameCard
+                  key={`game-${game.id}`}
+                  setFavorites={(newFavorites) => setFavorites(newFavorites)}
+                  favorites={favorites}
+                  game={game}
+                />
+              ))}
+            </div>
           </Grid>
           <Hidden mdDown>
             <Grid item lg={4}></Grid>

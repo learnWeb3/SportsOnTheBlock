@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = ({ favorites, setFavorites }) => {
   const classes = useStyles();
 
-  const [competitons, setCompetitions] = useState([
+  const [competitions, setCompetitions] = useState([
     { id: 1, name: "Eurocup" },
     { id: 2, name: "test" },
   ]);
@@ -40,38 +40,45 @@ const Dashboard = ({ favorites, setFavorites }) => {
 
   return (
     <div className={classes.gradient}>
-        <Navbar />
-        <Container maxWidth="lg">
-          <MainMetrics
-            userCount={10}
-            totalFunds={5}
-            competitionCount={9}
-            gameCount={18}
-            avgGamePerCompetition={9}
-            transactionCount={200}
-            avgTransactionCountPerAddress={3}
+      <Navbar
+        competition={competition}
+        setCompetition={(selectedCompetition) =>
+          setCompetition(selectedCompetition)
+        }
+        competitions={competitions}
+        menuRightDisplayed={true}
+      />
+      <Container maxWidth="lg">
+        <MainMetrics
+          userCount={10}
+          totalFunds={5}
+          competitionCount={9}
+          gameCount={18}
+          avgGamePerCompetition={9}
+          transactionCount={200}
+          avgTransactionCountPerAddress={3}
+        />
+        <FiltersArea
+          competitions={competitions}
+          competition={competition}
+          setCompetition={(selectedCompetition) =>
+            setCompetition(selectedCompetition)
+          }
+          isFilterGameToActive={isFilterGameToActive}
+          setFilterGameToActive={(isFilterGameToActiveState) =>
+            setFilterGameToActive(isFilterGameToActiveState)
+          }
+        />
+        {games?.map((game) => (
+          <GameCardDashboard
+            favorites={favorites}
+            setFavorites={(newFavorites) => setFavorites(newFavorites)}
+            key={`game-${game.id}`}
+            game={game}
           />
-          <FiltersArea
-            competitions={competitons}
-            competition={competition}
-            setCompetition={(selectedCompetition) =>
-              setCompetition(selectedCompetition)
-            }
-            isFilterGameToActive={isFilterGameToActive}
-            setFilterGameToActive={(isFilterGameToActiveState) =>
-              setFilterGameToActive(isFilterGameToActiveState)
-            }
-          />
-          {games?.map((game) => (
-            <GameCardDashboard
-              favorites={favorites}
-              setFavorites={(newFavorites) => setFavorites(newFavorites)}
-              key={`game-${game.id}`}
-              game={game}
-            />
-          ))}
-        </Container>
-      </div>
+        ))}
+      </Container>
+    </div>
   );
 };
 

@@ -38,7 +38,7 @@ const App = () => {
           <Route exact path="/faq">
             <Faq />
           </Route>
-          <Route exact path="/dashboard">
+          <Route exact path="/analytics">
             {favorites && (
               <Dashboard
                 setFavorites={(newFavorites) => handleNewFavorite(newFavorites)}

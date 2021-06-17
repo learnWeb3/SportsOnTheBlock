@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
     position: "fixed",
-    backgroundColor: "#FFF",
+    backgroundColor: "#3f51b5",
     zIndex: "100",
     padding: 0,
     top: "4rem",
@@ -30,7 +30,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Menu = ({ menuContent, toogled, setToogled, left }) => {
+const Menu = ({
+  menuContent: MenuContent,
+  toogled,
+  setToogled,
+  left,
+  ...props
+}) => {
   const classes = useStyles();
   const matches = useMediaQuery("(max-width:600px)");
 
@@ -48,7 +54,7 @@ const Menu = ({ menuContent, toogled, setToogled, left }) => {
     >
       {toogled && (
         <Typography variant="h6" component="p">
-          {menuContent}
+          <MenuContent {...props} />
         </Typography>
       )}
     </div>
