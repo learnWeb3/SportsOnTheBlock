@@ -46,6 +46,11 @@ const useStyles = makeStyles((theme) => ({
       padding: 8,
     },
   },
+  surface: {
+      padding: 16,
+      marginTop: 8,
+      marginBottom: 8
+  }
 }));
 
 const PanelIcon = ({
@@ -62,7 +67,7 @@ const PanelIcon = ({
   const matches = useMediaQuery("(min-width:600px)");
   const history = useHistory();
   return (
-    <Paper>
+    <Paper className={classes.surface}>
       <Grid container>
         <Grid item sm={12} lg={3} className={classes.alignCenter}>
           <Icon height={iconHeight} width={iconWidth} />
