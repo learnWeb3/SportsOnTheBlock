@@ -4,7 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardHeader from "./CardHeader";
 import CardBody from "./CardBody";
-import { Grid } from "@material-ui/core";
+import { CardContent, Grid } from "@material-ui/core";
 import Collapse from "@material-ui/core/Collapse";
 import { DataGrid } from "@material-ui/data-grid";
 
@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   datagrid: {
     height: 275,
     width: "100%",
+  },
+  collapse: {
+    paddingTop: 16,
   },
 }));
 
@@ -108,30 +111,36 @@ const GameCardDashBoard = ({
             title="Paella dish"
           />
         </Grid>
-        <Grid item xs={12} lg={4}>
-          <CardHeader
-            id={id}
-            teamA={teamA}
-            teamB={teamB}
-            datetime={datetime}
-            draw={draw}
-            competition={competition}
-          />
-        </Grid>
-        <Grid item xs={12} lg={4}>
-          <CardBody
-            isFavorite={isFavorite}
-            handleAddFavorite={handleAddFavorite}
-            expanded={expanded}
-            handleExpandClick={handleExpandClick}
-            teamA={teamA}
-            description={description}
-            teamB={teamB}
-            draw={draw}
-          />
+        <Grid item xs={12} lg={8}>
+          <CardContent>
+            <CardHeader
+              id={id}
+              teamA={teamA}
+              teamB={teamB}
+              datetime={datetime}
+              draw={draw}
+              competition={competition}
+            />
+
+            <CardBody
+              isFavorite={isFavorite}
+              handleAddFavorite={handleAddFavorite}
+              expanded={expanded}
+              handleExpandClick={handleExpandClick}
+              teamA={teamA}
+              description={description}
+              teamB={teamB}
+              draw={draw}
+            />
+          </CardContent>
         </Grid>
       </Grid>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        className={classes.collapse}
+        in={expanded}
+        timeout="auto"
+        unmountOnExit
+      >
         <div className={classes.datagrid}>
           <DataGrid rows={transactions} columns={columns} />
         </div>

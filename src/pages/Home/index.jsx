@@ -1,6 +1,12 @@
 import React, { useContext, useState } from "react";
 import EthProviderContext from "../../context/EthProviderContext";
-import { Grid, Hidden, makeStyles, Typography } from "@material-ui/core";
+import {
+  Grid,
+  Hidden,
+  makeStyles,
+  Typography,
+  Container,
+} from "@material-ui/core";
 import GameCard from "../../components/GameCard";
 import SportsSoccerIcon from "@material-ui/icons/SportsSoccer";
 
@@ -26,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   overlay: {
+    width: "100%",
     position: "fixed",
     textAlign: "center",
     top: "4rem",
@@ -89,7 +96,7 @@ const Home = ({ favorites, setFavorites }) => {
         className={classes.backgroundImage}
         style={{ backgroundImage: `url(${competition.cover})` }}
       >
-        <Grid container className={classes.overlay}>
+        <div className={classes.overlay}>
           <Navbar
             competition={competition}
             setCompetition={(selectedCompetition) =>
@@ -98,17 +105,7 @@ const Home = ({ favorites, setFavorites }) => {
             competitions={competitions}
             menuRightDisplayed={true}
           />
-          <Hidden mdDown>
-            <Grid item lg={4}>
-              <div className={classes.competitonLabel}>
-                <SportsSoccerIcon />
-                <Typography variant="h4" component="h2">
-                  {competition.name}
-                </Typography>
-              </div>
-            </Grid>
-          </Hidden>
-          <Grid item xs={12} lg={4}>
+          <Container maxWidth="md">
             <div className={classes.scroll}>
               {games?.map((game) => (
                 <GameCard
@@ -119,11 +116,8 @@ const Home = ({ favorites, setFavorites }) => {
                 />
               ))}
             </div>
-          </Grid>
-          <Hidden mdDown>
-            <Grid item lg={4}></Grid>
-          </Hidden>
-        </Grid>
+          </Container>
+        </div>
       </Grid>
     </>
   );

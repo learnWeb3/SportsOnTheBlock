@@ -1,48 +1,42 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { Container, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
-import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
-  },
-  description: {
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    textAlign: "justify",
     marginTop: 16,
   },
-  isColorFavorite: {
-    color: "red",
-  },
-  isColorNotFavorite: {
-    color: "unset",
+
+  buttonBar: {
+    marginTop: 16,
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 0,
   },
 }));
 
-const CardBody = ({
-  isFavorite,
+const CardActionBar = ({
   handleAddFavorite,
-  expanded,
+  isFavorite,
   handleExpandClick,
+  expanded,
   id,
 }) => {
   const classes = useStyles();
   return (
-    <CardActions disableSpacing>
+    <Container className={classes.buttonBar}>
       <IconButton aria-label="add to favorites">
         <FavoriteIcon
-          className={
-            isFavorite ? classes.isColorFavorite : classes.isColorNotFavorite
-          }
+          style={{ color: isFavorite ? "red" : "unset" }}
           onClick={() => handleAddFavorite(id)}
         />
       </IconButton>
@@ -56,8 +50,8 @@ const CardBody = ({
       >
         <ExpandMoreIcon />
       </IconButton>
-    </CardActions>
+    </Container>
   );
 };
 
-export default CardBody;
+export default CardActionBar;
