@@ -1,0 +1,307 @@
+{
+    "contractName": "IsCommon",
+    "abi": [],
+    "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/neurotropik/Documents/PROJECTS/ETHEREUM/SportsOnTheBlock/contracts/IsCommon.sol\":\"IsCommon\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/neurotropik/Documents/PROJECTS/ETHEREUM/SportsOnTheBlock/contracts/IsCommon.sol\":{\"keccak256\":\"0x2e63613083d4c62baeaec8909d944bd18cc50674f61a2daac69ebcd65c6d7f59\",\"urls\":[\"bzz-raw://0a74ffa832bb3b8f3e1f1007587e6d2d85ddb88a331d2c5f486585adf8e57241\",\"dweb:/ipfs/QmPo7at1Yno2tqAMRE1Zp2FEXdKvLrKt5vTjAbNe14LAsQ\"]}},\"version\":1}",
+    "bytecode": "6080604052348015600f57600080fd5b50604c80601d6000396000f3fe6080604052600080fdfea365627a7a72315820f1d75e207945060145761ca8091b07d9df04218e0274a557b1327d67153d43a56c6578706572696d656e74616cf564736f6c63430005100040",
+    "deployedBytecode": "6080604052600080fdfea365627a7a72315820f1d75e207945060145761ca8091b07d9df04218e0274a557b1327d67153d43a56c6578706572696d656e74616cf564736f6c63430005100040",
+    "sourceMap": "60:348:4:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;60:348:4;;;;;;;",
+    "deployedSourceMap": "60:348:4:-;;;;;",
+    "sourcePath": "/home/neurotropik/Documents/PROJECTS/ETHEREUM/SportsOnTheBlock/contracts/IsCommon.sol",
+    "compiler": {
+        "name": "solc",
+        "version": "0.5.16+commit.9c3226ce"
+    },
+    "ast": {
+        "absolutePath": "/home/neurotropik/Documents/PROJECTS/ETHEREUM/SportsOnTheBlock/contracts/IsCommon.sol",
+        "exportedSymbols": {
+            "IsCommon": [
+                1147
+            ]
+        },
+        "id": 1148,
+        "nodeType": "SourceUnit",
+        "nodes": [
+            {
+                "id": 1125,
+                "literals": [
+                    "solidity",
+                    "^",
+                    "0.5",
+                    ".16"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "0:24:4"
+            },
+            {
+                "id": 1126,
+                "literals": [
+                    "experimental",
+                    "ABIEncoderV2"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "25:33:4"
+            },
+            {
+                "baseContracts": [],
+                "contractDependencies": [],
+                "contractKind": "contract",
+                "documentation": null,
+                "fullyImplemented": true,
+                "id": 1147,
+                "linearizedBaseContracts": [
+                    1147
+                ],
+                "name": "IsCommon",
+                "nodeType": "ContractDefinition",
+                "nodes": [
+                    {
+                        "canonicalName": "IsCommon.GAMEOUTCOMES",
+                        "id": 1130,
+                        "members": [
+                            {
+                                "id": 1127,
+                                "name": "TEAMA",
+                                "nodeType": "EnumValue",
+                                "src": "154:5:4"
+                            },
+                            {
+                                "id": 1128,
+                                "name": "TEAMB",
+                                "nodeType": "EnumValue",
+                                "src": "161:5:4"
+                            },
+                            {
+                                "id": 1129,
+                                "name": "NULL",
+                                "nodeType": "EnumValue",
+                                "src": "168:4:4"
+                            }
+                        ],
+                        "name": "GAMEOUTCOMES",
+                        "nodeType": "EnumDefinition",
+                        "src": "135:38:4"
+                    },
+                    {
+                        "constant": false,
+                        "id": 1132,
+                        "name": "gameOutcome",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 1147,
+                        "src": "178:24:4",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_enum$_GAMEOUTCOMES_$1130",
+                            "typeString": "enum IsCommon.GAMEOUTCOMES"
+                        },
+                        "typeName": {
+                            "contractScope": null,
+                            "id": 1131,
+                            "name": "GAMEOUTCOMES",
+                            "nodeType": "UserDefinedTypeName",
+                            "referencedDeclaration": 1130,
+                            "src": "178:12:4",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_enum$_GAMEOUTCOMES_$1130",
+                                "typeString": "enum IsCommon.GAMEOUTCOMES"
+                            }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                    },
+                    {
+                        "constant": false,
+                        "id": 1134,
+                        "name": "admin",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 1147,
+                        "src": "230:13:4",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                        },
+                        "typeName": {
+                            "id": 1133,
+                            "name": "address",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "230:7:4",
+                            "stateMutability": "nonpayable",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                            }
+                        },
+                        "value": null,
+                        "visibility": "internal"
+                    },
+                    {
+                        "body": {
+                            "id": 1145,
+                            "nodeType": "Block",
+                            "src": "268:138:4",
+                            "statements": [
+                                {
+                                    "expression": {
+                                        "argumentTypes": null,
+                                        "arguments": [
+                                            {
+                                                "argumentTypes": null,
+                                                "commonType": {
+                                                    "typeIdentifier": "t_address",
+                                                    "typeString": "address"
+                                                },
+                                                "id": 1140,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": false,
+                                                "lValueRequested": false,
+                                                "leftExpression": {
+                                                    "argumentTypes": null,
+                                                    "expression": {
+                                                        "argumentTypes": null,
+                                                        "id": 1137,
+                                                        "name": "msg",
+                                                        "nodeType": "Identifier",
+                                                        "overloadedDeclarations": [],
+                                                        "referencedDeclaration": 1162,
+                                                        "src": "299:3:4",
+                                                        "typeDescriptions": {
+                                                            "typeIdentifier": "t_magic_message",
+                                                            "typeString": "msg"
+                                                        }
+                                                    },
+                                                    "id": 1138,
+                                                    "isConstant": false,
+                                                    "isLValue": false,
+                                                    "isPure": false,
+                                                    "lValueRequested": false,
+                                                    "memberName": "sender",
+                                                    "nodeType": "MemberAccess",
+                                                    "referencedDeclaration": null,
+                                                    "src": "299:10:4",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_address_payable",
+                                                        "typeString": "address payable"
+                                                    }
+                                                },
+                                                "nodeType": "BinaryOperation",
+                                                "operator": "==",
+                                                "rightExpression": {
+                                                    "argumentTypes": null,
+                                                    "id": 1139,
+                                                    "name": "admin",
+                                                    "nodeType": "Identifier",
+                                                    "overloadedDeclarations": [],
+                                                    "referencedDeclaration": 1134,
+                                                    "src": "313:5:4",
+                                                    "typeDescriptions": {
+                                                        "typeIdentifier": "t_address",
+                                                        "typeString": "address"
+                                                    }
+                                                },
+                                                "src": "299:19:4",
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                }
+                                            },
+                                            {
+                                                "argumentTypes": null,
+                                                "hexValue": "596f75206e6565642061646d696e2072696768747320746f20706572666f726d207468697320616374696f6e",
+                                                "id": 1141,
+                                                "isConstant": false,
+                                                "isLValue": false,
+                                                "isPure": true,
+                                                "kind": "string",
+                                                "lValueRequested": false,
+                                                "nodeType": "Literal",
+                                                "src": "332:46:4",
+                                                "subdenomination": null,
+                                                "typeDescriptions": {
+                                                    "typeIdentifier": "t_stringliteral_408d30687cfe21fb2287eb21aa4181509b83003c9fd79cc062af7a960c2e11b6",
+                                                    "typeString": "literal_string \"You need admin rights to perform this action\""
+                                                },
+                                                "value": "You need admin rights to perform this action"
+                                            }
+                                        ],
+                                        "expression": {
+                                            "argumentTypes": [
+                                                {
+                                                    "typeIdentifier": "t_bool",
+                                                    "typeString": "bool"
+                                                },
+                                                {
+                                                    "typeIdentifier": "t_stringliteral_408d30687cfe21fb2287eb21aa4181509b83003c9fd79cc062af7a960c2e11b6",
+                                                    "typeString": "literal_string \"You need admin rights to perform this action\""
+                                                }
+                                            ],
+                                            "id": 1136,
+                                            "name": "require",
+                                            "nodeType": "Identifier",
+                                            "overloadedDeclarations": [
+                                                1165,
+                                                1166
+                                            ],
+                                            "referencedDeclaration": 1166,
+                                            "src": "278:7:4",
+                                            "typeDescriptions": {
+                                                "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                                                "typeString": "function (bool,string memory) pure"
+                                            }
+                                        },
+                                        "id": 1142,
+                                        "isConstant": false,
+                                        "isLValue": false,
+                                        "isPure": false,
+                                        "kind": "functionCall",
+                                        "lValueRequested": false,
+                                        "names": [],
+                                        "nodeType": "FunctionCall",
+                                        "src": "278:110:4",
+                                        "typeDescriptions": {
+                                            "typeIdentifier": "t_tuple$__$",
+                                            "typeString": "tuple()"
+                                        }
+                                    },
+                                    "id": 1143,
+                                    "nodeType": "ExpressionStatement",
+                                    "src": "278:110:4"
+                                },
+                                {
+                                    "id": 1144,
+                                    "nodeType": "PlaceholderStatement",
+                                    "src": "398:1:4"
+                                }
+                            ]
+                        },
+                        "documentation": null,
+                        "id": 1146,
+                        "name": "isAdmin",
+                        "nodeType": "ModifierDefinition",
+                        "parameters": {
+                            "id": 1135,
+                            "nodeType": "ParameterList",
+                            "parameters": [],
+                            "src": "265:2:4"
+                        },
+                        "src": "249:157:4",
+                        "visibility": "internal"
+                    }
+                ],
+                "scope": 1148,
+                "src": "60:348:4"
+            }
+        ],
+        "src": "0:409:4"
+    },
+    "functionHashes": {},
+    "gasEstimates": {
+        "creation": {
+            "codeDepositCost": "15200",
+            "executionCost": "69",
+            "totalCost": "15269"
+        }
+    }
+}
