@@ -42,12 +42,6 @@ const RoutingMenuContent = () => {
           Home
         </Typography>
       </Link>
-      <Link className={classes.listItem} to="/analytics">
-        <BarChartIcon className={classes.icon} />
-        <Typography variant="h5" component="span">
-          Analytics
-        </Typography>
-      </Link>
       <Link className={classes.listItem} to="/faq">
         <BuildIcon className={classes.icon} />
         <Typography variant="h5" component="span">

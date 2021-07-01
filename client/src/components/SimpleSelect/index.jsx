@@ -38,7 +38,7 @@ const SimpleSelect = ({
           value={competition}
           onChange={handleChange}
         >
-          {competitions.map((menuItem) => (
+          {competitions?.map((menuItem) => (
             <MenuItem
               key={`competitions-${menuItem.id}`}
               id={menuItem.id}

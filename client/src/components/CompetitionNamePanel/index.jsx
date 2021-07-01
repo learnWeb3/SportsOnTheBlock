@@ -18,7 +18,7 @@ const CompetitionNamePanel = ({ competition }) => {
   return (
     <div className={classes.root}>
       <SportsSoccerIcon fontSize="large" />
-      <Typography variant="h5" color="dark" component="p">
+      <Typography variant="h5" component="p">
         {competition.name}
       </Typography>
     </div>

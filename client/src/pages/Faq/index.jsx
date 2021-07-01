@@ -30,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     textAlign: "center",
     padding: 16,
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 8,
+    marginBottom: 8,
     "& h1": {
-      fontWeight: 600,
+      fontWeight: 400,
     },
   },
 }));
@@ -56,7 +56,7 @@ const Faq = () => {
               title="Metamask Setup"
               text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora, qui fugiat optio dolor sed culpa veritatis. Nesciunt repellendus sapiente optio reprehenderit a quae? Similique sed obcaecati tempora voluptates, rerum neque."
               call2ActionExternalLink="https://metamask.io/faqs.html"
-              call2ActionLabel="Let's setup Metamask !"
+              call2ActionLabel="install metamask"
               iconHeight="8rem"
               iconWidth="8rem"
             />

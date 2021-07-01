@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import detectEthereumProvider from "@metamask/detect-provider";
-import EthProviderContext from "./context/EthProviderContext";
-import Home from "./pages/Home/index.jsx";
 import Faq from "./pages/Faq/index.jsx";
 import Dashboard from "./pages/Dashboard";
-import ComponentState from "./hoc/ComponentState";
+import Error from "./components/Error/index";
+import Context from "./context/index";
+import Navbar from "./components/NavBar/index";
 
 const App = () => {
-  const [Ethprovider, setEthProvider] = useState();
+  // user local favorites
   const [favorites, setFavorites] = useState();
   const handleNewFavorite = (newFavorites) => {
     setFavorites(newFavorites);
   };
   useEffect(() => {
-    const getAndSetEthProvider = async () => {
-      const provider = await detectEthereumProvider();
-      provider && setEthProvider(provider);
-    };
     const getAndSetLocalFavorites = () => {
       let localFavorites = localStorage.getItem("favoriteGames");
       if (localFavorites) {
@@ -28,38 +23,26 @@ const App = () => {
         setFavorites([]);
       }
     };
-    getAndSetEthProvider();
     getAndSetLocalFavorites();
   }, []);
 
   return (
-    <EthProviderContext.Provider value={Ethprovider}>
+    <Context.Provider value={{ favorites, setFavorites }}>
       <Router>
+        <Navbar />
         <Switch>
           <Route exact path="/faq">
             <Faq />
           </Route>
-          <Route exact path="/analytics">
-            {favorites && (
-              <ComponentState
-                component={Dashboard}
-                setFavorites={(newFavorites) => handleNewFavorite(newFavorites)}
-                favorites={favorites}
-              />
-            )}
-          </Route>
           <Route exact path="/">
-            {favorites && (
-              <ComponentState
-                component={Home}
-                setFavorites={(newFavorites) => handleNewFavorite(newFavorites)}
-                favorites={favorites}
-              />
-            )}
+            <Dashboard />
+          </Route>
+          <Route path="*">
+            <Error code={404} />
           </Route>
         </Switch>
       </Router>
-    </EthProviderContext.Provider>
+    </Context.Provider>
   );
 };
 

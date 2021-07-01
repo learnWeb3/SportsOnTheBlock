@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = ({
   competition,
   setCompetition,
-  competitions,
   menuRightDisplayed,
 }) => {
   const classes = useStyles();
@@ -64,7 +63,6 @@ const Navbar = ({
           setCompetition={(selectedCompetition) =>
             setCompetition(selectedCompetition)
           }
-          competitions={competitions}
         />
       )}
     </>

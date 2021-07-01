@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "justify",
   },
   btn: {
-    marginTop: 8,
+    marginTop: 16,
     marginBottom: 16,
   },
   btnLg: {
@@ -82,21 +82,21 @@ const PanelIcon = ({
               : clsx(classes.subject, classes.subjectMd)
           }
         >
-          <Typography variant="h5" component="h2">
+          <Typography variant="h4" component="h2">
             {title}
           </Typography>
-          <Typography variant="subtitle1" component="p">
+          <Typography variant="body1" component="p">
             {text}
           </Typography>
           <Button
             variant="contained"
+            size="large"
             color="secondary"
             onClick={() =>
               call2ActionExternalLink
                 ? (window.location.href = call2ActionExternalLink)
                 : history.push(call2ActionLink)
             }
-            size="medium"
             className={
               matches
                 ? clsx(classes.btn, classes.btnMd)

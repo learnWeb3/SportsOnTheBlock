@@ -1,0 +1,14 @@
+{
+  "name": "SportOnTheBlock",
+  "version": "1.0.0",
+  "description": "1N2 like bet ethereum blockchain based service",
+  "main": "truffle-config.js",
+  "directories": {},
+  "scripts": {
+    "dev": "(truffle networks --clean && truffle deploy --network=development) & (cd ./server && npm run dev) & (cd ./client && npm run start)",
+    "start": "(truffle networks --clean && truffle deploy --network=ropsten)  & (cd ./server && npm run dev) & (cd ./client && npm run start)"
+  },
+  "author": "Antoine LE GUILLOU",
+  "license": "ISC",
+  "dependencies": {}
+}

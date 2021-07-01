@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Error = ({ code }) => {
+  console.log(code)
   const classes = useStyles();
   const mapCodeToMessage = {
     404: {
