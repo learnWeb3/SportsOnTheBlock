@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { useComponentState } from "../../hooks";
+import SnackBar from "../SnackBar.index";
 import ModalClosePanel from "../ModalClosePanel/index";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import clsx from "clsx";
@@ -64,6 +67,8 @@ const BetForm = ({
   title,
   buttonLabel,
   setModalToogled,
+  bettingContract,
+  accounts,
   game: {
     cover,
     description,
@@ -77,9 +82,9 @@ const BetForm = ({
     id,
   },
 }) => {
+  const { alert, setAlert } = useComponentState();
   const matches = useMediaQuery("(max-width:600px)");
   const classes = useStyles();
-  const [isFormValid, setFormValid] = useState(false);
   const [formData, setFormData] = useState({
     betSide: {
       value: "",
@@ -90,9 +95,9 @@ const BetForm = ({
       value: "",
       error: false,
     },
+    isValid: false,
   });
   const validateFields = (event) => {
-    let formIsValid = true;
     fields.map((field) => {
       if (event.target.name === field.name) {
         const newFormData = {
@@ -103,16 +108,24 @@ const BetForm = ({
             helperText: "Required",
           },
         };
-        setFormData(newFormData);
-        formIsValid = event.target.value === "" ? false : formIsValid;
+        let formIsValid = true;
+        for (const key in newFormData) {
+          if (newFormData[key].value === "") {
+            formIsValid = false;
+          }
+        }
+        setFormData({ ...newFormData, isValid: formIsValid });
       }
     });
-    setFormValid(formIsValid);
   };
 
   useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+    setAlert({
+      toogled: true,
+      message: "Please fill out the form to place your bet",
+      type: "info",
+    });
+  }, []);
 
   const fields = [
     {
@@ -122,13 +135,14 @@ const BetForm = ({
       name: "betSide",
       value: "",
       items: [
-        { id: "1", name: team1Name?.toUpperCase() },
-        { id: "N", name: "NULL" },
-        { id: "2", name: team2Name?.toUpperCase() },
+        { id: 1, name: team1Name?.toUpperCase() },
+        { id: 0, name: "NULL" },
+        { id: 2, name: team2Name?.toUpperCase() },
       ],
       onChange: (event) => {
         validateFields(event);
       },
+      required: true,
     },
     {
       type: "number",
@@ -145,87 +159,130 @@ const BetForm = ({
     },
   ];
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    if (formData.isValid) {
+      try {
+        await bettingContract.methods
+          .bet(id, formData.betSide.value)
+          .send({ from: accounts[0], value: formData.betValue.value });
+        setAlert({
+          toogled: true,
+          message:
+            "Your bet has been sent to the contract ! Have Game and may the odds be ever in your favor",
+          type: "success",
+        });
+      } catch (error) {
+        setAlert({
+          toogled: true,
+          message: "We encoutered an unexpected error, please try again",
+          type: "error",
+        });
+      }
+    } else {
+      setAlert({
+        toogled: true,
+        message: "form is invalid, please fill the required inputs",
+        type: "error",
+      });
+    }
+  };
 
   return (
-    <Grid container className={classes.root}>
-      <Hidden mdDown>
-        <Grid item lg={4}></Grid>
-      </Hidden>
-      <Grid item xs={12} lg={4} className={classes.containerFlex}>
-        <div
-          className={
-            matches
-              ? clsx(classes.formContainer, classes.formContainerSm)
-              : classes.formContainer
-          }
-        >
-          <form
-            noValidate
-            autoComplete="off"
+    <>
+      <Grid container className={classes.root}>
+        <Hidden mdDown>
+          <Grid item lg={4}></Grid>
+        </Hidden>
+        <Grid item xs={12} lg={4} className={classes.containerFlex}>
+          <div
             className={
-              matches ? classes.form : clsx(classes.form, classes.formLg)
+              matches
+                ? clsx(classes.formContainer, classes.formContainerSm)
+                : classes.formContainer
             }
           >
-            <ModalClosePanel setModalToogled={setModalToogled} />
-            <Typography variant="h4" component="h1" className={classes.title}>
-              {title}
-            </Typography>
-            {fields.map((field) =>
-              field.type === "number" ? (
-                <TextField
-                  key={field.id}
-                  id={field.id}
-                  label={field.label.toUpperCase()}
-                  variant="outlined"
-                  className={classes.textfield}
-                  required={field.required}
-                  readOnly={field.readOnly}
-                  error={formData[field.id].error}
-                  helperText={formData[field.id].helperText}
-                  type={field.type}
-                  value={formData[field.id].value}
-                  onInput={field.onInput}
-                  name={field.name}
-                />
-              ) : (
-                field.type === "select" && (
-                  <Select
-                    labelId={field.labelId}
-                    id={field.id}
-                    name={field.name}
-                    value={formData[field.id].value}
-                    onChange={field.onChange}
-                    className={classes.textfield}
-                    error={formData[field.id].error}
-                  >
-                    {field.items?.map((item) => (
-                      <MenuItem key={`game-${item.id}`} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )
-              )
-            )}
-            <Button
-              color="primary"
-              variant="contained"
-              className={classes.button}
-              size="large"
-              onClick={handleSubmit}
-              disabled={!isFormValid}
+            <form
+              noValidate
+              autoComplete="off"
+              className={
+                matches ? classes.form : clsx(classes.form, classes.formLg)
+              }
             >
-              {buttonLabel}
-            </Button>
-          </form>
-        </div>
+              <ModalClosePanel setModalToogled={setModalToogled} />
+              <Typography variant="h4" component="h1" className={classes.title}>
+                {title}
+              </Typography>
+              {fields.map((field) =>
+                field.type === "number" ? (
+                  <TextField
+                    key={field.id}
+                    id={field.id}
+                    label={field.label.toUpperCase()}
+                    variant="outlined"
+                    className={classes.textfield}
+                    required={field.required}
+                    readOnly={field.readOnly}
+                    error={formData[field.id].error}
+                    helperText={formData[field.id].helperText}
+                    type={field.type}
+                    value={formData[field.id].value}
+                    onInput={field.onInput}
+                    name={field.name}
+                  />
+                ) : (
+                  field.type === "select" && (
+                    <Select
+                      key={field.id}
+                      labelId={field.labelId}
+                      id={field.id}
+                      name={field.name}
+                      value={formData[field.id].value}
+                      onChange={field.onChange}
+                      className={classes.textfield}
+                      error={formData[field.id].error}
+                    >
+                      {field.items?.map((item) => (
+                        <MenuItem
+                          key={`game-${item.id}`}
+                          key={item.id}
+                          value={item.id}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )
+                )
+              )}
+              <Button
+                color="primary"
+                variant="contained"
+                className={classes.button}
+                size="large"
+                onClick={handleSubmit}
+                disabled={!formData.isValid}
+              >
+                {buttonLabel}
+              </Button>
+            </form>
+          </div>
+        </Grid>
+
+        <Hidden mdDown>
+          <Grid item lg={4}></Grid>
+        </Hidden>
       </Grid>
 
-      <Hidden mdDown>
-        <Grid item lg={4}></Grid>
-      </Hidden>
-    </Grid>
+      {alert.toogled &&
+        ReactDOM.createPortal(
+          <SnackBar
+            message={alert.message}
+            type={alert.type}
+            setAlert={setAlert}
+          />,
+          document.querySelector("body")
+        )}
+    </>
   );
 };
 

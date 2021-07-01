@@ -51,12 +51,19 @@ const useProvider = (setState) => {
 // make available state setState, LoadingAnimation and error to components implementing this hook
 const useComponentState = () => {
   const [isModalToogled, setModalToogled] = useState(false);
+  const [alert, setAlert] = useState({
+    toogled: false,
+    message: "",
+    type: "error",
+  });
   const [state, setState] = useState({
     status: "loaded",
     code: null,
   });
 
   return {
+    alert,
+    setAlert,
     setState,
     state,
     isModalToogled,

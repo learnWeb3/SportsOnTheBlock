@@ -43,6 +43,13 @@ const games = [
     description: "lorem ipsum dolor sit amet",
     cover: "/games/3",
   },
+  {
+    competitionId: 1,
+    team1Name: "potugal",
+    team2Name: "espagne",
+    description: "lorem ipsum dolor sit amet",
+    cover: "/games/3",
+  },
 ];
 
 const createGames = async (bettingContract, owner, games) =>

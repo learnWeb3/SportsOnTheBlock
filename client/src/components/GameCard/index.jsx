@@ -44,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GameCardDashBoard = ({
+  bettingContract,
+  accounts,
   game: {
     cover,
     description,
@@ -110,7 +112,7 @@ const GameCardDashBoard = ({
           <CardMedia src={cover} />
           <CardContent>
             <Typography variant="h5" component="h5">
-              {team1Name}&nbsp;vs&nbsp;{team2Name}
+              {team1Name.toUpperCase()}&nbsp;vs&nbsp;{team2Name.toUpperCase()}
             </Typography>
             <Typography variant="body1" component="p">
               {description}
@@ -139,7 +141,7 @@ const GameCardDashBoard = ({
           ReactDOM.createPortal(
             <Modal
               component={BetForm}
-              title="Place a bet"
+              title={`Place a bet on ${team1Name?.toUpperCase()} vs ${team2Name?.toUpperCase()}`}
               buttonLabel="confirm"
               setModalToogled={setModalToogled}
               game={{
@@ -154,6 +156,8 @@ const GameCardDashBoard = ({
                 winner,
                 id,
               }}
+              bettingContract={bettingContract}
+              accounts={accounts}
             />,
             document.querySelector("body")
           )}

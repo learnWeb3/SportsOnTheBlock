@@ -135,6 +135,8 @@ const Dashboard = () => {
                       provider={provider}
                       accounts={accounts}
                       game={game}
+                      bettingContract={bettingContract}
+                      accounts={accounts}
                     />
                   </Grid>
                 ))}
