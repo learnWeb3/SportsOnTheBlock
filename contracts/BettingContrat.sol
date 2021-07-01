@@ -59,6 +59,7 @@ contract BettingContract is Owner, isCommon {
     // costly 3 writes in storage
     function newGame(
         uint256 competitionId,
+        uint256 start,
         string calldata team1Name,
         string calldata team2Name,
         string calldata description,
@@ -69,6 +70,7 @@ contract BettingContract is Owner, isCommon {
             team2Name,
             description,
             cover,
+            start,
             0,
             0,
             0,
@@ -79,6 +81,10 @@ contract BettingContract is Owner, isCommon {
         CompetitionIdToGames[competitionId].push(_game);
         currentGameId++;
         emit NewGame(_game);
+    }
+
+    function setGameToStarted(uint256 gameId) external isOwner() {
+        GameIdToGame[gameId].started = true;
     }
 
     function settleGame(uint256 gameId, uint256 winner)

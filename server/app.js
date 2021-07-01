@@ -2,34 +2,21 @@ const express = require("express");
 const cors = require("cors");
 const { CONFIG } = require("./config");
 const fs = require("fs");
-const { Db } = require("./db");
-const { apiKeyCheck } = require("./middlewares");
-
 // init express server
 const app = express();
 // cors configuration middleware
 app.use(cors(CONFIG.CORS));
-// api key check middleware
-app.use(apiKeyCheck);
 
-app.get("/games/:game_contract_address", async (req, res) => {
+app.get("/games/:id", async (req, res) => {
   try {
-    const { game_contract_address } = req.params;
-    if (game_contract_address) {
-      const db = new Db("games");
-      const game = db.findElement({ address: game_contract_address }, 0, 1);
-      if (game.length > 0) {
-        const image = fs.readFileSync(`${process.cwd() + game.cover}`);
-        res.append("Content-type", "image/png");
-        res.send(image);
-      } else {
-        res.status(404).json({
-          message: "Page not found",
-        });
-      }
+    const { id } = req.params;
+    if (id) {
+      const image = fs.readFileSync(`${process.cwd()}/public/games/${id}.png`);
+      res.append("Content-type", "image/png");
+      res.send(image);
     } else {
-      res.status(404).json({
-        message: "Page not found",
+      res.status(422).json({
+        message: "id must be present",
       });
     }
   } catch (error) {
@@ -40,17 +27,18 @@ app.get("/games/:game_contract_address", async (req, res) => {
   }
 });
 
-app.post("/games", async (req, res) => {
+app.get("/competitions/:id", async (req, res) => {
   try {
-    const { address, cover } = req.body;
-    if (address && cover) {
-      const db = new Db("games");
-      db.create([{ address, cover }]);
-      const game = db.findElement({ address }, 0, 1);
-      return res.status(200).json(game[0]);
+    const { id } = req.params;
+    if (id) {
+      const image = fs.readFileSync(
+        `${process.cwd()}/public/competitions/${id}.png`
+      );
+      res.append("Content-type", "image/png");
+      res.send(image);
     } else {
       res.status(422).json({
-        message: "Unprocessable entity",
+        message: "id must be present",
       });
     }
   } catch (error) {

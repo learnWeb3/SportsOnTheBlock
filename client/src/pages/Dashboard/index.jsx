@@ -65,6 +65,7 @@ const Dashboard = () => {
       const _games = await bettingContract.methods
         .getGames(competition.id)
         .call();
+      console.log(_games);
       const formattedGames = _games.map(
         (
           {
@@ -77,6 +78,7 @@ const Dashboard = () => {
             team2Name,
             team2Score,
             winner,
+            start
           },
           index
         ) => ({
@@ -89,6 +91,7 @@ const Dashboard = () => {
           team2Name,
           team2Score,
           winner,
+          start,
           id: index + 1,
         })
       );

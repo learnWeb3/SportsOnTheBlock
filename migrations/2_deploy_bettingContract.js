@@ -24,20 +24,23 @@ const exportContractABIS = () => {
 const games = [
   {
     competitionId: 1,
-    team1Name: "italie",
-    team2Name: "france",
+    start: parseInt((Date.now() + 3600 * 24 * 1000).toString().slice(0, -3)),
+    team1Name: "switzerland",
+    team2Name: "spain",
     description: "lorem ipsum dolor sit amet",
     cover: "/games/1",
   },
   {
     competitionId: 1,
-    team1Name: "italie",
-    team2Name: "allemagne",
+    start: parseInt((Date.now() + 3600 * 24 * 1000).toString().slice(0, -3)),
+    team1Name: "belgium",
+    team2Name: "italia",
     description: "lorem ipsum dolor sit amet",
     cover: "/games/2",
   },
   {
     competitionId: 1,
+    start: parseInt((Date.now() + 3600 * 24 * 1000).toString().slice(0, -3)),
     team1Name: "italie",
     team2Name: "espagne",
     description: "lorem ipsum dolor sit amet",
@@ -45,19 +48,28 @@ const games = [
   },
   {
     competitionId: 1,
-    team1Name: "potugal",
-    team2Name: "espagne",
+    start: (Date.now() + 3600 * 24 * 1000).toString().slice(0, -3),
+    team1Name: "tcheck rep",
+    team2Name: "danmeark",
     description: "lorem ipsum dolor sit amet",
-    cover: "/games/3",
+    cover: "/games/4",
   },
 ];
 
 const createGames = async (bettingContract, owner, games) =>
   await Promise.all(
     games.map(
-      async ({ competitionId, team1Name, team2Name, description, cover }) => {
+      async ({
+        competitionId,
+        start,
+        team1Name,
+        team2Name,
+        description,
+        cover,
+      }) => {
         await bettingContract.newGame(
           competitionId,
+          start,
           team1Name,
           team2Name,
           description,

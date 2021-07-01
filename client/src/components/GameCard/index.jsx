@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
+import moment from "moment";
 import ReactDOM from "react-dom";
 import Context from "../../context/index";
 import { useComponentState } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import {
+  CardHeader,
   CardContent,
   CardMedia,
   Collapse,
@@ -22,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   media: {
-    width: "100%",
+    height: 0,
+    paddingTop: '56.25%', // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
@@ -56,6 +59,7 @@ const GameCardDashBoard = ({
     team2Name,
     team2Score,
     winner,
+    start,
     id,
   },
 }) => {
@@ -109,7 +113,16 @@ const GameCardDashBoard = ({
     return (
       <>
         <Card className={classes.root}>
-          <CardMedia src={cover} />
+          <CardHeader
+            title={`Date:  ${moment(parseInt(start + "000")).format(
+              "ddd MM YYYY HH:SS"
+            )}`}
+          />
+          <CardMedia
+            image={"http://localhost:8000" + cover}
+            className={classes.media}
+            title={`${team1Name.toUpperCase()} vs ${team2Name.toUpperCase()}`}
+          />
           <CardContent>
             <Typography variant="h5" component="h5">
               {team1Name.toUpperCase()}&nbsp;vs&nbsp;{team2Name.toUpperCase()}
@@ -141,7 +154,7 @@ const GameCardDashBoard = ({
           ReactDOM.createPortal(
             <Modal
               component={BetForm}
-              title={`Place a bet on ${team1Name?.toUpperCase()} vs ${team2Name?.toUpperCase()}`}
+              title={`Place a bet on :`}
               buttonLabel="confirm"
               setModalToogled={setModalToogled}
               game={{

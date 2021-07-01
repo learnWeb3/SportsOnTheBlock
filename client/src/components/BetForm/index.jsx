@@ -14,6 +14,8 @@ import {
   Hidden,
   MenuItem,
   Select,
+  InputLabel,
+  FormControl,
 } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
@@ -37,12 +39,12 @@ const useStyles = makeStyles(() => ({
     borderRadius: "4px",
   },
   form: {
-    backgroundColor: "#FFF",
     padding: 24,
     minHeight: "100%",
   },
   formContainer: {
     width: "100%",
+    backgroundColor: "#FFF",
   },
   formContainerSm: {
     minHeight: "100%",
@@ -51,6 +53,7 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     marginBottom: "1rem",
+    textAlign: "center",
   },
   backPanel: {
     display: "flex",
@@ -61,6 +64,15 @@ const useStyles = makeStyles(() => ({
     marginRight: 8,
     cursor: "pointer",
   },
+  media: {
+    width: "100%",
+  },
+  formControl: {
+    width: "100%",
+  },
+  formLabel: {
+    padding: "1rem"
+  }
 }));
 
 const BetForm = ({
@@ -129,15 +141,16 @@ const BetForm = ({
 
   const fields = [
     {
+      label: "choose your side",
       type: "select",
       labelId: "Choose your side",
       id: "betSide",
       name: "betSide",
       value: "",
       items: [
-        { id: 1, name: team1Name?.toUpperCase() },
-        { id: 0, name: "NULL" },
-        { id: 2, name: team2Name?.toUpperCase() },
+        { id: 2, name: team1Name?.toUpperCase(), disabled: false },
+        { id: 3, name: "NULL", disabled: false },
+        { id: 4, name: team2Name?.toUpperCase(), disabled: false },
       ],
       onChange: (event) => {
         validateFields(event);
@@ -201,6 +214,11 @@ const BetForm = ({
                 : classes.formContainer
             }
           >
+            <img
+              src={"http://localhost:8000" + cover}
+              alt=""
+              className={classes.media}
+            />
             <form
               noValidate
               autoComplete="off"
@@ -212,45 +230,61 @@ const BetForm = ({
               <Typography variant="h4" component="h1" className={classes.title}>
                 {title}
               </Typography>
+              <Typography variant="h5" component="h1" className={classes.title}>
+                {team1Name?.toUpperCase()} vs {team2Name?.toUpperCase()}
+              </Typography>
+
               {fields.map((field) =>
                 field.type === "number" ? (
-                  <TextField
-                    key={field.id}
-                    id={field.id}
-                    label={field.label.toUpperCase()}
+                  <FormControl
                     variant="outlined"
-                    className={classes.textfield}
-                    required={field.required}
-                    readOnly={field.readOnly}
-                    error={formData[field.id].error}
-                    helperText={formData[field.id].helperText}
-                    type={field.type}
-                    value={formData[field.id].value}
-                    onInput={field.onInput}
-                    name={field.name}
-                  />
+                    className={classes.formControl}
+                  >
+                    <InputLabel className={classes.formLabel} id={field.labelId}>{field.label.toUpperCase()}</InputLabel>
+                    <TextField
+                      key={field.id}
+                      id={field.id}
+                      variant="outlined"
+                      className={classes.textfield}
+                      required={field.required}
+                      readOnly={field.readOnly}
+                      error={formData[field.id].error}
+                      helperText={formData[field.id].helperText}
+                      type={field.type}
+                      value={formData[field.id].value}
+                      onInput={field.onInput}
+                      name={field.name}
+                    />
+                  </FormControl>
                 ) : (
                   field.type === "select" && (
-                    <Select
-                      key={field.id}
-                      labelId={field.labelId}
-                      id={field.id}
-                      name={field.name}
-                      value={formData[field.id].value}
-                      onChange={field.onChange}
-                      className={classes.textfield}
-                      error={formData[field.id].error}
+                    <FormControl
+                      variant="outlined"
+                      className={classes.formControl}
                     >
-                      {field.items?.map((item) => (
-                        <MenuItem
-                          key={`game-${item.id}`}
-                          key={item.id}
-                          value={item.id}
-                        >
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                      <InputLabel id={field.labelId}>{field.label.toUpperCase()}</InputLabel>
+                      <Select
+                        key={field.id}
+                        labelId={field.labelId}
+                        id={field.id}
+                        name={field.name}
+                        value={formData[field.id].value}
+                        onChange={field.onChange}
+                        className={classes.textfield}
+                        error={formData[field.id].error}
+                      >
+                        {field.items?.map((item) => (
+                          <MenuItem
+                            key={`game-${item.id}`}
+                            key={item.id}
+                            value={item.id}
+                            disabled={item.disabled}
+                          >
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   )
                 )
               )}
