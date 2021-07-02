@@ -1,11 +1,5 @@
 const fs = require("fs");
-const { exec } = require("child_process");
-const MNEMONIC =
-  "surge furnace seek amazing abuse crop orbit slow congress volcano buzz arm";
-const ropsten_provider_url =
-  "https://ropsten.infura.io/v3/4c45f4cc5b5b450e8a17ddae01994d56";
-const development_provider_url = "http://localhost:7545";
-
+const { CONFIG } = require("../config/index.js");
 const BettingContract = artifacts.require("BettingContract");
 
 const exportContractABIS = () => {
@@ -28,7 +22,7 @@ const games = [
     team1Name: "switzerland",
     team2Name: "spain",
     description: "lorem ipsum dolor sit amet",
-    cover: "/games/1",
+    cover: "/games/1.png",
   },
   {
     competitionId: 1,
@@ -36,7 +30,7 @@ const games = [
     team1Name: "belgium",
     team2Name: "italia",
     description: "lorem ipsum dolor sit amet",
-    cover: "/games/2",
+    cover: "/games/2.png",
   },
   {
     competitionId: 1,
@@ -44,7 +38,7 @@ const games = [
     team1Name: "italie",
     team2Name: "espagne",
     description: "lorem ipsum dolor sit amet",
-    cover: "/games/3",
+    cover: "/games/3.png",
   },
   {
     competitionId: 1,
@@ -52,7 +46,7 @@ const games = [
     team1Name: "tcheck rep",
     team2Name: "danmeark",
     description: "lorem ipsum dolor sit amet",
-    cover: "/games/4",
+    cover: "/games/4.png",
   },
 ];
 
@@ -96,19 +90,19 @@ module.exports = async function (deployer, network, accounts) {
 
   await createGames(bettingContract, owner, games);
 
-  // check network type and set provider url
-  let provider_url;
-  if (network === "development") {
-    provider_url = development_provider_url;
-  } else if (network === "ropsten") {
-    provider_url === ropsten_provider_url;
-  }
   // write client configurations
   fs.writeFileSync(
     process.cwd() + "/client/src/config/index.json",
     JSON.stringify({
-      provider_url: provider_url,
+      provider_url:
+        network === "development"
+          ? CONFIG.development.provider_url
+          : CONFIG.production.provider_url,
       initial_contract_address: bettingContract.address,
+      server_root_path:
+        network === "development"
+          ? CONFIG.development.server_root_path
+          : CONFIG.production.server_root_path,
     })
   );
   // export contract ABIs

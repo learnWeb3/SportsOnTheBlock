@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Button } from "@material-ui/core";
+import { makeStyles} from "@material-ui/core";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -17,8 +17,7 @@ const CardActionBar = ({
   isFavorite,
   handleExpandClick,
   expanded,
-  gameId,
-  setModalToogled,
+  gameId
 }) => {
   const classes = useStyles();
   return (
@@ -29,13 +28,6 @@ const CardActionBar = ({
       >
         <FavoriteIcon style={{ color: isFavorite ? "red" : "unset" }} />
       </IconButton>
-      <Button
-        size="small"
-        color="secondary"
-        onClick={() => setModalToogled(true)}
-      >
-        place a bet
-      </Button>
       <IconButton
         className={clsx(classes.expand, {
           [classes.expandOpen]: expanded,

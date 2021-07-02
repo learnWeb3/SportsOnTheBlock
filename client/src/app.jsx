@@ -9,9 +9,6 @@ import Navbar from "./components/NavBar/index";
 const App = () => {
   // user local favorites
   const [favorites, setFavorites] = useState();
-  const handleNewFavorite = (newFavorites) => {
-    setFavorites(newFavorites);
-  };
   useEffect(() => {
     const getAndSetLocalFavorites = () => {
       let localFavorites = localStorage.getItem("favoriteGames");

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, makeStyles, Typography, Button, Paper } from "@material-ui/core";
+import { Grid, makeStyles, Typography, Button } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import clsx from "clsx";
 import { useHistory } from "react-router";
@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   surface: {
-      padding: 16,
-      marginTop: 8,
-      marginBottom: 8
-  }
+    padding: 16,
+    marginTop: 8,
+    marginBottom: 8,
+  },
 }));
 
 const PanelIcon = ({
@@ -67,47 +67,45 @@ const PanelIcon = ({
   const matches = useMediaQuery("(min-width:600px)");
   const history = useHistory();
   return (
-    <Paper className={classes.surface}>
-      <Grid container>
-        <Grid item sm={12} lg={3} className={classes.alignCenter}>
-          <Icon height={iconHeight} width={iconWidth} />
-        </Grid>
-        <Grid
-          item
-          sm={12}
-          lg={9}
+    <Grid container className={classes.surface}>
+      <Grid item sm={12} lg={3} className={classes.alignCenter}>
+        <Icon height={iconHeight} width={iconWidth} />
+      </Grid>
+      <Grid
+        item
+        sm={12}
+        lg={9}
+        className={
+          matches
+            ? clsx(classes.subject, classes.subjectLg)
+            : clsx(classes.subject, classes.subjectMd)
+        }
+      >
+        <Typography variant="h6" component="h2">
+          {title}
+        </Typography>
+        <Typography variant="body1" component="p">
+          {text}
+        </Typography>
+        <Button
+          variant="contained"
+          size="large"
+          color="secondary"
+          onClick={() =>
+            call2ActionExternalLink
+              ? (window.location.href = call2ActionExternalLink)
+              : history.push(call2ActionLink)
+          }
           className={
             matches
-              ? clsx(classes.subject, classes.subjectLg)
-              : clsx(classes.subject, classes.subjectMd)
+              ? clsx(classes.btn, classes.btnMd)
+              : clsx(classes.btn, classes.btnLg)
           }
         >
-          <Typography variant="h4" component="h2">
-            {title}
-          </Typography>
-          <Typography variant="body1" component="p">
-            {text}
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            color="secondary"
-            onClick={() =>
-              call2ActionExternalLink
-                ? (window.location.href = call2ActionExternalLink)
-                : history.push(call2ActionLink)
-            }
-            className={
-              matches
-                ? clsx(classes.btn, classes.btnMd)
-                : clsx(classes.btn, classes.btnLg)
-            }
-          >
-            {call2ActionLabel}
-          </Button>
-        </Grid>
+          {call2ActionLabel}
+        </Button>
       </Grid>
-    </Paper>
+    </Grid>
   );
 };
 

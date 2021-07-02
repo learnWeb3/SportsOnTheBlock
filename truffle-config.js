@@ -23,6 +23,8 @@
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
+const { CONFIG } = require("./config/index.js");
+
 const MNEMONIC =
   "surge furnace seek amazing abuse crop orbit slow congress volcano buzz arm";
 const ropsten_provider_url =
@@ -64,7 +66,11 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     ropsten: {
-      provider: () => new HDWalletProvider(MNEMONIC, ropsten_provider_url),
+      provider: () =>
+        new HDWalletProvider(
+          CONFIG.production.mnemonic,
+          CONFIG.production.provider_url
+        ),
       network_id: 3, // Ropsten's id
       gas: 5500000, // Ropsten has a lower block limit than mainnet
       confirmations: 2, // # of confs to wait between deployments. (default: 0)

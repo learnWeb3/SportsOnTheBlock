@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { server_root_path } from "../../config/index.json";
 import { useComponentState } from "../../hooks";
 import SnackBar from "../SnackBar.index";
 import ModalClosePanel from "../ModalClosePanel/index";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import clsx from "clsx";
+import capitalize from "capitalize";
 import {
   Grid,
   makeStyles,
@@ -53,7 +55,6 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     marginBottom: "1rem",
-    textAlign: "center",
   },
   backPanel: {
     display: "flex",
@@ -71,8 +72,8 @@ const useStyles = makeStyles(() => ({
     width: "100%",
   },
   formLabel: {
-    padding: "1rem"
-  }
+    paddingTop: "1rem",
+  },
 }));
 
 const BetForm = ({
@@ -148,9 +149,9 @@ const BetForm = ({
       name: "betSide",
       value: "",
       items: [
-        { id: 2, name: team1Name?.toUpperCase(), disabled: false },
-        { id: 3, name: "NULL", disabled: false },
-        { id: 4, name: team2Name?.toUpperCase(), disabled: false },
+        { id: 1, name: team1Name?.toUpperCase(), disabled: false },
+        { id: 0, name: "NULL", disabled: false },
+        { id: 2, name: team2Name?.toUpperCase(), disabled: false },
       ],
       onChange: (event) => {
         validateFields(event);
@@ -177,7 +178,12 @@ const BetForm = ({
       try {
         await bettingContract.methods
           .bet(id, formData.betSide.value)
-          .send({ from: accounts[0], value: formData.betValue.value });
+          .send({
+            from: accounts[0],
+            value: bettingContract.utils.toWei(
+              formData.betValue.value.toString()
+            ),
+          });
         setAlert({
           toogled: true,
           message:
@@ -215,7 +221,7 @@ const BetForm = ({
             }
           >
             <img
-              src={"http://localhost:8000" + cover}
+              src={server_root_path + cover}
               alt=""
               className={classes.media}
             />
@@ -228,21 +234,16 @@ const BetForm = ({
             >
               <ModalClosePanel setModalToogled={setModalToogled} />
               <Typography variant="h4" component="h1" className={classes.title}>
-                {title}
+                {title} {capitalize(team1Name)} vs {capitalize(team2Name)}
               </Typography>
-              <Typography variant="h5" component="h1" className={classes.title}>
-                {team1Name?.toUpperCase()} vs {team2Name?.toUpperCase()}
-              </Typography>
-
               {fields.map((field) =>
                 field.type === "number" ? (
                   <FormControl
                     variant="outlined"
                     className={classes.formControl}
+                    key={field.id}
                   >
-                    <InputLabel className={classes.formLabel} id={field.labelId}>{field.label.toUpperCase()}</InputLabel>
                     <TextField
-                      key={field.id}
                       id={field.id}
                       variant="outlined"
                       className={classes.textfield}
@@ -254,6 +255,7 @@ const BetForm = ({
                       value={formData[field.id].value}
                       onInput={field.onInput}
                       name={field.name}
+                      label={field.label}
                     />
                   </FormControl>
                 ) : (
@@ -261,10 +263,12 @@ const BetForm = ({
                     <FormControl
                       variant="outlined"
                       className={classes.formControl}
+                      key={field.id}
                     >
-                      <InputLabel id={field.labelId}>{field.label.toUpperCase()}</InputLabel>
+                      <InputLabel htmlFor={field.labelId}>
+                        {capitalize(field.label)}
+                      </InputLabel>
                       <Select
-                        key={field.id}
                         labelId={field.labelId}
                         id={field.id}
                         name={field.name}

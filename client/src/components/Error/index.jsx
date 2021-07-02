@@ -17,29 +17,28 @@ const useStyles = makeStyles(() => ({
     top: "4rem"
   },
   errorCode: {
-    marginTop: 16,
+    marginTop: 24,
   },
 }));
 
 const Error = ({ code }) => {
-  console.log(code)
   const classes = useStyles();
   const mapCodeToMessage = {
     404: {
       message: "Page not found !",
-      illustration: <PageNotFound height="20rem" />,
+      illustration: <PageNotFound height="25rem" />,
     },
     403: {
       message: "Forbidden !",
-      illustration: <Forbidden height="20rem" />,
+      illustration: <Forbidden height="25rem" />,
     },
     499: {
       message: "Please install Metamask !",
-      illustration: <MetamaskIcon height="10rem" />,
+      illustration: <MetamaskIcon height="15rem" />,
     },
     500: {
       message: "Internal Server Error",
-      illustration: <ServerError height="20rem" />,
+      illustration: <ServerError height="25rem" />,
     },
   };
   return (

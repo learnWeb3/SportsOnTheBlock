@@ -3,7 +3,6 @@ import { Typography, List, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
 import BuildIcon from "@material-ui/icons/Build";
-import BarChartIcon from "@material-ui/icons/BarChart";
 
 const useStyles = makeStyles(() => ({
   list: {
