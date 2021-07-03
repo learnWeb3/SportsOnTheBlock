@@ -35,7 +35,9 @@ contract BettingContract is Owner, isCommon {
         betOutcomeIsValid(outcome)
         checkGameState(gameId)
     {
-        GameIdToBets[gameId].push(Bet(msg.sender, msg.value, outcome));
+        Bet memory newBet = Bet(msg.sender, msg.value, outcome);
+        GameIdToBets[gameId].push(newBet);
+        emit NewBet(newBet);
     }
 
     // costly 3 writes in storage

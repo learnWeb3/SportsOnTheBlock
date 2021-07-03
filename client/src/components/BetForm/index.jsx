@@ -191,6 +191,7 @@ const BetForm = ({
           type: "success",
         });
       } catch (error) {
+        console.log(error)
         setAlert({
           toogled: true,
           message: "We encoutered an unexpected error, please try again",
