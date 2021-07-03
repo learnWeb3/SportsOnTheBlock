@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Container } from "@material-ui/core";
+import ErrorOutlineRoundedIcon from "@material-ui/icons/ErrorOutlineRounded";
 import MetamaskIcon from "../icons/MetamaskIcon";
 import PageNotFound from "../icons/PageNotFound";
 import ServerError from "../icons/ServerError";
@@ -8,20 +9,33 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
   container: {
-    minHeight: "90vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    position: "relative",
-    top: "4rem"
+    padding: 16,
   },
   errorCode: {
     marginTop: 24,
   },
+  componentErrorContainer: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  componentErrorIllustration: {
+    height: "75%",
+  },
+  errorCodeComponent: {
+    marginTop: 8,
+    textAlign: "justify",
+  },
 }));
 
-const Error = ({ code }) => {
+const ErrorPage = ({ code, height, messageDisplayed = true }) => {
   const classes = useStyles();
   const mapCodeToMessage = {
     404: {
@@ -42,13 +56,35 @@ const Error = ({ code }) => {
     },
   };
   return (
-    <Container maxWidth="lg" className={classes.container}>
+    <Container
+      maxWidth="lg"
+      className={classes.container}
+      style={{ height: height }}
+    >
       {mapCodeToMessage[code].illustration}
-      <Typography variant="h6" component="h6" className={classes.errorCode}>
-        {mapCodeToMessage[code].message}
+      {messageDisplayed && (
+        <Typography variant="h6" component="h6" className={classes.errorCode}>
+          {mapCodeToMessage[code].message}
+        </Typography>
+      )}
+    </Container>
+  );
+};
+
+const ErrorComponent = () => {
+  const classes = useStyles();
+  return (
+    <Container maxWidth="lg" className={classes.componentErrorContainer}>
+      <ErrorOutlineRoundedIcon fontSize="large" />
+      <Typography
+        variant="body2"
+        component="p"
+        className={classes.errorCodeComponent}
+      >
+        Oops, impossible to load this content please refresh your browser page
       </Typography>
     </Container>
   );
 };
 
-export default Error;
+export { ErrorPage, ErrorComponent };

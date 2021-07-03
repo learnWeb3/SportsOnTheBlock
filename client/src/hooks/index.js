@@ -3,7 +3,7 @@ import config from "../config";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import LoadingAnimation from "../components/LoadingAnimation/index";
-import Error from "../components/Error/index";
+import { ErrorComponent, ErrorPage } from "../components/Error/index";
 
 // make web3 provider and accounts available for component using this hook
 const useProvider = (setState) => {
@@ -69,7 +69,8 @@ const useComponentState = () => {
     isModalToogled,
     setModalToogled,
     LoadingAnimation,
-    Error,
+    ErrorPage,
+    ErrorComponent,
   };
 };
 

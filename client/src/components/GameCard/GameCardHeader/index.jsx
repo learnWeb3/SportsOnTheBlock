@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 8,
   },
 }));
-const GameCardHeader = ({ game: { started, ended }, competition }) => {
+const GameCardHeader = ({ game:{ started, ended, start }, competition }) => {
   const classes = useStyles();
   return (
     <div className={classes.cardHeader}>
@@ -22,7 +22,7 @@ const GameCardHeader = ({ game: { started, ended }, competition }) => {
         className={classes.badge}
         color={started ? "secondary" : "primary"}
         icon={<AccessTimeRoundedIcon />}
-        label={moment(parseInt(started + "000")).format("DD/MM/YY HH:SS")}
+        label={moment(parseInt(start + "000")).format("DD/MM/YY HH:SS")}
       />
       <Chip
         className={classes.badge}

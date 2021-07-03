@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Faq from "./pages/Faq/index.jsx";
 import Dashboard from "./pages/Dashboard";
-import Error from "./components/Error/index";
+import { ErrorPage } from "./components/Error/index";
 import Context from "./context/index";
 import Navbar from "./components/NavBar/index";
 
@@ -35,7 +35,7 @@ const App = () => {
             <Dashboard />
           </Route>
           <Route path="*">
-            <Error code={404} />
+            <ErrorPage code={404} height="90vh" />
           </Route>
         </Switch>
       </Router>

@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const { state, setState, Error, LoadingAnimation } = useComponentState();
+  const { state, setState, ErrorPage, LoadingAnimation } = useComponentState();
   const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider();
   const [bettingContract, setBettingContract] = useState(null);
   const [competition, setCompetition] = useState(null);
@@ -108,17 +108,21 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12}>
               <Grid container spacing={2} className={classes.gameContainer}>
-                {games?.map((game) => (
-                  <Grid item xs={12} lg={4} key={game.id}>
-                    <GameCard
-                      competition={competition}
-                      provider={provider}
-                      accounts={accounts}
-                      game={game}
-                      bettingContract={bettingContract}
-                    />
-                  </Grid>
-                ))}
+                {games?.length > 0 ? (
+                  games.map((game) => (
+                    <Grid item xs={12} lg={4} key={game.id}>
+                      <GameCard
+                        competition={competition}
+                        provider={provider}
+                        accounts={accounts}
+                        game={game}
+                        bettingContract={bettingContract}
+                      />
+                    </Grid>
+                  ))
+                ) : (
+                  <ErrorPage code={404} height="100%" messageDisplayed={false} />
+                )}
               </Grid>
             </Grid>
           </Grid>
@@ -126,7 +130,7 @@ const Dashboard = () => {
       </div>
     );
   else {
-    return <Error code={state.code} />;
+    return <ErrorPage code={state.code} height="90vh" />;
   }
 };
 

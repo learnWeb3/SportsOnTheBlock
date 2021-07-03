@@ -66,7 +66,7 @@ const GameCardDashBoard = ({
   const {
     state,
     setState,
-    Error,
+    ErrorComponent,
     LoadingAnimation,
     isModalToogled,
     setModalToogled,
@@ -114,71 +114,77 @@ const GameCardDashBoard = ({
   };
 
   if (state.status === "loading") return <LoadingAnimation />;
-  else if (state.status === "loaded") {
+  else {
     return (
       <>
         <Card className={classes.root}>
-          <GameCardHeader
-            game={{
-              cover,
-              description,
-              ended,
-              started,
-              team1Name,
-              team1Score,
-              team2Name,
-              team2Score,
-              winner,
-              start,
-              id,
-            }}
-            competition={competition}
-          />
-          <CardMedia
-            image={server_root_path + cover}
-            className={classes.media}
-            title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
-          />
-          <GameCardContent
-            game={{
-              cover,
-              description,
-              ended,
-              started,
-              team1Name,
-              team1Score,
-              team2Name,
-              team2Score,
-              winner,
-              start,
-              id,
-            }}
-          />
-          <CardActionBar
-            handleAddFavorite={handleAddFavorite}
-            isFavorite={isFavorite}
-            handleExpandClick={handleExpandClick}
-            expanded={expanded}
-            gameId={id}
-          />
-          <GameCardCollapse
-            expanded={expanded}
-            setModalToogled={setModalToogled}
-            game={{
-              cover,
-              description,
-              ended,
-              started,
-              team1Name,
-              team1Score,
-              team2Name,
-              team2Score,
-              winner,
-              start,
-              id,
-            }}
-            betStats={bets?.betStats}
-          />
+          {state.status === "loaded" ? (
+            <>
+              <GameCardHeader
+                game={{
+                  cover,
+                  description,
+                  ended,
+                  started,
+                  team1Name,
+                  team1Score,
+                  team2Name,
+                  team2Score,
+                  winner,
+                  start,
+                  id,
+                }}
+                competition={competition}
+              />
+              <CardMedia
+                image={server_root_path + cover}
+                className={classes.media}
+                title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
+              />
+              <GameCardContent
+                game={{
+                  cover,
+                  description,
+                  ended,
+                  started,
+                  team1Name,
+                  team1Score,
+                  team2Name,
+                  team2Score,
+                  winner,
+                  start,
+                  id,
+                }}
+              />
+              <CardActionBar
+                handleAddFavorite={handleAddFavorite}
+                isFavorite={isFavorite}
+                handleExpandClick={handleExpandClick}
+                expanded={expanded}
+                gameId={id}
+              />
+              <GameCardCollapse
+                expanded={expanded}
+                setModalToogled={setModalToogled}
+                game={{
+                  cover,
+                  description,
+                  ended,
+                  started,
+                  team1Name,
+                  team1Score,
+                  team2Name,
+                  team2Score,
+                  winner,
+                  start,
+                  id,
+                }}
+                betStats={bets?.betStats}
+              />
+            </>
+          ) : (
+            state.status === "error" && <ErrorComponent />
+          )}
         </Card>
         {isModalToogled &&
           ReactDOM.createPortal(
@@ -207,8 +213,6 @@ const GameCardDashBoard = ({
           )}
       </>
     );
-  } else {
-    return <Error code={500} />;
   }
 };
 
