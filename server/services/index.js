@@ -8,7 +8,7 @@ const {
     abi: bettingContractAbi
 } = require('../../build/contracts/BettingContract.json');
 
-const { CONFIG: { api_token } } = require('../config/index.json')
+const { api_token } = require('../config/index.json')
 
 const { CONFIG: { GAS } } = require('../config/index.js')
 

@@ -33,7 +33,7 @@ const Admin = () => {
             try {
                 const url = "https://soccer.sportmonks.com/api/v2.0/leagues"
                 const { data: _competitions } = await fetchData(url)
-                console.log(_competitions)
+                //console.log(_competitions)
                 setCompetitions(_competitions);
                 setCompetition(_competitions[0])
             } catch (error) {
@@ -45,36 +45,36 @@ const Admin = () => {
 
     }, [provider, accounts]);
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     const fetchAndSetSeason = async () => {
+        const fetchAndSetSeason = async () => {
+            const competitionId = competition.id
+            const url = `https://soccer.sportmonks.com/api/v2.0/leagues/${competitionId}`;
+            const params = "include=seasons"
+            const { data: { seasons: { data: _seasons } } } = await fetchData(url, params)
+            setSeason(_seasons.find((season) => season.is_current_season === true));
+        }
 
-    //         const url = `https://soccer.sportmonks.com/api/v2.0/leagues/${competition.id}?include=seasons`;
-    //         const { data: { seasons: { data: _seasons } } } = await fetchData(url)
-    //         console.log(_seasons)
-    //         setSeason(_seasons[-1]);
+        competition && fetchAndSetSeason();
 
-    //     }
-
-    //     competitions && fetchAndSetSeason();
-
-    // }, [competition, competitions])
+    }, [competition, competitions])
 
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     const fetchAndSetGames = async () => {
-    //         try {
-    //             const url = `https://soccer.sportmonks.com/api/v2.0/seasons/${season.id}?include=fixtures`
-    //             const { data: { fixtures: { data: _games } } } = fetchData(url)
-    //             console.log(_games)
-    //             setGames(_games)
-    //         } catch (error) {
-    //             setState({ status: "error", code: 500 });
-    //         }
-    //     }
-    //     season && fetchAndSetGames();
-    // }, [season])
+        const fetchAndSetGames = async () => {
+            try {
+                const seasonId = season.id
+                const url = `https://soccer.sportmonks.com/api/v2.0/seasons/${seasonId}`
+                const params = "include=fixtures"
+                const { data: { fixtures: { data: _games } } } = fetchData(url, params)
+                setGames(_games)
+            } catch (error) {
+                setState({ status: "error", code: 500 });
+            }
+        }
+        season && fetchAndSetGames();
+    }, [season])
 
 
 
@@ -97,7 +97,7 @@ const Admin = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={2} className={classes.gameContainer}>
-                                {games?.length > 0 ? (
+                                {/* {games?.length > 0 ? (
                                     games.map((game) => (
                                         <Grid item xs={12} lg={4} key={game.id}>
                                             <GameCardAdmin
@@ -110,7 +110,7 @@ const Admin = () => {
                                     ))
                                 ) : (
                                     <ErrorPage code={404} height="100%" messageDisplayed={false} />
-                                )}
+                                )} */}
                             </Grid>
                         </Grid>
                     </Grid>
