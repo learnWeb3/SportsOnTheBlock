@@ -1,1 +1,1 @@
-{"provider_url":"http://localhost:8545","initial_contract_address":"0x1e4f22e85A9e795a36D911b0c42068A52F18E0f0","server_root_path":"http://localhost:8000"}
+{"api_token":"oZ8wj1OkApK3z1uNekBiOVkzdi8wT5o8hZXfzmejHHzAcwVVLdaJMs2QXUoi","betting_contract_address":"0x360e8940C6c2341a6619728c77AdC96F0B260945","oracle_contract_address":"0xd8d05caC203065D0E12E91c8ddFde8E2daa48D36","provider_url":"http://localhost:8545","server_root_path":"http://localhost:8000"}

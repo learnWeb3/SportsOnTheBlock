@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { CONFIG } = require("../config/index.js");
-const BettingContract = artifacts.require("BettingContract");
+const Oracle = artifacts.require("Oracle");
 
 const exportContractABIS = () => {
   const contractsABIPaths = fs.readdirSync(process.cwd() + "/build/contracts");
@@ -15,8 +15,16 @@ const exportContractABIS = () => {
   });
 };
 
+const competition = {
+  competitionId: 1,
+  name: "eurocup",
+  description: "lorem ipsum dolor sit amet",
+  cover: "/competitions/1",
+};
+
 const games = [
   {
+    gameId: 16475286,
     competitionId: 1,
     start: parseInt((Date.now() + 3600 * 24 * 1000).toString().slice(0, -3)),
     team1Name: "switzerland",
@@ -25,6 +33,7 @@ const games = [
     cover: "/games/1.png",
   },
   {
+    gameId: 16475287,
     competitionId: 1,
     start: parseInt((Date.now() + 3600 * 24 * 1000).toString().slice(0, -3)),
     team1Name: "belgium",
@@ -33,6 +42,7 @@ const games = [
     cover: "/games/2.png",
   },
   {
+    gameId: 16475288,
     competitionId: 1,
     start: parseInt((Date.now() + 3600 * 24 * 1000).toString().slice(0, -3)),
     team1Name: "italie",
@@ -41,6 +51,7 @@ const games = [
     cover: "/games/3.png",
   },
   {
+    gameId: 16475289,
     competitionId: 1,
     start: (Date.now() + 3600 * 24 * 1000).toString().slice(0, -3),
     team1Name: "tcheck rep",
@@ -50,10 +61,11 @@ const games = [
   },
 ];
 
-const createGames = async (bettingContract, owner, games) =>
+const createGames = async (oracle, owner, games) =>
   await Promise.all(
     games.map(
       async ({
+        gameId,
         competitionId,
         start,
         team1Name,
@@ -61,7 +73,8 @@ const createGames = async (bettingContract, owner, games) =>
         description,
         cover,
       }) => {
-        await bettingContract.newGame(
+        await oracle.newGame(
+          gameId,
           competitionId,
           start,
           team1Name,
@@ -76,35 +89,50 @@ const createGames = async (bettingContract, owner, games) =>
 
 module.exports = async function (deployer, network, accounts) {
   const owner = accounts[0];
-  await deployer.deploy(BettingContract);
-  const bettingContract = await BettingContract.deployed();
-  const competition = {
-    name: "eurocup",
-    description: "lorem ipsum dolor sit amet",
-    cover: "/competitions/1",
-  };
-  const { name, description, cover } = competition;
-  await bettingContract.newCompetition(name, description, cover, {
+  await deployer.deploy(Oracle);
+  const oracle = await Oracle.deployed();
+  const { name, description, cover, competitionId } = competition;
+  await oracle.newCompetition(competitionId, name, description, cover, {
     from: owner,
   });
 
-  await createGames(bettingContract, owner, games);
+  await createGames(oracle, owner, games);
+
+  const betting_contract_address = await oracle.bettingContractAddress();
 
   // write client configurations
   fs.writeFileSync(
     process.cwd() + "/client/src/config/index.json",
     JSON.stringify({
+      api_token: CONFIG.api_token,
+      betting_contract_address,
+      oracle_contract_address: oracle.address,
       provider_url:
         network === "development"
           ? CONFIG.development.provider_url
           : CONFIG.production.provider_url,
-      initial_contract_address: bettingContract.address,
       server_root_path:
         network === "development"
           ? CONFIG.development.server_root_path
           : CONFIG.production.server_root_path,
     })
   );
+
+  // write server configurations
+
+  fs.writeFileSync(
+    process.cwd() + "/server/config/index.json",
+    JSON.stringify({
+      api_token: CONFIG.api_token,
+      betting_contract_address,
+      oracle_contract_address: oracle.address,
+      provider_url:
+        network === "development"
+          ? CONFIG.development.provider_url
+          : CONFIG.production.provider_url,
+    })
+  );
+
   // export contract ABIs
   exportContractABIS();
 };

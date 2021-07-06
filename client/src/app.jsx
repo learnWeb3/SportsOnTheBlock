@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Admin from './pages/Admin/index';
+import Home from "./pages/Home";
 import Faq from "./pages/Faq/index.jsx";
-import Dashboard from "./pages/Dashboard";
 import { ErrorPage } from "./components/Error/index";
 import Context from "./context/index";
 import Navbar from "./components/NavBar/index";
@@ -32,7 +33,10 @@ const App = () => {
             <Faq />
           </Route>
           <Route exact path="/">
-            <Dashboard />
+            <Home />
+          </Route>
+          <Route exact path="/admin">
+            <Admin />
           </Route>
           <Route path="*">
             <ErrorPage code={404} height="90vh" />

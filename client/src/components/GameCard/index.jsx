@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GameCardDashBoard = ({
+const GameCard = ({
   competition,
   bettingContract,
   accounts,
@@ -106,11 +106,9 @@ const GameCardDashBoard = ({
     }
   };
 
-  // 3- Transactions
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    // setTransactions
   };
 
   if (state.status === "loading") return <LoadingAnimation />;
@@ -216,4 +214,4 @@ const GameCardDashBoard = ({
   }
 };
 
-export default GameCardDashBoard;
+export default GameCard;

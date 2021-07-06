@@ -8,6 +8,7 @@ contract isCommon {
         uint256 outcome;
     }
     struct Game {
+        uint256 id;
         string team1Name;
         string team2Name;
         string description;
@@ -18,17 +19,18 @@ contract isCommon {
         uint256 winner;
         bool ended;
         bool started;
+        bool exists;
     }
     struct Competition {
+        uint256 id;
         string name;
         string description;
         string cover;
         bool available;
+        bool exists;
     }
 
     Competition[] competitions;
-    uint256 currentGameId;
-    uint256 currentCompetitionId;
     mapping(uint256 => Competition) CompetitionIdToCompetition;
     mapping(uint256 => Game[]) CompetitionIdToGames;
     mapping(uint256 => Bet[]) GameIdToBets;
@@ -42,17 +44,17 @@ contract isCommon {
 
     modifier competitionExists(uint256 competitionId) {
         require(
-            competitionId > 0 && competitionId <= currentCompetitionId,
+            CompetitionIdToCompetition[competitionId].exists,
             "Competition does not exists"
         );
         _;
     }
     modifier gameExists(uint256 gameId) {
-        require(gameId > 0 && gameId <= currentGameId, "Game does not exists");
+        require(GameIdToGame[gameId].exists, "Game does not exists");
         _;
     }
     modifier betOutcomeIsValid(uint256 outcome) {
-        require(outcome >= 0 && outcome <= 2, "Outcome must be 0, 1, or 2");
+        require(outcome >= 0 && outcome <= 2, "Outcome is invalid");
         _;
     }
 
