@@ -67,8 +67,12 @@ app.listen(CONFIG.SERVER_PORT, async () =>
 
 cron.schedule('* 0-23 * * *', async () => {
   try {
+    console.log('Starting fetching new competitions and writing to database ...')
     const competitions = await fetchNewCompetitionsAndWriteToDb();
+    console.log('competitions task completed with success ...')
+    console.log('Starting fetching new games and writing to database ...')
     await fetchNewGamesAndWriteToDb(competitions);
+    console.log('games task completed with success ...')
   } catch (error) {
     console.log(error)
   }

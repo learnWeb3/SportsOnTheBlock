@@ -25,56 +25,29 @@ const Admin = () => {
     const [competition, setCompetition] = useState(null)
     const [competitions, setCompetitions] = useState(null);
     const [games, setGames] = useState(null);
-    const [season, setSeason] = useState(null)
 
     useEffect(() => {
 
-        const fetchAndSetCompetition = async () => {
-            try {
-                const url = "https://soccer.sportmonks.com/api/v2.0/leagues"
-                const { data: _competitions } = await fetchData(url)
-                //console.log(_competitions)
-                setCompetitions(_competitions);
-                setCompetition(_competitions[0])
-            } catch (error) {
-                setState({ status: "error", code: 500 });
-            }
+        // const fetchAndSetCompetition = async () => {
+        //     try {
+        //         const url = "https://soccer.sportmonks.com/api/v2.0/leagues"
+        //         const { data: _competitions } = await fetchData(url)
+        //         //console.log(_competitions)
+        //         setCompetitions(_competitions);
+        //         setCompetition(_competitions[0])
+        //     } catch (error) {
+        //         setState({ status: "error", code: 500 });
+        //     }
 
-        }
-        fetchAndSetCompetition()
+        // }
+        // fetchAndSetCompetition()
 
     }, [provider, accounts]);
 
+
     useEffect(() => {
-
-        const fetchAndSetSeason = async () => {
-            const competitionId = competition.id
-            const url = `https://soccer.sportmonks.com/api/v2.0/leagues/${competitionId}`;
-            const params = "include=seasons"
-            const { data: { seasons: { data: _seasons } } } = await fetchData(url, params)
-            setSeason(_seasons.find((season) => season.is_current_season === true));
-        }
-
-        competition && fetchAndSetSeason();
 
     }, [competition, competitions])
-
-
-    useEffect(() => {
-
-        const fetchAndSetGames = async () => {
-            try {
-                const seasonId = season.id
-                const url = `https://soccer.sportmonks.com/api/v2.0/seasons/${seasonId}`
-                const params = "include=fixtures"
-                const { data: { fixtures: { data: _games } } } = fetchData(url, params)
-                setGames(_games)
-            } catch (error) {
-                setState({ status: "error", code: 500 });
-            }
-        }
-        season && fetchAndSetGames();
-    }, [season])
 
 
 
