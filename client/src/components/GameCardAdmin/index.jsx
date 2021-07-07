@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { server_root_path } from "../../config/index.json";
-import { useComponentState } from "../../hooks";
+import { useComponentState, useMediaLoaded } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import { CardMedia } from "@material-ui/core";
@@ -10,6 +10,7 @@ import GameCardCollapse from "../GameCard/GameCardCollapse/index";
 import GameCardHeader from "../GameCard/GameCardHeader/index";
 import GameCardContent from "../GameCard/GameCardContent/index";
 import Context from '../../context/index';
+import ImagePlaceholder from "../icons/ImagePlaceholder";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,6 +60,9 @@ const GameCardAdmin = ({
     const classes = useStyles();
     const { favorites, setFavorites } = useContext(Context);
     const [isFavorite, setIsFavorite] = useState();
+
+    // access component hook to check wether image is loaded 
+    const { media, mediaLoaded } = useMediaLoaded()
 
     const handleAddFavorite = (id) => {
         if (!isFavorite) {
@@ -119,11 +123,17 @@ const GameCardAdmin = ({
                             }}
                             competition={competition}
                         />
-                        <CardMedia
-                            image={server_root_path + cover}
-                            className={classes.media}
-                            title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
-                        />
+                        {
+                            mediaLoaded ? (
+                                <CardMedia
+                                    ref={media}
+                                    src={server_root_path + cover}
+                                    component="img"
+                                    className={classes.media}
+                                    title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
+                                />
+                            ) : <ImagePlaceholder rounded={true} height={"100%"} width={"100%"} />
+                        }
                         <GameCardContent
                             game={{
                                 cover,

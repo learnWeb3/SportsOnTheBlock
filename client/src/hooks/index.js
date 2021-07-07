@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import config from "../config";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -74,4 +74,17 @@ const useComponentState = () => {
   };
 };
 
-export { useProvider, useComponentState };
+const useMediaLoaded = () => {
+  const media = useRef();
+  const [mediaLoaded, setMediaLoaded] = useState(true)
+  useEffect(() => {
+    media?.current && !media.current.complete && setMediaLoaded(false)
+  }, [media]);
+
+  return {
+    media,
+    mediaLoaded,
+  }
+}
+
+export { useProvider, useComponentState, useMediaLoaded };

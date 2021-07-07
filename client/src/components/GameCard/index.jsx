@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
 import Context from "../../context/index";
 import { server_root_path } from "../../config/index.json";
-import { useComponentState } from "../../hooks";
+import { useComponentState, useMediaLoaded } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import { CardMedia } from "@material-ui/core";
@@ -14,6 +14,7 @@ import { getBets } from "./helper.js";
 import GameCardCollapse from "./GameCardCollapse/index";
 import GameCardHeader from "./GameCardHeader/index";
 import GameCardContent from "./GameCardContent/index";
+import ImagePlaceholder from "../icons/ImagePlaceholder";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
+    // height: 0,
+    // paddingTop: "56.25%", // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
@@ -71,6 +72,9 @@ const GameCard = ({
     isModalToogled,
     setModalToogled,
   } = useComponentState();
+
+  // access component hook to check wether image is loaded 
+  const { media, mediaLoaded } = useMediaLoaded()
   // 0- check if user favorite the current game
   const { favorites, setFavorites } = useContext(Context);
   const [isFavorite, setIsFavorite] = useState();
@@ -134,11 +138,17 @@ const GameCard = ({
                 }}
                 competition={competition}
               />
-              <CardMedia
-                image={server_root_path + cover}
-                className={classes.media}
-                title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
-              />
+              {
+                mediaLoaded ? (
+                  <CardMedia
+                    ref={media}
+                    src={server_root_path + cover}
+                    component="img"
+                    className={classes.media}
+                    title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
+                  />
+                ) : <ImagePlaceholder rounded={true} height={"100%"} width={"100%"} />
+              }
               <GameCardContent
                 game={{
                   cover,
