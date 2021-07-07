@@ -18,10 +18,6 @@ const app = express();
 // cors configuration middleware
 app.use(cors(CONFIG.CORS));
 
-app.use("/games", express.static("./public/games"));
-app.use("/competitions", express.static("./public/competitions"));
-
-
 
 app.get('/competitions', async (req, res) => {
   try {
@@ -49,6 +45,25 @@ app.get('/competitions/:id/games', async (req, res) => {
     res.status(500).json(games)
   }
 
+});
+
+app.get('/games/:id', async (req, res) => {
+
+  try {
+    const { id } = req.params;
+    let db = new Db("games");
+    const games = await db.findElement({ id: id }, 0, 1);
+    if (games.length > 0) {
+      res.status(200).json(games[0])
+    } else {
+      res.status(404).json({
+        message: "Page not found",
+      })
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(games)
+  }
 
 });
 

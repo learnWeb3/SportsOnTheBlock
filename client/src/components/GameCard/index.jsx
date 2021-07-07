@@ -48,8 +48,7 @@ const GameCard = ({
   bettingContract,
   accounts,
   game: {
-    team1Logo,
-    team2Logo,
+    cover,
     description,
     ended,
     started,
@@ -121,8 +120,7 @@ const GameCard = ({
             <>
               <GameCardHeader
                 game={{
-                  team1Logo,
-                  team2Logo,
+                  cover,
                   description,
                   ended,
                   started,
@@ -137,14 +135,13 @@ const GameCard = ({
                 competition={competition}
               />
               <CardMedia
-                image={server_root_path + team1Logo}
+                image={server_root_path + cover}
                 className={classes.media}
                 title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
               />
               <GameCardContent
                 game={{
-                  team1Logo,
-                  team2Logo,
+                  cover,
                   description,
                   ended,
                   started,
@@ -168,8 +165,7 @@ const GameCard = ({
                 expanded={expanded}
                 setModalToogled={setModalToogled}
                 game={{
-                  team1Logo,
-                  team2Logo,
+                  cover,
                   description,
                   ended,
                   started,
@@ -196,8 +192,7 @@ const GameCard = ({
               buttonLabel="confirm"
               setModalToogled={setModalToogled}
               game={{
-                team1Logo,
-                team2Logo,
+                cover,
                 description,
                 ended,
                 started,

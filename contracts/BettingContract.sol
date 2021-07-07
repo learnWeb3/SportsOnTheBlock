@@ -51,14 +51,12 @@ contract BettingContract is Owner, isCommon {
     function newCompetition(
         uint256 competitionId,
         string calldata name,
-        string calldata description,
-        string calldata cover
+        string calldata description
     ) external {
         Competition memory _competition = Competition(
             competitionId,
             name,
             description,
-            cover,
             true,
             true
         );
@@ -75,16 +73,14 @@ contract BettingContract is Owner, isCommon {
         string calldata team1Name,
         string calldata team2Name,
         string calldata description,
-        string calldata team1Logo,
-        string calldata team2Logo
+        string calldata cover
     ) external competitionExists(competitionId) isOwner() {
         Game memory _game = Game(
             gameId,
             team1Name,
             team2Name,
             description,
-            team1Logo,
-            team2Logo,
+            cover,
             start,
             0,
             0,

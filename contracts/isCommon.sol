@@ -12,8 +12,7 @@ contract isCommon {
         string team1Name;
         string team2Name;
         string description;
-        string team1Logo;
-        string team2Logo;
+        string cover;
         uint256 start;
         uint256 team1Score;
         uint256 team2Score;
@@ -26,7 +25,6 @@ contract isCommon {
         uint256 id;
         string name;
         string description;
-        string cover;
         bool available;
         bool exists;
     }
