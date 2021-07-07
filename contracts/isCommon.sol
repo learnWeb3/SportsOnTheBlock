@@ -25,6 +25,7 @@ contract isCommon {
         uint256 id;
         string name;
         string description;
+        string cover;
         bool available;
         bool exists;
     }

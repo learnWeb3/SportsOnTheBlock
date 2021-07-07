@@ -88,11 +88,12 @@ contract Oracle is Owner {
     function newCompetition(
         uint256 competitionId,
         string calldata name,
-        string calldata description
+        string calldata description,
+        string calldata cover
     ) external {
         BettingContract bettingContract = BettingContract(
             bettingContractAddress
         );
-        bettingContract.newCompetition(competitionId, name, description);
+        bettingContract.newCompetition(competitionId, name, description, cover);
     }
 }
