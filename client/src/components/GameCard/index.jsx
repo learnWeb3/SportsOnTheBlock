@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
 import Context from "../../context/index";
 import { server_root_path } from "../../config/index.json";
-import { useComponentState, useMediaLoaded } from "../../hooks";
+import { useComponentState, useMediaLoaded, useFavorites } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import { CardMedia } from "@material-ui/core";
@@ -62,7 +62,9 @@ const GameCard = ({
     id,
   },
 }) => {
+  // component styles
   const classes = useStyles();
+
   // Access custom hooks to display errors and loading animations
   const {
     state,
@@ -75,9 +77,15 @@ const GameCard = ({
 
   // access component hook to check wether image is loaded 
   const { media, mediaLoaded } = useMediaLoaded()
-  // 0- check if user favorite the current game
-  const { favorites, setFavorites } = useContext(Context);
-  const [isFavorite, setIsFavorite] = useState();
+
+  // access component hooks to deal with favorites actions
+  const {
+    favorites,
+    setFavorites,
+    isFavorite,
+    handleAddFavorite
+  } = useFavorites(id)
+
   const [bets, setBets] = useState(null);
 
   useEffect(() => {
@@ -91,24 +99,9 @@ const GameCard = ({
       }
     };
     if (id) {
-      const favoriteId = favorites.find((gameId) => gameId === id);
-      favoriteId ? setIsFavorite(true) : setIsFavorite(false);
       getAndSetBets(bettingContract, id);
     }
   }, [id, isModalToogled]);
-
-  const handleAddFavorite = (id) => {
-    if (!isFavorite) {
-      setIsFavorite(true);
-      localStorage.setItem("favoriteGames", JSON.stringify([...favorites, id]));
-      setFavorites([...favorites, id]);
-    } else {
-      setIsFavorite(false);
-      const newFavorites = favorites.filter((id) => id !== id);
-      localStorage.setItem("favoriteGames", JSON.stringify(newFavorites));
-      setFavorites(newFavorites);
-    }
-  };
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {

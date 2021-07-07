@@ -22,7 +22,7 @@ const GameCardHeader = ({ game:{ started, ended, start }, competition }) => {
         className={classes.badge}
         color={started ? "secondary" : "primary"}
         icon={<AccessTimeRoundedIcon />}
-        label={moment(parseInt(start + "000")).format("DD/MM/YY HH:SS")}
+        label={moment(parseInt(start)).format("DD/MM/YY HH:SS")}
       />
       <Chip
         className={classes.badge}

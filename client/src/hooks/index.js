@@ -1,9 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import config from "../config";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import LoadingAnimation from "../components/LoadingAnimation/index";
 import { ErrorComponent, ErrorPage } from "../components/Error/index";
+import Context from '../context/index';
 
 // make web3 provider and accounts available for component using this hook
 const useProvider = (setState) => {
@@ -87,4 +88,40 @@ const useMediaLoaded = () => {
   }
 }
 
-export { useProvider, useComponentState, useMediaLoaded };
+const useFavorites = (id) => {
+  const { favorites, setFavorites } = useContext(Context);
+  const [isFavorite, setIsFavorite] = useState();
+
+  useEffect(() => {
+    if (id) {
+      const favoriteId = favorites.find((gameId) => gameId === id);
+      favoriteId ? setIsFavorite(true) : setIsFavorite(false);
+    }
+  }, [id]);
+
+
+  const handleAddFavorite = (id) => {
+    if (!isFavorite) {
+      setIsFavorite(true);
+      localStorage.setItem("favoriteGames", JSON.stringify([...favorites, id]));
+      setFavorites([...favorites, id]);
+    } else {
+      setIsFavorite(false);
+      const newFavorites = favorites.filter((id) => id !== id);
+      localStorage.setItem("favoriteGames", JSON.stringify(newFavorites));
+      setFavorites(newFavorites);
+    }
+  };
+
+  return (
+    {
+      favorites,
+      setFavorites,
+      isFavorite,
+      handleAddFavorite
+    }
+  )
+
+}
+
+export { useProvider, useComponentState, useMediaLoaded, useFavorites };
