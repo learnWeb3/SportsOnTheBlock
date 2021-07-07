@@ -10,7 +10,9 @@ const useStyles = makeStyles(() => ({
         backgroundImage: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
         top: "4rem",
         position: "relative",
-        minHeight: "100vh",
+        minHeight: "87vh",
+        paddingTop: 24, 
+        paddingBottom: 24
     },
     gameContainer: {
         paddingTop: 16,
@@ -30,11 +32,11 @@ const Admin = () => {
 
         const fetchAndSetCompetitions = async () => {
             try {
-                const { data: _competitions } = await fetchData("/competitions")
-                console.log(_competitions)
+                const _competitions = await fetchData("/competitions")
                 setCompetitions(_competitions);
                 setCompetition(_competitions[0])
             } catch (error) {
+                console.log(error)
                 setState({ status: "error", code: 500 });
             }
 
@@ -45,20 +47,20 @@ const Admin = () => {
 
 
     useEffect(() => {
-
         const fetchAndSetGames = async (competition) => {
             try {
-                const { data: _games } = await fetchData(`/competitions/${competition.id}/games`)
+                const _games = await fetchData(`/competitions/${competition.id}/games`)
                 console.log(_games)
                 setGames(_games);
             } catch (error) {
+                console.log(error)
                 setState({ status: "error", code: 500 });
             }
 
         }
-        competition && fetchAndSetGames()
+        competition && fetchAndSetGames(competition)
 
-    }, [competition, competitions])
+    }, [competition])
 
 
 

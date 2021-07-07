@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
     backgroundImage: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
     top: "4rem",
     position: "relative",
-    minHeight: "100vh",
+    minHeight: "87vh",
   },
   gameContainer: {
     paddingTop: 16,

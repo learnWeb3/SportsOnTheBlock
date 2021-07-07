@@ -63,34 +63,33 @@ const fetchNewGamesAndWriteToDb = async (competitions) => {
                 params = "include=localTeam,visitorTeam,venue";
                 const { data, error } = await fetchData(url, params);
                 if (!error) {
-                    console.log(data)
-                    // const {
-                    //     id,
-                    //     league_id,
-                    //     season_id,
-                    //     venue: { data: { name: venueName } },
-                    //     localTeam: { data: { name: team1Name } },
-                    //     visitorTeam: { data: { name: team2Name } },
-                    //     localTeam: { data: { logo_path: team1Logo } },
-                    //     visitorTeam: { data: { logo_path: team2Logo } },
-                    //     time: { starting_at: { date: start } },
-                    // } = data;
-                    // await db.create([{
-                    //     id,
-                    //     league_id,
-                    //     season_id,
-                    //     team1Name,
-                    //     team2Name,
-                    //     description: `An amazing game between ${team1Name} and ${team2Name} taking place in the outstanding ${venueName} stadium, make your bets ! and may the odds be with you !`,
-                    //     team1Logo,
-                    //     team2Logo,
-                    //     start: Date.parse(start),
-                    //     team1Score: 0,
-                    //     team2Score: 0,
-                    //     winner: 0,
-                    //     ended: false,
-                    //     started: false,
-                    // }]);
+                    const {
+                        id,
+                        league_id,
+                        season_id,
+                        venue: { data: { name: venueName } },
+                        localTeam: { data: { name: team1Name } },
+                        visitorTeam: { data: { name: team2Name } },
+                        localTeam: { data: { logo_path: team1Logo } },
+                        visitorTeam: { data: { logo_path: team2Logo } },
+                        time: { starting_at: { date: start } },
+                    } = data;
+                    await db.create([{
+                        id,
+                        league_id,
+                        season_id,
+                        team1Name,
+                        team2Name,
+                        description: `An amazing game between ${team1Name} and ${team2Name} taking place in the outstanding ${venueName} stadium, make your bets ! and may the odds be with you !`,
+                        team1Logo,
+                        team2Logo,
+                        start: Date.parse(start),
+                        team1Score: 0,
+                        team2Score: 0,
+                        winner: 0,
+                        ended: false,
+                        started: false,
+                    }]);
                 } else {
                     throw new Error('API request limit reached')
                 }
