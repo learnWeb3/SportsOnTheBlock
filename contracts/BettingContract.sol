@@ -75,14 +75,16 @@ contract BettingContract is Owner, isCommon {
         string calldata team1Name,
         string calldata team2Name,
         string calldata description,
-        string calldata cover
+        string calldata team1Logo,
+        string calldata team2Logo
     ) external competitionExists(competitionId) isOwner() {
         Game memory _game = Game(
             gameId,
             team1Name,
             team2Name,
             description,
-            cover,
+            team1Logo,
+            team2Logo,
             start,
             0,
             0,

@@ -28,24 +28,35 @@ const Admin = () => {
 
     useEffect(() => {
 
-        // const fetchAndSetCompetition = async () => {
-        //     try {
-        //         const url = "https://soccer.sportmonks.com/api/v2.0/leagues"
-        //         const { data: _competitions } = await fetchData(url)
-        //         //console.log(_competitions)
-        //         setCompetitions(_competitions);
-        //         setCompetition(_competitions[0])
-        //     } catch (error) {
-        //         setState({ status: "error", code: 500 });
-        //     }
+        const fetchAndSetCompetitions = async () => {
+            try {
+                const { data: _competitions } = await fetchData("/competitions")
+                console.log(_competitions)
+                setCompetitions(_competitions);
+                setCompetition(_competitions[0])
+            } catch (error) {
+                setState({ status: "error", code: 500 });
+            }
 
-        // }
-        // fetchAndSetCompetition()
+        }
+        fetchAndSetCompetitions()
 
     }, [provider, accounts]);
 
 
     useEffect(() => {
+
+        const fetchAndSetGames = async (competition) => {
+            try {
+                const { data: _games } = await fetchData(`/competitions/${competition.id}/games`)
+                console.log(_games)
+                setGames(_games);
+            } catch (error) {
+                setState({ status: "error", code: 500 });
+            }
+
+        }
+        competition && fetchAndSetGames()
 
     }, [competition, competitions])
 
@@ -70,7 +81,7 @@ const Admin = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <Grid container spacing={2} className={classes.gameContainer}>
-                                {/* {games?.length > 0 ? (
+                                {games?.length > 0 ? (
                                     games.map((game) => (
                                         <Grid item xs={12} lg={4} key={game.id}>
                                             <GameCardAdmin
@@ -83,7 +94,7 @@ const Admin = () => {
                                     ))
                                 ) : (
                                     <ErrorPage code={404} height="100%" messageDisplayed={false} />
-                                )} */}
+                                )}
                             </Grid>
                         </Grid>
                     </Grid>

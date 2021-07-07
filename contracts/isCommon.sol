@@ -12,7 +12,8 @@ contract isCommon {
         string team1Name;
         string team2Name;
         string description;
-        string cover;
+        string team1Logo;
+        string team2Logo;
         uint256 start;
         uint256 team1Score;
         uint256 team2Score;
