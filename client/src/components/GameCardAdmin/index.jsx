@@ -22,8 +22,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     media: {
-        height: 0,
-        paddingTop: "56.25%", // 16:9
+        padding: "1rem",
+        margin: "auto",
+        width: "unset"
     },
     expand: {
         transform: "rotate(0deg)",
@@ -44,7 +45,7 @@ const GameCardAdmin = ({
     competition,
     accounts,
     game: {
-        cover,
+        team1Logo: cover,
         description,
         ended,
         started,
@@ -103,6 +104,7 @@ const GameCardAdmin = ({
 
     if (state.status === "loading") return <LoadingAnimation />;
     else {
+        console.log(cover)
         return (
             <Card className={classes.root}>
                 {state.status === "loaded" ? (
@@ -124,15 +126,15 @@ const GameCardAdmin = ({
                             competition={competition}
                         />
                         {
-                            mediaLoaded ? (
-                                <CardMedia
-                                    ref={media}
-                                    src={server_root_path + cover}
-                                    component="img"
-                                    className={classes.media}
-                                    title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
-                                />
-                            ) : <ImagePlaceholder rounded={true} height={"100%"} width={"100%"} />
+                            // mediaLoaded ? (
+                            <CardMedia
+                                ref={media}
+                                src={cover}
+                                component="img"
+                                className={classes.media}
+                                title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
+                            />
+                            // ) : <ImagePlaceholder rounded={true} height={"100%"} width={"100%"} />
                         }
                         <GameCardContent
                             game={{

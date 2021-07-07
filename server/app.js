@@ -37,7 +37,7 @@ app.get('/competitions/:id/games', async (req, res) => {
   try {
     const { id } = req.params;
     let db = new Db("games");
-    const games = await db.findElement({ league_id: id }, 0, 100);
+    const games = await db.findElement({ league_id: parseInt(id) }, 0, 100);
     res.status(200).json(games)
 
   } catch (error) {
@@ -80,18 +80,18 @@ app.listen(CONFIG.SERVER_PORT, async () =>
 );
 
 
-// cron.schedule('* 0-23 * * *', async () => {
-//   try {
-//     console.log('Starting fetching new competitions and writing to database ...')
-//     const competitions = await fetchNewCompetitionsAndWriteToDb();
-//     console.log('competitions task completed with success ...')
-//     console.log('Starting fetching new games and writing to database ...')
-//     await fetchNewGamesAndWriteToDb(competitions);
-//     console.log('games task completed with success ...')
-//   } catch (error) {
-//     console.log(error)
-//   }
-// })
+cron.schedule('* 0-23 * * *', async () => {
+  try {
+    console.log('Starting fetching new competitions and writing to database ...')
+    const competitions = await fetchNewCompetitionsAndWriteToDb();
+    console.log('competitions task completed with success ...')
+    console.log('Starting fetching new games and writing to database ...')
+    await fetchNewGamesAndWriteToDb(competitions);
+    console.log('games task completed with success ...')
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 
 // cron.schedule('* * * * *', async () => {
