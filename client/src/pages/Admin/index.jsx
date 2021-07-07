@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
         top: "4rem",
         position: "relative",
         minHeight: "87vh",
-        paddingTop: 24, 
+        paddingTop: 24,
         paddingBottom: 24
     },
     gameContainer: {
@@ -32,6 +32,7 @@ const Admin = () => {
 
         const fetchAndSetCompetitions = async () => {
             try {
+                setState({ status: "loading", code: null });
                 const _competitions = await fetchData("/competitions")
                 setCompetitions(_competitions);
                 setCompetition(_competitions[0])
@@ -49,9 +50,10 @@ const Admin = () => {
     useEffect(() => {
         const fetchAndSetGames = async (competition) => {
             try {
+                setState({ status: "loading", code: null });
                 const _games = await fetchData(`/competitions/${competition.id}/games`)
-                console.log(_games)
                 setGames(_games);
+                setState({ status: "loaded", code: null });
             } catch (error) {
                 console.log(error)
                 setState({ status: "error", code: 500 });

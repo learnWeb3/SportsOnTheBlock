@@ -40,6 +40,7 @@ const Home = () => {
   useEffect(() => {
     const fetchAndSetBettingContract = async (provider, accounts) => {
       try {
+        setState({ status: "loading", code: null });
         const _bettingContract = new BettingContract(
           provider,
           config.betting_contract_address,
@@ -63,11 +64,13 @@ const Home = () => {
   useEffect(() => {
     const fetchAndSetMainMetricsAndGames = async (bettingContract) => {
       try {
+        setState({ status: "loading", code: null });
         const _games = await getGames(bettingContract, competition.id);
         const _bets = await getBets(bettingContract, _games);
         setMainMetrics(makeStats(_bets, bettingContract, _games, competitions));
         setGames(_games.filter((game) => game.ended !== isFilterGameToActive));
         //subscibeToEvents();
+        setState({ status: "loaded", code: null });
       } catch (error) {
         console.log(error)
         setState({ status: "error", code: 500 });
