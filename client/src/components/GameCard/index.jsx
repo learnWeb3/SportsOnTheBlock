@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import Context from "../../context/index";
-import { server_root_path } from "../../config/index.json";
-import { useComponentState, useMediaLoaded, useFavorites } from "../../hooks";
+import { useComponentState, useFavorites } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import { CardMedia } from "@material-ui/core";
-import capitalize from "capitalize";
 import Modal from "../Modal/index";
 import BetForm from "../BetForm/index";
 import CardActionBar from "../CardActionBar";
@@ -14,7 +10,7 @@ import { getBets } from "./helper.js";
 import GameCardCollapse from "./GameCardCollapse/index";
 import GameCardHeader from "./GameCardHeader/index";
 import GameCardContent from "./GameCardContent/index";
-import ImagePlaceholder from "../icons/ImagePlaceholder";
+import GameCardMedia from "./GameCardMedia/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,10 +20,6 @@ const useStyles = makeStyles((theme) => ({
     "& h5": {
       fontWeight: 700,
     },
-  },
-  media: {
-    // height: 0,
-    // paddingTop: "56.25%", // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
@@ -49,7 +41,8 @@ const GameCard = ({
   bettingContract,
   accounts,
   game: {
-    cover,
+    team1Logo,
+    team2Logo,
     description,
     ended,
     started,
@@ -75,16 +68,9 @@ const GameCard = ({
     setModalToogled,
   } = useComponentState();
 
-  // access component hook to check wether image is loaded 
-  const { media, mediaLoaded } = useMediaLoaded()
-
   // access component hooks to deal with favorites actions
-  const {
-    favorites,
-    setFavorites,
-    isFavorite,
-    handleAddFavorite
-  } = useFavorites(id)
+  const { favorites, setFavorites, isFavorite, handleAddFavorite } =
+    useFavorites(id);
 
   const [bets, setBets] = useState(null);
 
@@ -117,7 +103,8 @@ const GameCard = ({
             <>
               <GameCardHeader
                 game={{
-                  cover,
+                  team1Logo,
+                  team2Logo,
                   description,
                   ended,
                   started,
@@ -131,20 +118,28 @@ const GameCard = ({
                 }}
                 competition={competition}
               />
-              {
-                mediaLoaded ? (
-                  <CardMedia
-                    ref={media}
-                    src={server_root_path + cover}
-                    component="img"
-                    className={classes.media}
-                    title={`${capitalize(team1Name)} vs ${capitalize(team2Name)}`}
-                  />
-                ) : <ImagePlaceholder rounded={true} height={"100%"} width={"100%"} />
-              }
+
+              <GameCardMedia
+                game={{
+                  team1Logo,
+                  team2Logo,
+                  description,
+                  ended,
+                  started,
+                  team1Name,
+                  team1Score,
+                  team2Name,
+                  team2Score,
+                  winner,
+                  start,
+                  id,
+                }}
+              />
+
               <GameCardContent
                 game={{
-                  cover,
+                  team1Logo,
+                  team2Logo,
                   description,
                   ended,
                   started,
@@ -165,10 +160,12 @@ const GameCard = ({
                 gameId={id}
               />
               <GameCardCollapse
+                competition={competition}
                 expanded={expanded}
                 setModalToogled={setModalToogled}
                 game={{
-                  cover,
+                  team1Logo,
+                  team2Logo,
                   description,
                   ended,
                   started,
@@ -195,7 +192,8 @@ const GameCard = ({
               buttonLabel="confirm"
               setModalToogled={setModalToogled}
               game={{
-                cover,
+                team1Logo,
+                team2Logo,
                 description,
                 ended,
                 started,

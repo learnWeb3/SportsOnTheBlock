@@ -11,8 +11,6 @@ contract isCommon {
         uint256 id;
         string team1Name;
         string team2Name;
-        string description;
-        string cover;
         uint256 start;
         uint256 team1Score;
         uint256 team2Score;
@@ -24,8 +22,6 @@ contract isCommon {
     struct Competition {
         uint256 id;
         string name;
-        string description;
-        string cover;
         bool available;
         bool exists;
     }

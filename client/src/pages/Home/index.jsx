@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react";
 import config from "../../config/index.json";
 import { useComponentState, useProvider } from "../../hooks";
 import { BettingContract } from "../../services/Contract";
 import { Container, makeStyles, Grid } from "@material-ui/core";
+import SnackBar from "../../components/SnackBar.index";
 import GameCard from "../../components/GameCard";
 import FiltersArea from "../../components/FiltersArea";
 import MainMetrics from "../../components/MainMetrics";
+import { fetchData } from "../Admin/helpers";
 import {
   getCompetitions,
   getGames,
   makeStats,
   getBets,
-  subscibeToEvents,
+  subscribeToEvents,
 } from "./helpers";
 
 const useStyles = makeStyles(() => ({
@@ -28,14 +31,19 @@ const useStyles = makeStyles(() => ({
 
 const Home = () => {
   const classes = useStyles();
-  const { state, setState, ErrorPage, LoadingAnimation } = useComponentState();
+  const { state, setState, ErrorPage, LoadingAnimation, alert, setAlert } =
+    useComponentState();
   const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider();
   const [bettingContract, setBettingContract] = useState(null);
   const [competition, setCompetition] = useState(null);
   const [competitions, setCompetitions] = useState(null);
+  const [contractGames, setContractGames] = useState(null);
   const [games, setGames] = useState(null);
   const [isFilterGameToActive, setFilterGameToActive] = useState(true);
   const [mainMetrics, setMainMetrics] = useState(null);
+  const [refreshCompetitionsCounter, setRefresCompetitionsCounter] =
+    useState(0);
+  const [refreshGamesCounter, setRefresGamesCounter] = useState(0);
 
   useEffect(() => {
     const fetchAndSetBettingContract = async (provider, accounts) => {
@@ -51,7 +59,7 @@ const Home = () => {
         setCompetitions(_competitions);
         setCompetition(_competitions[0]);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setState({ status: "error", code: 500 });
       }
     };
@@ -59,80 +67,127 @@ const Home = () => {
     if (provider && accounts) {
       fetchAndSetBettingContract(provider, accounts);
     }
-  }, [provider, accounts]);
+  }, [provider, accounts, refreshCompetitionsCounter]);
 
   useEffect(() => {
     const fetchAndSetMainMetricsAndGames = async (bettingContract) => {
       try {
         setState({ status: "loading", code: null });
-        const _games = await getGames(bettingContract, competition.id);
-        const _bets = await getBets(bettingContract, _games);
-        setMainMetrics(makeStats(_bets, bettingContract, _games, competitions));
-        setGames(_games.filter((game) => game.ended !== isFilterGameToActive));
-        //subscibeToEvents();
+        const _contract_games = await getGames(bettingContract, competition.id);
+        const _games = await fetchData(`/competitions/${competition.id}/games`);
+        const _bets = await getBets(bettingContract, _contract_games);
+        setMainMetrics(
+          makeStats(_bets, bettingContract, _contract_games, competitions)
+        );
+        setContractGames(
+          _contract_games.filter((game) => game.ended !== isFilterGameToActive)
+        );
+        setGames(_games);
         setState({ status: "loaded", code: null });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setState({ status: "error", code: 500 });
       }
     };
-    if (competitions && competition) {
+
+    const refreshCompetitions = () => {
+      setRefresCompetitionsCounter(refreshCompetitionsCounter + 1);
+    };
+    const refreshGames = () => {
+      setRefresGamesCounter(refreshGamesCounter + 1);
+    };
+
+    if (bettingContract && competitions && competition) {
       fetchAndSetMainMetricsAndGames(bettingContract);
+      subscribeToEvents(
+        bettingContract,
+        refreshGames,
+        refreshCompetitions,
+      );
     }
-  }, [competitions, competition, bettingContract, isFilterGameToActive]);
+  }, [
+    competitions,
+    competition,
+    bettingContract,
+    isFilterGameToActive,
+    refreshGamesCounter,
+  ]);
 
   if (state.status === "loading") return <LoadingAnimation />;
   else if (state.status === "loaded")
     return (
-      <div className={classes.gradient}>
-        <Container maxWidth="lg">
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <MainMetrics
-                userCount={mainMetrics?.uniqueAddressCount}
-                totalFunds={mainMetrics?.totalFunds}
-                competitionCount={mainMetrics?.competitionCount}
-                gameCount={mainMetrics?.gamesCount}
-                avgGamePerCompetition={mainMetrics?.avgGamePerCompetition}
-                transactionCount={mainMetrics?.transactionCount}
-                avgTransactionCountPerAddress={
-                  mainMetrics?.avgTransactionCountPerAddress
-                }
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FiltersArea
-                competition={competition}
-                competitions={competitions}
-                setCompetition={(selectedCompetition) =>
-                  setCompetition(selectedCompetition)
-                }
-                isFilterGameToActive={isFilterGameToActive}
-                setFilterGameToActive={(value) => setFilterGameToActive(value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={2} className={classes.gameContainer}>
-                {games?.length > 0 ? (
-                  games.map((game) => (
-                    <Grid item xs={12} lg={4} key={game.id}>
-                      <GameCard
-                        competition={competition}
-                        provider={provider}
-                        accounts={accounts}
-                        game={game}
-                        bettingContract={bettingContract}
-                      />
-                    </Grid>
-                  ))
-                ) : (
-                  <ErrorPage code={404} height="100%" messageDisplayed={false} />
-                )}
+      <>
+        <div className={classes.gradient}>
+          <Container maxWidth="lg">
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <MainMetrics
+                  userCount={mainMetrics?.uniqueAddressCount}
+                  totalFunds={mainMetrics?.totalFunds}
+                  competitionCount={mainMetrics?.competitionCount}
+                  gameCount={mainMetrics?.gamesCount}
+                  avgGamePerCompetition={mainMetrics?.avgGamePerCompetition}
+                  transactionCount={mainMetrics?.transactionCount}
+                  avgTransactionCountPerAddress={
+                    mainMetrics?.avgTransactionCountPerAddress
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FiltersArea
+                  competition={competition}
+                  competitions={competitions}
+                  setCompetition={(selectedCompetition) =>
+                    setCompetition(selectedCompetition)
+                  }
+                  isFilterGameToActive={isFilterGameToActive}
+                  setFilterGameToActive={(value) =>
+                    setFilterGameToActive(value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={2} className={classes.gameContainer}>
+                  {contractGames?.length > 0 ? (
+                    contractGames.map((game) => {
+                      const dbGame = games.find(
+                        (_game) => _game.id === parseInt(game.id)
+                      );
+                      return (
+                        <Grid item xs={12} lg={4} key={game.id}>
+                          <GameCard
+                            competition={competition}
+                            provider={provider}
+                            accounts={accounts}
+                            game={{ ...game, ...dbGame }}
+                            bettingContract={bettingContract}
+                          />
+                        </Grid>
+                      );
+                    })
+                  ) : (
+                    <ErrorPage
+                      code={404}
+                      height="100%"
+                      messageDisplayed={false}
+                    />
+                  )}
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </div>
+          </Container>
+        </div>
+
+        {alert.toogled &&
+          ReactDOM.createPortal(
+            <SnackBar
+              message={alert.message}
+              type={alert.type}
+              setAlert={setAlert}
+            />,
+            document.querySelector("body")
+          )}
+      </>
     );
   else {
     return <ErrorPage code={state.code} height="90vh" />;

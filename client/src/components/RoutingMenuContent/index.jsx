@@ -32,7 +32,7 @@ const RoutingMenuContent = () => {
   return (
     <List
       className={classes.list}
-      component="nav"
+      component="ul"
       aria-label="secondary mailbox folders"
     >
       <Link className={classes.listItem} to="/">

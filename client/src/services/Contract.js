@@ -1,4 +1,5 @@
 import BettingContractABI from "./contracts/BettingContract.json";
+import OracleContractABI from "./contracts/Oracle.json";
 
 class Contract {
   constructor(provider, address, accounts) {
@@ -33,4 +34,12 @@ class BettingContract extends Contract {
   }
 }
 
-export { BettingContract };
+class OracleContract extends Contract {
+  constructor(provider, address, accounts) {
+    super(provider, address, accounts);
+    this._abi = OracleContractABI.abi;
+    this._setContract();
+  }
+}
+
+export { BettingContract, OracleContract };

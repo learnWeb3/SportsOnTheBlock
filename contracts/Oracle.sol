@@ -23,7 +23,11 @@ contract Oracle is Owner {
 
     constructor() {
         owner = msg.sender;
-        bettingContractAddress = address(new BettingContract());
+    }
+
+    function deployBettingContract() external isOwner() {
+        BettingContract bettingContract = new BettingContract();
+        bettingContractAddress = address(bettingContract);
     }
 
     function createRequest(uint256 gameId) external isOwner() {
@@ -67,9 +71,7 @@ contract Oracle is Owner {
         uint256 competitionId,
         uint256 start,
         string calldata team1Name,
-        string calldata team2Name,
-        string calldata description,
-        string calldata cover
+        string calldata team2Name
     ) external isOwner() {
         BettingContract bettingContract = BettingContract(
             bettingContractAddress
@@ -79,21 +81,16 @@ contract Oracle is Owner {
             competitionId,
             start,
             team1Name,
-            team2Name,
-            description,
-            cover
+            team2Name
         );
     }
 
-    function newCompetition(
-        uint256 competitionId,
-        string calldata name,
-        string calldata description,
-        string calldata cover
-    ) external {
+    function newCompetition(uint256 competitionId, string calldata name)
+        external
+    {
         BettingContract bettingContract = BettingContract(
             bettingContractAddress
         );
-        bettingContract.newCompetition(competitionId, name, description, cover);
+        bettingContract.newCompetition(competitionId, name);
     }
 }

@@ -14,10 +14,21 @@ const useStyles = makeStyles((theme) => ({
     padding: 8,
   },
 }));
-const GameCardHeader = ({ game:{ started, ended, start }, competition }) => {
+const GameCardHeader = ({
+  game: { started, ended, start },
+  competition,
+  isPresentInContract,
+}) => {
   const classes = useStyles();
   return (
     <div className={classes.cardHeader}>
+      {isPresentInContract && (
+        <Chip
+          className={classes.badge}
+          color={isPresentInContract ? "secondary" : "primary"}
+          label={isPresentInContract ? "On The Block" : "Off The Block"}
+        />
+      )}
       <Chip
         className={classes.badge}
         color={started ? "secondary" : "primary"}

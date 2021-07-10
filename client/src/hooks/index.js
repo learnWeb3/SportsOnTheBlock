@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext, useRef } from "react";
-import config from "../config";
+import config from "../config/index.json";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import LoadingAnimation from "../components/LoadingAnimation/index";
 import { ErrorComponent, ErrorPage } from "../components/Error/index";
-import Context from '../context/index';
+import Context from "../context/index";
 
 // make web3 provider and accounts available for component using this hook
 const useProvider = (setState) => {
@@ -75,18 +75,22 @@ const useComponentState = () => {
   };
 };
 
-const useMediaLoaded = () => {
-  const media = useRef();
-  const [mediaLoaded, setMediaLoaded] = useState(true)
+const useMediaLoaded = (dependenciesArr) => {
+  const media1 = useRef();
+  const media2 = useRef();
+  const [mediaLoaded, setMediaLoaded] = useState(true);
   useEffect(() => {
-    media?.current && !media.current.complete && setMediaLoaded(false)
-  }, [media]);
+    if (media1 && media2 && media1.current && media2.current) {
+      setMediaLoaded(media1.current.complete && media2.current.complete);
+    }
+  }, [...dependenciesArr, media1, media2]);
 
   return {
-    media,
+    media1,
+    media2,
     mediaLoaded,
-  }
-}
+  };
+};
 
 const useFavorites = (id) => {
   const { favorites, setFavorites } = useContext(Context);
@@ -98,7 +102,6 @@ const useFavorites = (id) => {
       favoriteId ? setIsFavorite(true) : setIsFavorite(false);
     }
   }, [id]);
-
 
   const handleAddFavorite = (id) => {
     if (!isFavorite) {
@@ -113,15 +116,12 @@ const useFavorites = (id) => {
     }
   };
 
-  return (
-    {
-      favorites,
-      setFavorites,
-      isFavorite,
-      handleAddFavorite
-    }
-  )
-
-}
+  return {
+    favorites,
+    setFavorites,
+    isFavorite,
+    handleAddFavorite,
+  };
+};
 
 export { useProvider, useComponentState, useMediaLoaded, useFavorites };

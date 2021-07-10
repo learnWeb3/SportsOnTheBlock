@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { server_root_path } from "../../config/index.json";
 import { useComponentState } from "../../hooks";
+import GameCardMedia from "../GameCard/GameCardMedia/index";
 import SnackBar from "../SnackBar.index";
 import ModalClosePanel from "../ModalClosePanel/index";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -83,7 +83,8 @@ const BetForm = ({
   bettingContract,
   accounts,
   game: {
-    cover,
+    team1Logo,
+    team2Logo,
     description,
     ended,
     started,
@@ -176,14 +177,12 @@ const BetForm = ({
   const handleSubmit = async () => {
     if (formData.isValid) {
       try {
-        await bettingContract.methods
-          .bet(id, formData.betSide.value)
-          .send({
-            from: accounts[0],
-            value: bettingContract.utils.toWei(
-              formData.betValue.value.toString()
-            ),
-          });
+        await bettingContract.methods.bet(id, formData.betSide.value).send({
+          from: accounts[0],
+          value: bettingContract.utils.toWei(
+            formData.betValue.value.toString()
+          ),
+        });
         setAlert({
           toogled: true,
           message:
@@ -191,7 +190,7 @@ const BetForm = ({
           type: "success",
         });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setAlert({
           toogled: true,
           message: "We encoutered an unexpected error, please try again",
@@ -221,10 +220,20 @@ const BetForm = ({
                 : classes.formContainer
             }
           >
-            <img
-              src={server_root_path + cover}
-              alt=""
-              className={classes.media}
+            <GameCardMedia
+              game={{
+                team1Logo,
+                team2Logo,
+                description,
+                ended,
+                started,
+                team1Name,
+                team1Score,
+                team2Name,
+                team2Score,
+                winner,
+                id,
+              }}
             />
             <form
               noValidate

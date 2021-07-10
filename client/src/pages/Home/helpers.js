@@ -1,14 +1,10 @@
 import { unique } from "../../utils/index.js";
 
 export const getCompetitions = async (bettingContract) =>
-  await bettingContract.contract.methods
-    .getCompetitions()
-    .call()
+  await bettingContract.contract.methods.getCompetitions().call();
 
 export const getGames = async (bettingContract, competitionId) =>
-  await bettingContract.methods
-    .getGames(competitionId)
-    .call()
+  await bettingContract.methods.getGames(competitionId).call();
 
 export const getBets = async (bettingContract, games) =>
   await Promise.all(
@@ -66,16 +62,80 @@ export const makeStats = (bets, bettingContract, games, competitions) => {
   };
 };
 
-export const subscibeToEvents = (bettingContract) => {
+const subscribeToNewBet = (bettingContract) => {
   bettingContract.events
     .NewBet()
     .on("connected", function () {
       console.log("subscribe to NewBet event");
     })
     .on("data", function (data) {
-      console.log(data);
     })
     .on("error", function (error) {
-      console.log(error);
+      subscribeToNewBet();
     });
+};
+
+const subscribeToNewGame = (bettingContract, refreshGames) => {
+  bettingContract.events
+    .NewGame()
+    .on("connected", function () {
+      console.log("subscribe to NewGame event");
+    })
+    .on("data", function (data) {
+      refreshGames();
+    })
+    .on("error", function (error) {
+      subscribeToNewGame();
+    });
+};
+const subscribeToNewCompetition = (bettingContract, refreshCompetitions) => {
+  bettingContract?.events
+    .NewCompetition()
+    .on("connected", function () {
+      console.log("subscribe to NewCompetition event");
+    })
+    .on("data", function (data) {
+      refreshCompetitions();
+    })
+    .on("error", function (error) {
+      subscribeToNewCompetition();
+    });
+};
+
+const subscribeToGamesStatus = (bettingContract, refreshGames) => {
+  bettingContract.events
+    .GameStarted()
+    .on("connected", function () {
+      console.log("subscribe to GameStarted event");
+    })
+    .on("data", function (data) {
+      refreshGames();
+    })
+    .on("error", function (error) {
+      subscribeToGamesStatus();
+    });
+
+  bettingContract.events
+    .GameEnded()
+    .on("connected", function () {
+      console.log("subscribe to GameEnded event");
+    })
+    .on("data", function (data) {
+      refreshGames();
+    })
+    .on("error", function (error) {
+      subscribeToGamesStatus();
+    });
+};
+
+export const subscribeToEvents = (
+  _bettingContract,
+  refreshGames,
+  refreshCompetitions,
+  refreshBets,
+) => {
+  subscribeToNewCompetition(_bettingContract, refreshCompetitions);
+  subscribeToNewGame(_bettingContract, refreshGames);
+  subscribeToGamesStatus(_bettingContract, refreshGames);
+  subscribeToNewBet(_bettingContract);
 };

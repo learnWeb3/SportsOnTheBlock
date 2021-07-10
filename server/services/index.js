@@ -69,7 +69,7 @@ class OracleContract extends Contract {
         super(provider, address);
         this._abi = oracleContractAbi;
         this._setContract();
-        this.bettingContract = new BettingContract(web3, betting_contract_address);
+        this.bettingContract = new BettingContract(provider, betting_contract_address);
     }
 
     subscribeAndSettle() {

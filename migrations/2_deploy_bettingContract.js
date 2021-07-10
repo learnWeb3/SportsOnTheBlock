@@ -91,13 +91,12 @@ module.exports = async function (deployer, network, accounts) {
   const owner = accounts[0];
   await deployer.deploy(Oracle);
   const oracle = await Oracle.deployed();
-  const { name, description, cover, competitionId } = competition;
-  await oracle.newCompetition(competitionId, name, description, cover, {
-    from: owner,
-  });
-
-  await createGames(oracle, owner, games);
-
+  await oracle.deployBettingContract();
+  // const { name, description, cover, competitionId } = competition;
+  // await oracle.newCompetition(competitionId, name, description, cover, {
+  //   from: owner,
+  // });
+  // await createGames(oracle, owner, games);
   const betting_contract_address = await oracle.bettingContractAddress();
 
   // write client configurations
