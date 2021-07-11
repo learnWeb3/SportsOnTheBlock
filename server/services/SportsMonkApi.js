@@ -46,7 +46,7 @@ const fetchNewCompetitionsAndWriteToDb = async () => {
 const fetchNewGamesAndWriteToDb = async (competitions) => {
   // instantiating db on games collection
   let db = new Db("games");
-  const currentGames = await db.findElement({}, 0, 100).then((_currentGames) =>
+  const currentGames = await db.findElement({}, 0, 1000).then((_currentGames) =>
     _currentGames.map((currentGame) => ({
       ...currentGame,
       id: parseInt(currentGame.id),
@@ -76,15 +76,17 @@ const fetchNewGamesAndWriteToDb = async (competitions) => {
           fixtures: { data: _games },
         },
       } = await fetchData(url, params);
-      console.log(_games);
       await Promise.all(
         _games.map(async (game) => {
           // 180 call/hour rate limit checking if entry already started and already exists in own db
           if (
-            !currentGames.find((currentGame) => currentGame.id === game.id) &&
+            !currentGames.find(
+              (currentGame) => currentGame.id === parseInt(game.id)
+            ) &&
             game.time.status === "NS"
           ) {
             url = `https://soccer.sportmonks.com/api/v2.0/fixtures/${game.id}`;
+            console.log(url);
             params = "include=localTeam,visitorTeam,venue";
             const { data, error } = await fetchData(url, params);
             if (!error) {

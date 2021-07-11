@@ -20,10 +20,9 @@ contract BettingContract is Owner, isCommon {
     function getGames(uint256 competitionId)
         external
         view
-        competitionExists(competitionId)
-        returns (Game[] memory games)
+        returns (uint256[] memory games)
     {
-        return CompetitionIdToGames[competitionId];
+        return CompetitionIdToGamesIds[competitionId];
     }
 
     function getBets(uint256 gameId)
@@ -58,7 +57,6 @@ contract BettingContract is Owner, isCommon {
             true,
             true
         );
-        CompetitionIdToCompetition[competitionId] = _competition;
         competitions.push(_competition);
         emit NewCompetition(_competition);
     }
@@ -70,7 +68,7 @@ contract BettingContract is Owner, isCommon {
         uint256 start,
         string calldata team1Name,
         string calldata team2Name
-    ) external competitionExists(competitionId) isOwner() {
+    ) external isOwner() {
         Game memory _game = Game(
             gameId,
             team1Name,
@@ -84,7 +82,7 @@ contract BettingContract is Owner, isCommon {
             true
         );
         GameIdToGame[gameId] = _game;
-        CompetitionIdToGames[competitionId].push(_game);
+        CompetitionIdToGamesIds[competitionId].push(_game.id);
         emit NewGame(_game);
     }
 
@@ -102,24 +100,6 @@ contract BettingContract is Owner, isCommon {
         _game.team2Score = team2Score;
         _game.ended = true;
         GameIdToGame[gameId] = _game;
-        require(GameIdToGame[gameId].ended, "Game must have ended");
-        uint256 winner = getWinner(gameId);
-        Bet[] memory _bets = GameIdToBets[gameId];
-        (
-            Bet[] memory _winnerBets,
-            ,
-            uint256 _winnerBetsSum,
-            ,
-            ,
-            uint256 _loserBetsSum
-        ) = getSettlementData(_bets, winner);
-
-        for (uint256 i = 0; i < _winnerBets.length; i++) {
-            Bet memory _bet = _winnerBets[i];
-            uint256 _profit = _loserBetsSum *
-                ((_bet.amount * 100) / _winnerBetsSum);
-            payable(_bet.user).transfer(_bet.amount + _profit);
-        }
         emit GameEnded(true);
     }
 
@@ -140,37 +120,74 @@ contract BettingContract is Owner, isCommon {
         }
     }
 
-    function getSettlementData(Bet[] memory _bets, uint256 winner)
-        private
-        pure
+    function getUserBets(uint256 gameId)
+        internal
+        view
+        gameExists(gameId)
+        returns (Bet[] memory _userBets, uint256 _userBetsLen)
+    {
+        for (uint256 index = 0; index < GameIdToBets[gameId].length; index++) {
+            if (GameIdToBets[gameId][index].user == msg.sender) {
+                _userBets[_userBetsLen] = GameIdToBets[gameId][index];
+                _userBetsLen++;
+            }
+        }
+        return (_userBets, _userBetsLen);
+    }
+
+    function getUserProfits(uint256 gameId)
+        external
+        view
         returns (
-            Bet[] memory _winnerBets,
-            uint256 _winnerBetsCount,
+            uint256 dueProfits,
             uint256 _winnerBetsSum,
-            Bet[] memory _loserBets,
-            uint256 _loserBetsCount,
             uint256 _loserBetsSum
         )
     {
+        (Bet[] memory _userBets, uint256 _userBetsLen) = getUserBets(gameId);
+        require(
+            _userBetsLen > 0,
+            "User does not have bets related to this game"
+        );
+        uint256 winner = getWinner(gameId);
+        (_winnerBetsSum, _loserBetsSum) = getSettlementData(
+            GameIdToBets[gameId],
+            winner
+        );
+        for (uint256 index = 0; index < _userBetsLen; index++) {
+            if (_userBets[index].outcome == winner) {
+                dueProfits += _userBets[index].amount;
+            }
+        }
+
+        return (dueProfits, _winnerBetsSum, _loserBetsSum);
+    }
+
+    function claimProfits(uint256 gameId) external payable gameExists(gameId) {
+        (
+            uint256 dueProfits,
+            uint256 _winnerBetsSum,
+            uint256 _loserBetsSum
+        ) = this.getUserProfits(gameId);
+        require(dueProfits > 0, "no profits to send");
+        payable(msg.sender).transfer(
+            _loserBetsSum * ((dueProfits * 100) / _winnerBetsSum)
+        );
+    }
+
+    function getSettlementData(Bet[] memory _bets, uint256 winner)
+        private
+        pure
+        returns (uint256 _winnerBetsSum, uint256 _loserBetsSum)
+    {
         for (uint256 i = 0; i < _bets.length; i++) {
             if (_bets[i].outcome == winner) {
-                _winnerBets[_winnerBetsCount] = _bets[i];
-                _winnerBetsCount++;
                 _winnerBetsSum += _bets[i].amount;
             } else {
-                _loserBets[_loserBetsCount] = _bets[i];
-                _loserBetsCount++;
                 _loserBetsSum += _bets[i].amount;
             }
         }
 
-        return (
-            _winnerBets,
-            _winnerBetsCount,
-            _winnerBetsSum,
-            _loserBets,
-            _loserBetsCount,
-            _loserBetsSum
-        );
+        return (_winnerBetsSum, _loserBetsSum);
     }
 }

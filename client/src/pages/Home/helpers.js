@@ -4,12 +4,15 @@ export const getCompetitions = async (bettingContract) =>
   await bettingContract.contract.methods.getCompetitions().call();
 
 export const getGames = async (bettingContract, competitionId) =>
-  await bettingContract.methods.getGames(competitionId).call();
+  await bettingContract.methods
+    .getGames(competitionId)
+    .call()
+    .then((gamesIds) => gamesIds.map((id) => parseInt(id)));
 
-export const getBets = async (bettingContract, games) =>
+export const getBets = async (bettingContract, gamesIds) =>
   await Promise.all(
-    games.map(async (game) => {
-      let bets = await bettingContract.methods.getBets(game.id).call();
+    gamesIds.map(async (gameId) => {
+      let bets = await bettingContract.methods.getBets(gameId).call();
       bets = bets.map(({ amount, outcome, user }) => ({
         amount,
         outcome,
@@ -21,7 +24,7 @@ export const getBets = async (bettingContract, games) =>
         0
       );
       return {
-        gameId: game.id,
+        gameId,
         bets,
         betsCount: bets.length,
         betsValue,

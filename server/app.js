@@ -82,32 +82,34 @@ app.listen(CONFIG.SERVER_PORT, async () =>
 
 
 // scheduled task to fetch data for new competitions and games on SportsMonk API and write it to database for admin dashboard every hours
-cron.schedule('40 * * * *', async () => {
-  try {
-    console.log('Starting fetching new competitions and writing to database ...')
-    const competitions = await fetchNewCompetitionsAndWriteToDb();
-    console.log('competitions task completed with success ...')
-    console.log('Starting fetching new games and writing to database ...');
-    console.log(competitions)
-    await fetchNewGamesAndWriteToDb(competitions);
-    console.log('games task completed with success ...')
-  } catch (error) {
-    console.log(error)
-  }
-}, {
-  scheduled: true,
-  timezone: "Europe/Paris"
-})
+// cron.schedule('24 * * * *', async () => {
+//   try {
+//     console.log('Starting fetching new competitions and writing to database ...')
+//     const competitions = await fetchNewCompetitionsAndWriteToDb();
+//     console.log('competitions task completed with success ...')
+//     console.log('Starting fetching new games and writing to database ...');
+//     console.log(competitions)
+//     await fetchNewGamesAndWriteToDb(competitions);
+//     console.log('games task completed with success ...')
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }, {
+//   scheduled: true,
+//   timezone: "Europe/Paris"
+// })
 
 // scheduled task to fetch data on BettingContract compare it to SportMonk API game status and send an request to create a secured blueprint for request in order to settle games 
-cron.schedule('1 * * * *', async () => {
-  try {
-    oracleContract.checkGameEndedAndCreateRequest();
-  } catch (error) {
-    console.log('ERROR: UNABLE TO CREATE ORACLE REQUEST')
-    console.log(error)
-  }
-});
+// cron.schedule('1 * * * *', async () => {
+//   try {
+//     oracleContract.checkGameEndedAndCreateRequest();
+//   } catch (error) {
+//     console.log('ERROR: UNABLE TO CREATE ORACLE REQUEST')
+//     console.log(error)
+//   }
+// });
+
+oracleContract.checkGameEndedAndCreateRequest()
 
 
 

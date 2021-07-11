@@ -91,7 +91,7 @@ const Home = () => {
           makeStats(_bets, bettingContract, _contract_games, competitions)
         );
         setContractGames(
-          _contract_games.filter((game) => game.ended !== isFilterGameToActive)
+          _contract_games
         );
         setGames([..._games]);
         setState({ status: "loaded", code: null });
@@ -166,24 +166,25 @@ const Home = () => {
               <Grid item xs={12}>
                 <Grid container spacing={2} className={classes.gameContainer}>
                   {contractGames?.length > 0 ? (
-                    contractGames.map((game) => {
-                      const dbGame = games.find(
-                        (_game) => _game.id === parseInt(game.id)
-                      );
-                      return (
-                        <Grid item xs={12} lg={4} key={game.id}>
-                          <GameCard
-                            competition={competition}
-                            provider={provider}
-                            accounts={accounts}
-                            game={{ ...game, ...dbGame }}
-                            bettingContract={bettingContract}
-                            refreshGamesCounter={refreshGamesCounter}
-                            newBetPresent={newBet === parseInt(game.id)}
-                          />
-                        </Grid>
-                      );
-                    })
+                    games
+                      .filter((game) =>
+                        contractGames.includes(parseInt(game.id))
+                      )
+                      .map((game) => {
+                        return (
+                          <Grid item xs={12} lg={4} key={game.id}>
+                            <GameCard
+                              competition={competition}
+                              provider={provider}
+                              accounts={accounts}
+                              game={game}
+                              bettingContract={bettingContract}
+                              refreshGamesCounter={refreshGamesCounter}
+                              newBetPresent={newBet === parseInt(game.id)}
+                            />
+                          </Grid>
+                        );
+                      })
                   ) : (
                     <ErrorPage
                       code={404}

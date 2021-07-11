@@ -59,7 +59,7 @@ const GameCardMedia = ({
           </Grid>
         </Grid>
       ) : (
-        <ImagePlaceholder rounded={true} height={"100%"} width={"100%"} />
+        <ImagePlaceholder rounded={true} height={"auto"} width={"100%"} />
       )}
     </>
   );

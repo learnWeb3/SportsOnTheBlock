@@ -53,7 +53,7 @@ const Admin = () => {
     try {
       const tx = await oracleContract.contract.methods
         .newGame(gameId, competitionId, start, team1Name, team2Name)
-        .send({ from: accounts[0], gas: 750000 });
+        .send({ from: accounts[0], gas: 500000 });
       console.log(tx);
       setRefreshCounter(refreshCounter + 1);
       setAlert({
@@ -119,7 +119,7 @@ const Admin = () => {
         const _currentGamesContractIds = await bettingContract.contract.methods
           .getGames(competition.id)
           .call()
-          .then((games) => games.map((game) => parseInt(game.id)));
+          .then((gamesIds) => gamesIds.map((id) => parseInt(id)));
         setCurrentGamesContractIds(_currentGamesContractIds);
         const _games = await fetchData(`/competitions/${competition.id}/games`);
         setGames(_games.filter((game) => game.ended !== isFilterGameToActive));
