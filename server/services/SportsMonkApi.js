@@ -7,11 +7,27 @@ const fetchData = async (url, params) =>
     data.json()
   );
 
-const fetchNewCompetitionsAndWriteToDb = async () => {
+const getCurrentCompetitions = async () => {
   // instantiating db on competitions collection
   let db = new Db("competitions");
   // retrieving currrent competitions
-  const currentCompetitions = await db.findElement({}, 0, 100);
+  return await db.findElement({}, 0, 100);
+};
+
+const getCurrentGames = async () => {
+  // instantiating db on games collection
+  let db = new Db("games");
+  // retrieving currrent games
+  return await db.findElement({}, 0, 1000).then((_currentGames) =>
+    _currentGames.map((currentGame) => ({
+      ...currentGame,
+      id: parseInt(currentGame.id),
+    }))
+  );
+};
+
+const fetchNewCompetitionsAndWriteToDb = async () => {
+  const currentCompetitions = await getCurrentCompetitions();
   // fetching competitions aka leagues on API
   const url = "https://soccer.sportmonks.com/api/v2.0/leagues";
   const { data: competitions, error } = await fetchData(url);
@@ -44,14 +60,7 @@ const fetchNewCompetitionsAndWriteToDb = async () => {
 };
 
 const fetchNewGamesAndWriteToDb = async (competitionsIds) => {
-  // instantiating db on games collection
-  let db = new Db("games");
-  const currentGames = await db.findElement({}, 0, 1000).then((_currentGames) =>
-    _currentGames.map((currentGame) => ({
-      ...currentGame,
-      id: parseInt(currentGame.id),
-    }))
-  );
+  const currentGames = await getCurrentGames();
   await Promise.all(
     competitionsIds.map(async (competitionId) => {
       // get leagues including seasons
@@ -140,7 +149,24 @@ const fetchNewGamesAndWriteToDb = async (competitionsIds) => {
   );
 };
 
+const updateGamesStatus = async () => {
+  const currentGames = await getCurrentGames();
+  const db = new Db("games");
+  await Promise.all(
+    currentGames.map(async (currentGame) => {
+      if (currentGame.start < Date.now()) {
+        await db.update(currentGame, {
+          ...currentGame,
+          ended: true,
+          started: true,
+        });
+      }
+    })
+  );
+};
+
 module.exports = {
   fetchNewCompetitionsAndWriteToDb,
   fetchNewGamesAndWriteToDb,
+  updateGamesStatus,
 };
