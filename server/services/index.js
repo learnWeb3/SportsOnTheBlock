@@ -41,15 +41,26 @@ class BettingContract extends Contract {
 
   async _getSettlementData() {
     // map through bettingContract competitions
-    const competitions = await this.contract.methods.getCompetitions().call();
+    const self = this;
+    const competitionsIds = await this.contract.methods
+      .getCompetitions()
+      .call();
     // map through bettingContract games and retrieve games on api according to id
     const gamesData = [];
     await Promise.all(
-      competitions.map(
-        async (competition) =>
-          await this.contract.methods
-            .getGames(competition.id)
+      competitionsIds.map(
+        async (competitionId) =>
+          await self.contract.methods
+            .getGames(parseInt(competitionId))
             .call()
+            .then(async (gamesIds) =>
+              Promise.all(
+                gamesIds.map(
+                  async (gameId) =>
+                    await self.contract.methods.getGame(gameId).call()
+                )
+              )
+            )
             .then((games) => games.filter((game) => !game.ended))
             .then((games) =>
               Promise.all(
@@ -63,7 +74,6 @@ class BettingContract extends Contract {
             )
       )
     );
-
     // return games from api call
     return gamesData;
   }
@@ -122,18 +132,6 @@ class OracleContract extends Contract {
             )
             .send({ from: owner, gas: GAS });
           console.log(tx);
-          //udpating request on smartcontract and settling game bets
-          //   if (localTeamScore && visitorTeamScore && owner) {
-          //     console.log(id, localTeamScore, visitorTeamScore);
-          //     const tx = await self.contract.methods
-          //       .updateRequest(
-          //         parseInt(id),
-          //         parseInt(localTeamScore),
-          //         parseInt(visitorTeamScore)
-          //       )
-          //       .send({ from: owner, gas: GAS });
-          //     console.log(tx);
-          //   }
         }
       })
       .on("error", function (error) {
@@ -151,7 +149,7 @@ class OracleContract extends Contract {
     const finished_status = ["FT", "FT_PEN", "AET"];
     // getGames data on sportMonk API
     const gamesData = await this.bettingContract._getSettlementData();
-    // // filter to keep the one which have ended
+    // filter to keep the one which have ended
     if (gamesData.length > 0) {
       const gamesToSettle = gamesData;
       //   .filter((game) =>

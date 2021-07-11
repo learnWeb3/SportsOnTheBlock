@@ -37,6 +37,8 @@ export const getGames = async (
         return {
           ...game,
           ...dbGame,
+          ended: game.ended,
+          started: game.started,
           id: parseInt(game.id),
         };
       })

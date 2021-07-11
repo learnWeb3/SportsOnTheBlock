@@ -99,15 +99,16 @@ app.listen(CONFIG.SERVER_PORT, async () =>
 //   timezone: "Europe/Paris"
 // })
 
-// scheduled task to fetch data on BettingContract compare it to SportMonk API game status and send an request to create a secured blueprint for request in order to settle games 
-// cron.schedule('1 * * * *', async () => {
-//   try {
-//     oracleContract.checkGameEndedAndCreateRequest();
-//   } catch (error) {
-//     console.log('ERROR: UNABLE TO CREATE ORACLE REQUEST')
-//     console.log(error)
-//   }
-// });
+//scheduled task to fetch data on BettingContract compare it to SportMonk API game status and send an request to create a secured blueprint for request in order to settle games 
+cron.schedule('1 * * * *', async () => {
+  try {
+    oracleContract.checkGameEndedAndCreateRequest();
+  } catch (error) {
+    console.log('ERROR: UNABLE TO CREATE ORACLE REQUEST')
+    console.log(error)
+  }
+});
+
 
 
 
