@@ -34,17 +34,16 @@ const Home = () => {
   const { state, setState, ErrorPage, LoadingAnimation, alert, setAlert } =
     useComponentState();
   const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider();
-  const [bettingContract, setBettingContract] = useState(null);
-  const [competition, setCompetition] = useState(null);
-  const [competitions, setCompetitions] = useState(null);
-  const [contractGames, setContractGames] = useState(null);
-  const [games, setGames] = useState(null);
   const [isFilterGameToActive, setFilterGameToActive] = useState(true);
-  const [mainMetrics, setMainMetrics] = useState(null);
+
   const [refreshCompetitionsCounter, setRefresCompetitionsCounter] =
     useState(0);
   const [refreshGamesCounter, setRefresGamesCounter] = useState(0);
+  const [newBet, setNewBet] = useState(null);
 
+  const [bettingContract, setBettingContract] = useState(null);
+  const [competition, setCompetition] = useState(null);
+  const [competitions, setCompetitions] = useState(null);
   useEffect(() => {
     const fetchAndSetBettingContract = async (provider, accounts) => {
       try {
@@ -56,8 +55,16 @@ const Home = () => {
         );
         setBettingContract(_bettingContract.contract);
         const _competitions = await getCompetitions(_bettingContract);
-        setCompetitions(_competitions);
-        setCompetition(_competitions[0]);
+        if (_competitions.length > 0) {
+          setCompetitions(_competitions);
+          setCompetition(_competitions[0]);
+        } else {
+          setState({
+            status: "error",
+            code: 404,
+            message: "Nothing here yet, please come back later",
+          });
+        }
       } catch (error) {
         console.log(error);
         setState({ status: "error", code: 500 });
@@ -69,10 +76,14 @@ const Home = () => {
     }
   }, [provider, accounts, refreshCompetitionsCounter]);
 
+  const [contractGames, setContractGames] = useState(null);
+  const [games, setGames] = useState(null);
+  const [mainMetrics, setMainMetrics] = useState(null);
+
   useEffect(() => {
     const fetchAndSetMainMetricsAndGames = async (bettingContract) => {
       try {
-        setState({ status: "loading", code: null });
+        //setState({ status: "loading", code: null });
         const _contract_games = await getGames(bettingContract, competition.id);
         const _games = await fetchData(`/competitions/${competition.id}/games`);
         const _bets = await getBets(bettingContract, _contract_games);
@@ -82,7 +93,7 @@ const Home = () => {
         setContractGames(
           _contract_games.filter((game) => game.ended !== isFilterGameToActive)
         );
-        setGames(_games);
+        setGames([..._games]);
         setState({ status: "loaded", code: null });
       } catch (error) {
         console.log(error);
@@ -97,12 +108,18 @@ const Home = () => {
       setRefresGamesCounter(refreshGamesCounter + 1);
     };
 
+    const refreshBets = (value) => {
+      setRefresGamesCounter(refreshGamesCounter + 1);
+      setNewBet(value);
+    };
+
     if (bettingContract && competitions && competition) {
       fetchAndSetMainMetricsAndGames(bettingContract);
       subscribeToEvents(
         bettingContract,
         refreshGames,
         refreshCompetitions,
+        refreshBets
       );
     }
   }, [
@@ -161,6 +178,8 @@ const Home = () => {
                             accounts={accounts}
                             game={{ ...game, ...dbGame }}
                             bettingContract={bettingContract}
+                            refreshGamesCounter={refreshGamesCounter}
+                            newBetPresent={newBet === parseInt(game.id)}
                           />
                         </Grid>
                       );
@@ -190,7 +209,9 @@ const Home = () => {
       </>
     );
   else {
-    return <ErrorPage code={state.code} height="90vh" />;
+    return (
+      <ErrorPage code={state.code} height="90vh" message={state.message} />
+    );
   }
 };
 

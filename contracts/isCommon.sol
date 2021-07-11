@@ -33,7 +33,7 @@ contract isCommon {
     mapping(uint256 => Game) GameIdToGame;
 
     event NewGame(Game);
-    event NewBet(Bet);
+    event NewBet(Bet, uint256);
     event NewCompetition(Competition);
     event GameStarted(bool);
     event GameEnded(bool);

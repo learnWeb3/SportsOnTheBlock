@@ -62,13 +62,14 @@ export const makeStats = (bets, bettingContract, games, competitions) => {
   };
 };
 
-const subscribeToNewBet = (bettingContract) => {
+const subscribeToNewBet = (bettingContract, refreshBets) => {
   bettingContract.events
     .NewBet()
     .on("connected", function () {
       console.log("subscribe to NewBet event");
     })
     .on("data", function (data) {
+      refreshBets(parseInt(data.returnValues[1]));
     })
     .on("error", function (error) {
       subscribeToNewBet();
@@ -89,7 +90,7 @@ const subscribeToNewGame = (bettingContract, refreshGames) => {
     });
 };
 const subscribeToNewCompetition = (bettingContract, refreshCompetitions) => {
-  bettingContract?.events
+  bettingContract.events
     .NewCompetition()
     .on("connected", function () {
       console.log("subscribe to NewCompetition event");
@@ -132,10 +133,10 @@ export const subscribeToEvents = (
   _bettingContract,
   refreshGames,
   refreshCompetitions,
-  refreshBets,
+  refreshBets
 ) => {
   subscribeToNewCompetition(_bettingContract, refreshCompetitions);
   subscribeToNewGame(_bettingContract, refreshGames);
   subscribeToGamesStatus(_bettingContract, refreshGames);
-  subscribeToNewBet(_bettingContract);
+  subscribeToNewBet(_bettingContract, refreshBets);
 };

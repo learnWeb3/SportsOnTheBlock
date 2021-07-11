@@ -35,7 +35,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ErrorPage = ({ code, height, messageDisplayed = true }) => {
+const ErrorPage = ({
+  code,
+  height,
+  messageDisplayed = true,
+  message = null,
+}) => {
   const classes = useStyles();
   const mapCodeToMessage = {
     404: {
@@ -64,7 +69,7 @@ const ErrorPage = ({ code, height, messageDisplayed = true }) => {
       {mapCodeToMessage[code].illustration}
       {messageDisplayed && (
         <Typography variant="h6" component="h6" className={classes.errorCode}>
-          {mapCodeToMessage[code].message}
+          {message ? message : mapCodeToMessage[code].message}
         </Typography>
       )}
     </Container>

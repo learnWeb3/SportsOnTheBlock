@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useComponentState, useFavorites } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GameCard = ({
+  newBetPresent,
+  refreshGamesCounter,
   competition,
   bettingContract,
   accounts,
@@ -87,7 +89,16 @@ const GameCard = ({
     if (id) {
       getAndSetBets(bettingContract, id);
     }
-  }, [id, isModalToogled]);
+  }, [isModalToogled, refreshGamesCounter]);
+
+  const [cardAlertMessage, setCardAlertMessage] = useState(null);
+  useEffect(() => {
+    setCardAlertMessage("New bet sent to contract");
+
+    setTimeout(() => {
+      setCardAlertMessage("");
+    }, 6000);
+  }, [refreshGamesCounter]);
 
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
@@ -102,6 +113,8 @@ const GameCard = ({
           {state.status === "loaded" ? (
             <>
               <GameCardHeader
+                newBetPresent={newBetPresent}
+                cardAlertMessage={cardAlertMessage}
                 game={{
                   team1Logo,
                   team2Logo,

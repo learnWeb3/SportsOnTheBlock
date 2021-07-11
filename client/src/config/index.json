@@ -1,7 +1,1 @@
-{
-  "api_token": "oZ8wj1OkApK3z1uNekBiOVkzdi8wT5o8hZXfzmejHHzAcwVVLdaJMs2QXUoi",
-  "betting_contract_address": "0x6d8beE11F77aEa3867b60f0b27c5036Cb7E82388",
-  "oracle_contract_address": "0x7f53E6b7879637a8de0B20b94314Bb9Ee6Ef068e",
-  "provider_url": "ws://localhost:8545",
-  "server_root_path": "http://localhost:8000"
-}
+{"api_token":"oZ8wj1OkApK3z1uNekBiOVkzdi8wT5o8hZXfzmejHHzAcwVVLdaJMs2QXUoi","betting_contract_address":"0x9620f908EAAFC71A25Fe36F7bb7bC5dC9935644A","oracle_contract_address":"0x3F8575120a7e555Fd528e5538c64584cbaCa0c84","provider_url":"ws://localhost:8545","server_root_path":"http://localhost:8000"}

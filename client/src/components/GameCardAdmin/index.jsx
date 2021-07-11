@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useComponentState, useFavorites, useMediaLoaded } from "../../hooks";
+import React, { useRef, useState } from "react";
+import { useComponentState, useFavorites } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionBar from "../CardActionBar";
@@ -67,7 +67,8 @@ const GameCardAdmin = ({
   // Access custom hooks to display errors and loading animations
   const { state, ErrorComponent, LoadingAnimation } = useComponentState();
 
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };

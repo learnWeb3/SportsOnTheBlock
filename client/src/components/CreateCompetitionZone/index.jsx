@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateCompetitionZone = ({
+  refreshCounter,
+  setRefreshCounter,
   accounts,
   competitions,
   oracleContract,
@@ -25,7 +27,6 @@ const CreateCompetitionZone = ({
   setAlert,
 }) => {
   const classes = useStyles();
-  const [refreshCounter, setRefreshCounter] = useState(0);
   const [currentContractCompetitionsIds, setCurrentContractCompetitionsIds] =
     useState(null);
   useEffect(() => {
@@ -43,7 +44,7 @@ const CreateCompetitionZone = ({
     };
     bettingContract &&
       fetchAndSetCurrentContractCompetitionsIds(bettingContract);
-  }, [refreshCounter]);
+  }, []);
   return (
     <Paper>
       <Grid className={classes.grid} container spacing={2}>

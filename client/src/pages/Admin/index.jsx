@@ -150,6 +150,8 @@ const Admin = () => {
                 oracleContract={oracleContract}
                 bettingContract={bettingContract}
                 competitions={competitions}
+                refreshCounter={refreshCounter}
+                setRefreshCounter={setRefreshCounter}
               />
             </Grid>
             <Grid item xs={12}>
@@ -168,24 +170,26 @@ const Admin = () => {
             <Grid item xs={12}>
               <Grid container spacing={2} className={classes.gameContainer}>
                 {games?.length > 0 ? (
-                  games.map((game) => (
-                    <Grid item xs={12} lg={4} key={`admin-game-${game.id}`}>
-                      <GameCardAdmin
-                        isPresentInContract={
-                          currentGamesContractIds?.includes(game.id)
-                            ? true
-                            : false
-                        }
-                        competition={competition}
-                        provider={provider}
-                        accounts={accounts}
-                        game={game}
-                        isFilterGameToActive={isFilterGameToActive}
-                        setAlert={setAlert}
-                        createNewGame={createNewGame}
-                      />
-                    </Grid>
-                  ))
+                  games
+                    .filter((game) => game.ended !== isFilterGameToActive)
+                    .map((game) => (
+                      <Grid item xs={12} lg={4} key={`admin-game-${game.id}`}>
+                        <GameCardAdmin
+                          isPresentInContract={
+                            currentGamesContractIds?.includes(game.id)
+                              ? true
+                              : false
+                          }
+                          competition={competition}
+                          provider={provider}
+                          accounts={accounts}
+                          game={game}
+                          isFilterGameToActive={isFilterGameToActive}
+                          setAlert={setAlert}
+                          createNewGame={createNewGame}
+                        />
+                      </Grid>
+                    ))
                 ) : (
                   <ErrorPage
                     code={404}
