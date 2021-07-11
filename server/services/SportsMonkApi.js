@@ -43,7 +43,7 @@ const fetchNewCompetitionsAndWriteToDb = async () => {
   }
 };
 
-const fetchNewGamesAndWriteToDb = async (competitions) => {
+const fetchNewGamesAndWriteToDb = async (competitionsIds) => {
   // instantiating db on games collection
   let db = new Db("games");
   const currentGames = await db.findElement({}, 0, 1000).then((_currentGames) =>
@@ -53,10 +53,10 @@ const fetchNewGamesAndWriteToDb = async (competitions) => {
     }))
   );
   await Promise.all(
-    competitions.map(async (competition) => {
+    competitionsIds.map(async (competitionId) => {
       // get leagues including seasons
       let url, params;
-      url = `https://soccer.sportmonks.com/api/v2.0/leagues/${competition.id}`;
+      url = `https://soccer.sportmonks.com/api/v2.0/leagues/${competitionId}`;
       params = "include=seasons";
       // get leagues'seasons
       const {
@@ -76,17 +76,18 @@ const fetchNewGamesAndWriteToDb = async (competitions) => {
           fixtures: { data: _games },
         },
       } = await fetchData(url, params);
-      await Promise.all(
-        _games.map(async (game) => {
-          // 180 call/hour rate limit checking if entry already started and already exists in own db
-          if (
-            !currentGames.find(
-              (currentGame) => currentGame.id === parseInt(game.id)
-            ) &&
-            game.time.status === "NS"
-          ) {
+
+      // 180 call/hour rate limit checking if entry has not yet started and does not already exists in own db
+      const unregisteredGames = _games.filter(
+        (game) =>
+          !currentGames.find((currentGame) => currentGame.id) &&
+          game.time.status === "NS"
+      );
+
+      if (unregisteredGames.length > 0) {
+        await Promise.all(
+          unregisteredGames.map(async (game) => {
             url = `https://soccer.sportmonks.com/api/v2.0/fixtures/${game.id}`;
-            console.log(url);
             params = "include=localTeam,visitorTeam,venue";
             const { data, error } = await fetchData(url, params);
             if (!error) {
@@ -131,12 +132,10 @@ const fetchNewGamesAndWriteToDb = async (competitions) => {
                   started: false,
                 },
               ]);
-            } else {
-              throw new Error("API request limit reached");
             }
-          }
-        })
-      );
+          })
+        );
+      }
     })
   );
 };

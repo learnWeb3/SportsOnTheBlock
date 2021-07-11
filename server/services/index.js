@@ -90,6 +90,19 @@ class OracleContract extends Contract {
     );
   }
 
+  async activeCompetitions() {
+    const activeCompetitionsIds = await this.bettingContract.contract.methods
+      .getCompetitions()
+      .call()
+      .then((_activeCompetitionsIds) =>
+        _activeCompetitionsIds.map((activeCompetitionId) =>
+          parseInt(activeCompetitionId)
+        )
+      );
+
+    return activeCompetitionsIds;
+  }
+
   subscribeAndSettle() {
     const self = this;
     this.contract.events
