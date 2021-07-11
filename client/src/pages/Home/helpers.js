@@ -1,7 +1,18 @@
 import { unique } from "../../utils/index.js";
+import { fetchData } from "../Admin/helpers";
 
-export const getCompetitions = async (bettingContract) =>
-  await bettingContract.contract.methods.getCompetitions().call();
+export const getCompetitions = async (bettingContract) => {
+  const dbCompetitions = await fetchData("/competitions");
+  const contractCompetitions = await bettingContract.contract.methods
+    .getCompetitions()
+    .call()
+    .then((competitionsIds) =>
+      competitionsIds.map((competitionId) => parseInt(competitionId))
+    );
+  return dbCompetitions.filter((competition) =>
+    contractCompetitions.includes(competition.id)
+  );
+};
 
 export const getGames = async (bettingContract, competitionId) =>
   await bettingContract.methods

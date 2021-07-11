@@ -90,9 +90,7 @@ const Home = () => {
         setMainMetrics(
           makeStats(_bets, bettingContract, _contract_games, competitions)
         );
-        setContractGames(
-          _contract_games
-        );
+        setContractGames(_contract_games);
         setGames([..._games]);
         setState({ status: "loaded", code: null });
       } catch (error) {

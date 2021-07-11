@@ -37,8 +37,8 @@ const CreateCompetitionZone = ({
         await bettingContract.contract.methods
           .getCompetitions()
           .call()
-          .then((competitions) =>
-            competitions.map((competition) => parseInt(competition.id))
+          .then((competitionsIds) =>
+            competitionsIds.map((competitionId) => parseInt(competitionId))
           );
       setCurrentContractCompetitionsIds(_currentContractCompetitionsIds);
     };
@@ -53,8 +53,8 @@ const CreateCompetitionZone = ({
             Create new competition
           </Typography>
         </Grid>
-        {competitions?.map((competition) =>{
-           return (
+        {competitions?.map((competition) => {
+          return (
             <CardCompetition
               key={competition.id}
               competition={competition}
@@ -69,7 +69,7 @@ const CreateCompetitionZone = ({
               setRefreshCounter={setRefreshCounter}
               refreshCounter={refreshCounter}
             />
-          )
+          );
         })}
       </Grid>
     </Paper>

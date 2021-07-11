@@ -13,7 +13,7 @@ contract BettingContract is Owner, isCommon {
         return GameIdToGame[gameId];
     }
 
-    function getCompetitions() external view returns (Competition[] memory) {
+    function getCompetitions() external view returns (uint[] memory) {
         return competitions;
     }
 
@@ -47,32 +47,22 @@ contract BettingContract is Owner, isCommon {
     }
 
     // costly 3 writes in storage
-    function newCompetition(uint256 competitionId, string calldata name)
+    function newCompetition(uint256 competitionId)
         external
         isOwner()
     {
-        Competition memory _competition = Competition(
-            competitionId,
-            name,
-            true,
-            true
-        );
-        competitions.push(_competition);
-        emit NewCompetition(_competition);
+        competitions.push(competitionId);
+        emit NewCompetition(competitionId);
     }
 
     // costly 3 writes in storage
     function newGame(
         uint256 gameId,
         uint256 competitionId,
-        uint256 start,
-        string calldata team1Name,
-        string calldata team2Name
+        uint256 start
     ) external isOwner() {
         Game memory _game = Game(
             gameId,
-            team1Name,
-            team2Name,
             start,
             0,
             0,

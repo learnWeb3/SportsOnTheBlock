@@ -37,11 +37,7 @@ const GameCardAdminCollapse = ({
         await createNewGame(
           id,
           competition.id,
-          start,
-          team1Name,
-          team2Name,
-          description,
-          cover
+          start
         );
         setAlert({
           toogled: true,

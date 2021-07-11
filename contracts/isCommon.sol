@@ -9,8 +9,6 @@ contract isCommon {
     }
     struct Game {
         uint256 id;
-        string team1Name;
-        string team2Name;
         uint256 start;
         uint256 team1Score;
         uint256 team2Score;
@@ -19,20 +17,13 @@ contract isCommon {
         bool started;
         bool exists;
     }
-    struct Competition {
-        uint256 id;
-        string name;
-        bool available;
-        bool exists;
-    }
-
-    Competition[] competitions;
+    uint256[] competitions;
     mapping(uint256 => uint256[]) CompetitionIdToGamesIds;
     mapping(uint256 => Bet[]) GameIdToBets;
     mapping(uint256 => Game) GameIdToGame;
     event NewGame(Game);
     event NewBet(Bet, uint256);
-    event NewCompetition(Competition);
+    event NewCompetition(uint256);
     event GameStarted(bool);
     event GameEnded(bool);
 

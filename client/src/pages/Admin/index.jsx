@@ -43,16 +43,10 @@ const Admin = () => {
   const [bettingContract, setBettingContract] = useState(null);
   const [refreshCounter, setRefreshCounter] = useState(0);
 
-  const createNewGame = async (
-    gameId,
-    competitionId,
-    start,
-    team1Name,
-    team2Name
-  ) => {
+  const createNewGame = async (gameId, competitionId, start) => {
     try {
       const tx = await oracleContract.contract.methods
-        .newGame(gameId, competitionId, start, team1Name, team2Name)
+        .newGame(gameId, competitionId, start)
         .send({ from: accounts[0], gas: 500000 });
       console.log(tx);
       setRefreshCounter(refreshCounter + 1);
@@ -98,8 +92,8 @@ const Admin = () => {
           await bettingContract.contract.methods
             .getCompetitions()
             .call()
-            .then((competitions) =>
-              competitions.map((_competition) => parseInt(_competition.id))
+            .then((competitionsIds) =>
+              competitionsIds.map((_competitionId) => parseInt(_competitionId))
             );
         setCurrentContractCompetitionsIds(_currentContractCompetitionsIds);
         setCompetitions(_competitions);

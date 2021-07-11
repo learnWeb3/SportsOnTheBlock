@@ -42,10 +42,10 @@ const CardCompetition = ({
 }) => {
   const classes = useStyles();
   const { mediaLoaded, media } = useMediaLoaded([competition]);
-  const handleNewCompetition = async (competitionId, name) => {
+  const handleNewCompetition = async (competitionId) => {
     try {
       const tx = await oracleContract.contract.methods
-        .newCompetition(competitionId, name)
+        .newCompetition(competitionId)
         .send({ from: accounts[0], gas: 500000 });
       setAlert({
         toogled: true,
@@ -87,14 +87,7 @@ const CardCompetition = ({
               variant="contained"
               className={classes.button}
               size="small"
-              onClick={() =>
-                handleNewCompetition(
-                  competition.id,
-                  competition.name,
-                  "Amazing soccer competition",
-                  competition.cover
-                )
-              }
+              onClick={() => handleNewCompetition(competition.id)}
             >
               ADD TO CONTRACT
             </Button>
