@@ -13,7 +13,7 @@ contract BettingContract is Owner, isCommon {
         return GameIdToGame[gameId];
     }
 
-    function getCompetitions() external view returns (uint[] memory) {
+    function getCompetitions() external view returns (uint256[] memory) {
         return competitions;
     }
 
@@ -47,10 +47,7 @@ contract BettingContract is Owner, isCommon {
     }
 
     // costly 3 writes in storage
-    function newCompetition(uint256 competitionId)
-        external
-        isOwner()
-    {
+    function newCompetition(uint256 competitionId) external isOwner() {
         competitions.push(competitionId);
         emit NewCompetition(competitionId);
     }
@@ -61,16 +58,7 @@ contract BettingContract is Owner, isCommon {
         uint256 competitionId,
         uint256 start
     ) external isOwner() {
-        Game memory _game = Game(
-            gameId,
-            start,
-            0,
-            0,
-            0,
-            false,
-            false,
-            true
-        );
+        Game memory _game = Game(gameId, start, 0, 0, 0, false, false, true);
         GameIdToGame[gameId] = _game;
         CompetitionIdToGamesIds[competitionId].push(_game.id);
         emit NewGame(_game);
@@ -91,38 +79,6 @@ contract BettingContract is Owner, isCommon {
         _game.ended = true;
         GameIdToGame[gameId] = _game;
         emit GameEnded(true);
-    }
-
-    function getWinner(uint256 gameId)
-        private
-        view
-        isOwner()
-        gameExists(gameId)
-        returns (uint256)
-    {
-        Game memory _game = GameIdToGame[gameId];
-        if (_game.team1Score > _game.team2Score) {
-            return 1;
-        } else if (_game.team2Score > _game.team1Score) {
-            return 2;
-        } else {
-            return 0;
-        }
-    }
-
-    function getUserBets(uint256 gameId)
-        internal
-        view
-        gameExists(gameId)
-        returns (Bet[] memory _userBets, uint256 _userBetsLen)
-    {
-        for (uint256 index = 0; index < GameIdToBets[gameId].length; index++) {
-            if (GameIdToBets[gameId][index].user == msg.sender) {
-                _userBets[_userBetsLen] = GameIdToBets[gameId][index];
-                _userBetsLen++;
-            }
-        }
-        return (_userBets, _userBetsLen);
     }
 
     function getUserProfits(uint256 gameId)
@@ -163,6 +119,38 @@ contract BettingContract is Owner, isCommon {
         payable(msg.sender).transfer(
             _loserBetsSum * ((dueProfits * 100) / _winnerBetsSum)
         );
+    }
+
+    function getWinner(uint256 gameId)
+        private
+        view
+        isOwner()
+        gameExists(gameId)
+        returns (uint256)
+    {
+        Game memory _game = GameIdToGame[gameId];
+        if (_game.team1Score > _game.team2Score) {
+            return 1;
+        } else if (_game.team2Score > _game.team1Score) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    function getUserBets(uint256 gameId)
+        internal
+        view
+        gameExists(gameId)
+        returns (Bet[] memory _userBets, uint256 _userBetsLen)
+    {
+        for (uint256 index = 0; index < GameIdToBets[gameId].length; index++) {
+            if (GameIdToBets[gameId][index].user == msg.sender) {
+                _userBets[_userBetsLen] = GameIdToBets[gameId][index];
+                _userBetsLen++;
+            }
+        }
+        return (_userBets, _userBetsLen);
     }
 
     function getSettlementData(Bet[] memory _bets, uint256 winner)

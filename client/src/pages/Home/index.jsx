@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     backgroundImage: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
     top: "4rem",
     position: "relative",
-    minHeight: "87vh",
+    minHeight: "95vh",
   },
   gameContainer: {
     paddingTop: 16,
@@ -83,9 +83,9 @@ const Home = () => {
   useEffect(() => {
     const fetchAndSetMainMetricsAndGames = async (bettingContract) => {
       try {
-        //setState({ status: "loading", code: null });
-        const _contract_games = await getGames(bettingContract, competition.id);
+        setState({ status: "loading", code: null });
         const _games = await fetchData(`/competitions/${competition.id}/games`);
+        const _contract_games = await getGames(bettingContract, competition.id, _games, isFilterGameToActive);
         const _bets = await getBets(bettingContract, _contract_games);
         setMainMetrics(
           makeStats(_bets, bettingContract, _contract_games, competitions)
@@ -152,9 +152,9 @@ const Home = () => {
                 <FiltersArea
                   competition={competition}
                   competitions={competitions}
-                  setCompetition={(selectedCompetition) =>
-                    setCompetition(selectedCompetition)
-                  }
+                  setCompetition={(selectedCompetition) => {
+                    setCompetition(selectedCompetition);
+                  }}
                   isFilterGameToActive={isFilterGameToActive}
                   setFilterGameToActive={(value) =>
                     setFilterGameToActive(value)
@@ -164,25 +164,21 @@ const Home = () => {
               <Grid item xs={12}>
                 <Grid container spacing={2} className={classes.gameContainer}>
                   {contractGames?.length > 0 ? (
-                    games
-                      .filter((game) =>
-                        contractGames.includes(parseInt(game.id))
-                      )
-                      .map((game) => {
-                        return (
-                          <Grid item xs={12} lg={4} key={game.id}>
-                            <GameCard
-                              competition={competition}
-                              provider={provider}
-                              accounts={accounts}
-                              game={game}
-                              bettingContract={bettingContract}
-                              refreshGamesCounter={refreshGamesCounter}
-                              newBetPresent={newBet === parseInt(game.id)}
-                            />
-                          </Grid>
-                        );
-                      })
+                    contractGames?.map((game) => {
+                      return (
+                        <Grid item xs={12} lg={4} key={game.id}>
+                          <GameCard
+                            competition={competition}
+                            provider={provider}
+                            accounts={accounts}
+                            game={game}
+                            bettingContract={bettingContract}
+                            refreshGamesCounter={refreshGamesCounter}
+                            newBetPresent={newBet === parseInt(game.id)}
+                          />
+                        </Grid>
+                      );
+                    })
                   ) : (
                     <ErrorPage
                       code={404}

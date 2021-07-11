@@ -13,7 +13,8 @@ const GameCardContent = ({ game }) => {
   return (
     <CardContent>
       <Typography className={classes.gameName} variant="h6" component="h5">
-        {`${capitalize(game?.team1Name)} vs ${capitalize(game?.team2Name)}`}
+        {game &&
+          `${capitalize(game?.team1Name)} vs ${capitalize(game?.team2Name)}`}
       </Typography>
       <Typography variant="body1" component="p">
         {game?.description}

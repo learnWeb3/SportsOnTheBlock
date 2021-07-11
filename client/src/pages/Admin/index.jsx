@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     backgroundImage: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
     top: "4rem",
     position: "relative",
-    minHeight: "87vh",
+    minHeight: "95vh",
     paddingTop: 24,
     paddingBottom: 24,
   },
@@ -47,7 +47,7 @@ const Admin = () => {
     try {
       const tx = await oracleContract.contract.methods
         .newGame(gameId, competitionId, start)
-        .send({ from: accounts[0], gas: 500000 });
+        .send({ from: accounts[0], gas: 150000 });
       console.log(tx);
       setRefreshCounter(refreshCounter + 1);
       setAlert({

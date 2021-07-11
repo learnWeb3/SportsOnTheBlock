@@ -46,7 +46,7 @@ const CardCompetition = ({
     try {
       const tx = await oracleContract.contract.methods
         .newCompetition(competitionId)
-        .send({ from: accounts[0], gas: 500000 });
+        .send({ from: accounts[0], gas: 100000 });
       setAlert({
         toogled: true,
         message: "New competition added to contract",

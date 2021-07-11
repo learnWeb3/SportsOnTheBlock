@@ -40,7 +40,7 @@ const GameCardCollapse = ({ expanded, setModalToogled, game, betStats }) => {
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h6" component="p">
-            {capitalize(game?.team1Name)}
+            {game && capitalize(game?.team1Name)}
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -62,7 +62,7 @@ const GameCardCollapse = ({ expanded, setModalToogled, game, betStats }) => {
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h6" component="p">
-            {capitalize(game?.team2Name)}
+            {game && capitalize(game?.team2Name)}
           </Typography>
         </Grid>
         <Grid item xs={6}>

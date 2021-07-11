@@ -80,7 +80,7 @@ const useMediaLoaded = (dependenciesArr) => {
   const media2 = useRef();
   const [mediaLoaded, setMediaLoaded] = useState(true);
   useEffect(() => {
-    if (media1 && media2 && media1.current && media2.current) {
+    if (media1 && media2) {
       setMediaLoaded(media1.current.complete && media2.current.complete);
     }
   }, [...dependenciesArr, media1, media2]);

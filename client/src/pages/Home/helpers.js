@@ -14,16 +14,40 @@ export const getCompetitions = async (bettingContract) => {
   );
 };
 
-export const getGames = async (bettingContract, competitionId) =>
-  await bettingContract.methods
+export const getGames = async (
+  bettingContract,
+  competitionId,
+  dbGames,
+  isFilterGameToActive
+) => {
+  const gameIds = await bettingContract.methods
     .getGames(competitionId)
     .call()
     .then((gamesIds) => gamesIds.map((id) => parseInt(id)));
+  return await Promise.all(
+    gameIds.map(
+      async (gameId) => await bettingContract.methods.getGame(gameId).call()
+    )
+  ).then((games) => {
+    return games
+      .map((game) => {
+        const dbGame = dbGames.find(
+          (dbgame) => parseInt(dbgame.id) === parseInt(game.id)
+        );
+        return {
+          ...game,
+          ...dbGame,
+          id: parseInt(game.id),
+        };
+      })
+      .filter((game) => game.ended !== isFilterGameToActive);
+  });
+};
 
-export const getBets = async (bettingContract, gamesIds) =>
+export const getBets = async (bettingContract, games) =>
   await Promise.all(
-    gamesIds.map(async (gameId) => {
-      let bets = await bettingContract.methods.getBets(gameId).call();
+    games.map(async (game) => {
+      let bets = await bettingContract.methods.getBets(game.id).call();
       bets = bets.map(({ amount, outcome, user }) => ({
         amount,
         outcome,
@@ -35,7 +59,7 @@ export const getBets = async (bettingContract, gamesIds) =>
         0
       );
       return {
-        gameId,
+        gameId: game.id,
         bets,
         betsCount: bets.length,
         betsValue,

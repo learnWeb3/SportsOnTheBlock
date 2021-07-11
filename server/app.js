@@ -109,8 +109,6 @@ app.listen(CONFIG.SERVER_PORT, async () =>
 //   }
 // });
 
-oracleContract.checkGameEndedAndCreateRequest()
-
 
 
 
