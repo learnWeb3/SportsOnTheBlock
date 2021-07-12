@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Collapse,
-  Typography,
-  Grid,
-  Button,
-  makeStyles,
-} from "@material-ui/core";
-import capitalize from "capitalize";
+import { Collapse, Grid, Button, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   collapse: {
@@ -24,21 +17,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GameCardAdminCollapse = ({
-  expanded,
-  setAlert,
   competition,
-  createNewGame,
   game: { id, start, team1Name, team2Name, description, cover, started },
+  createNewGame,
+  setAlert,
+  expanded,
 }) => {
   const classes = useStyles();
   const handleClick = async () => {
     if (id) {
       try {
-        await createNewGame(
-          id,
-          competition.id,
-          start
-        );
+        await createNewGame(id, competition.id, start);
         setAlert({
           toogled: true,
           message: "New Game successfully added to the contract",

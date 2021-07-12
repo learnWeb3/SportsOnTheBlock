@@ -32,11 +32,11 @@ const GameCardCollapse = ({
   setModalToogled,
   game,
   betStats,
-  userProfits,
+  userGains,
 }) => {
   const classes = useStyles();
 
-  const handleUserProfits = async (game) => {
+  const handleUserGains = async (game) => {
     try {
       const tx = await bettingContract.methods
         .claimProfits(game.id)
@@ -44,6 +44,7 @@ const GameCardCollapse = ({
       if (tx.error) {
         throw new Error(`problem sending transaction`);
       }
+      console.log(tx);
       setAlert({
         toogled: true,
         message: "funds have been successfully sent to your address",
@@ -65,26 +66,6 @@ const GameCardCollapse = ({
       unmountOnExit
     >
       <Grid container spacing={2} className={classes.betStats}>
-        {game.ended && userProfits > 0 && (
-          <Grid item xs={12}>
-            <CardAlert
-              message={
-                "Congratulations, the odds were in your favor ! Please retrieve your profits"
-              }
-              autoUnmount={false}
-            />
-
-            <Button
-              className={classes.betButton}
-              size="large"
-              color="secondary"
-              variant="contained"
-              onClick={() => handleUserProfits(game)}
-            >
-              get my profits
-            </Button>
-          </Grid>
-        )}
         <Grid item xs={12}>
           <Typography variant="body1" component="p">
             Current value locked
@@ -136,6 +117,23 @@ const GameCardCollapse = ({
             </Button>
           )}
         </Grid>
+        {game.ended && userGains > 0 && (
+          <Grid item xs={12}>
+            <CardAlert
+              message={`Congratulations, the odds were in your favor ! Please retrieve your gains ${userGains} ETH`}
+              autoUnmount={false}
+            />
+            <Button
+              className={classes.betButton}
+              size="large"
+              color="secondary"
+              variant="contained"
+              onClick={() => handleUserGains(game)}
+            >
+              GET MY GAINS - {userGains} ETH
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </Collapse>
   );

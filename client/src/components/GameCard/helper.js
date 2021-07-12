@@ -42,3 +42,19 @@ export const getBets = async (bettingContract, gameId) =>
         ).slice(0, 4),
       },
     }));
+
+export const getUserGains = async (
+  gameId,
+  winnerBetsSum,
+  loserBetsSum,
+  bettingContract
+) => {
+  const userInitialDepositWei = await bettingContract.methods
+    .getUserInitialBetSum(gameId)
+    .call();
+  const userProfitsWei =
+    (((parseInt(userInitialDepositWei) * 100) / parseInt(winnerBetsSum)) *
+      parseInt(loserBetsSum)) /
+    100;
+  return parseInt(userInitialDepositWei) + userProfitsWei;
+};

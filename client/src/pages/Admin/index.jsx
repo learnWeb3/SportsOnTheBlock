@@ -6,12 +6,12 @@ import FiltersArea from "../../components/FiltersArea";
 import { fetchData } from "./helpers";
 import GameCardAdmin from "../../components/GameCardAdmin/index";
 import SnackBar from "../../components/SnackBar.index";
+import CreateCompetitionZone from "../../components/CreateCompetitionZone/index";
 import { BettingContract, OracleContract } from "../../services/Contract";
 import {
   oracle_contract_address,
   betting_contract_address,
 } from "../../config/index.json";
-import CreateCompetitionZone from "../../components/CreateCompetitionZone/index";
 
 const useStyles = makeStyles(() => ({
   gradient: {
@@ -141,13 +141,13 @@ const Admin = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <CreateCompetitionZone
+                competitions={competitions}
                 accounts={accounts}
-                setAlert={setAlert}
                 oracleContract={oracleContract}
                 bettingContract={bettingContract}
-                competitions={competitions}
                 refreshCounter={refreshCounter}
                 setRefreshCounter={setRefreshCounter}
+                setAlert={setAlert}
               />
             </Grid>
             <Grid item xs={12}>
@@ -171,16 +171,14 @@ const Admin = () => {
                     .map((game) => (
                       <Grid item xs={12} lg={4} key={`admin-game-${game.id}`}>
                         <GameCardAdmin
+                          game={game}
+                          competition={competition}
                           isPresentInContract={
                             currentGamesContractIds?.includes(game.id)
                               ? true
                               : false
                           }
-                          competition={competition}
                           provider={provider}
-                          accounts={accounts}
-                          game={game}
-                          isFilterGameToActive={isFilterGameToActive}
                           setAlert={setAlert}
                           createNewGame={createNewGame}
                         />

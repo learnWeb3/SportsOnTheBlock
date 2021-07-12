@@ -13,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardActionBar = ({
+  gameId,
   isPresentInContract,
   handleAddFavorite,
   isFavorite,
   handleExpandClick,
   expanded,
-  gameId,
 }) => {
   const classes = useStyles();
   return (

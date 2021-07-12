@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react";
+import ReactDOM from "react-dom";
 import config from "../../config/index.json";
 import { useComponentState, useProvider } from "../../hooks";
 import { BettingContract } from "../../services/Contract";
@@ -85,13 +85,18 @@ const Home = () => {
       try {
         setState({ status: "loading", code: null });
         const _games = await fetchData(`/competitions/${competition.id}/games`);
-        const _contract_games = await getGames(bettingContract, competition.id, _games, isFilterGameToActive);
+        setGames(_games);
+        const _contract_games = await getGames(
+          bettingContract,
+          competition.id,
+          _games,
+          isFilterGameToActive
+        );
+        setContractGames(_contract_games);
         const _bets = await getBets(bettingContract, _contract_games);
         setMainMetrics(
           makeStats(_bets, bettingContract, _contract_games, competitions)
         );
-        setContractGames(_contract_games);
-        setGames([..._games]);
         setState({ status: "loaded", code: null });
       } catch (error) {
         console.log(error);
@@ -169,13 +174,13 @@ const Home = () => {
                         <Grid item xs={12} lg={4} key={game.id}>
                           <GameCard
                             competition={competition}
+                            game={game}
                             provider={provider}
                             accounts={accounts}
-                            setAlert={setAlert}
-                            game={game}
                             bettingContract={bettingContract}
                             refreshGamesCounter={refreshGamesCounter}
                             newBetPresent={newBet === parseInt(game.id)}
+                            setAlert={(alert) => setAlert(alert)}
                           />
                         </Grid>
                       );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useComponentState, useFavorites } from "../../hooks";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,11 +6,11 @@ import Card from "@material-ui/core/Card";
 import Modal from "../Modal/index";
 import BetForm from "../BetForm/index";
 import CardActionBar from "../CardActionBar";
-import { getBets } from "./helper.js";
 import GameCardCollapse from "./GameCardCollapse/index";
 import GameCardHeader from "./GameCardHeader/index";
 import GameCardContent from "./GameCardContent/index";
 import GameCardMedia from "./GameCardMedia/index";
+import { getBets, getUserGains } from "./helper.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,33 +73,36 @@ const GameCard = ({
     setModalToogled,
   } = useComponentState();
 
-  // access component hooks to deal with favorites actions
+  // Access component hooks to deal with favorites actions
   const { favorites, setFavorites, isFavorite, handleAddFavorite } =
     useFavorites(id);
 
-  const [userProfits, setUserProfits] = useState(0);
+  // Access userGains on current game if game is settled aka ended
+  const [userGains, setuserGains] = useState(0);
   useEffect(() => {
-    const fetchAndSetUserProfits = async (id) => {
+    const fetchAndSetuserGains = async (id) => {
       try {
-        const userInitialDepositWei = await bettingContract.methods
-          .getUserInitialBetSum(id)
-          .call();
-        const userProfitsWei =
-          (((parseInt(userInitialDepositWei) * 100) / parseInt(winnerBetsSum)) *
-            parseInt(loserBetsSum)) /
-          100;
-        const sum = parseInt(userInitialDepositWei) + userProfitsWei;
-        const userProfitsEth = bettingContract.utils.fromWei(`${sum}`, "ether");
-        setUserProfits(userProfitsEth);
+        const userGains = await getUserGains(
+          id,
+          winnerBetsSum,
+          loserBetsSum,
+          bettingContract
+        );
+        const userGainsEth = bettingContract.utils.fromWei(
+          `${userGains}`,
+          "ether"
+        );
+        setuserGains(userGainsEth);
       } catch (error) {
         console.log(error);
-        setUserProfits(0);
+        setuserGains(0);
       }
     };
 
-    ended && fetchAndSetUserProfits(id);
+    ended && fetchAndSetuserGains(id);
   }, []);
 
+  // Access bets on current game to display funds by side
   const [bets, setBets] = useState(null);
   useEffect(() => {
     const getAndSetBets = async (bettingContract, id) => {
@@ -116,22 +119,39 @@ const GameCard = ({
     }
   }, [isModalToogled, refreshGamesCounter]);
 
+  // Access alert message in order to display it on current game card
   const [cardAlertMessage, setCardAlertMessage] = useState(null);
   useEffect(() => {
     setCardAlertMessage("New bet sent to contract");
-
     setTimeout(() => {
       setCardAlertMessage("");
     }, 6000);
   }, [refreshGamesCounter]);
 
-  const [expanded, setExpanded] = React.useState(false);
+  // Access expansion state of the card
+  const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   if (state.status === "loading") return <LoadingAnimation />;
   else {
+    const game = {
+      id,
+      team1Logo,
+      team2Logo,
+      team1Name,
+      team2Name,
+      team1Score,
+      team2Score,
+      description,
+      start,
+      ended,
+      started,
+      winner,
+      loserBetsSum,
+      winnerBetsSum,
+    };
     return (
       <>
         <Card className={classes.root}>
@@ -141,95 +161,33 @@ const GameCard = ({
                 newBetPresent={newBetPresent}
                 cardAlertMessage={cardAlertMessage}
                 bettingContract={bettingContract}
-                userProfits={userProfits}
-                game={{
-                  id,
-                  team1Logo,
-                  team2Logo,
-                  team1Name,
-                  team2Name,
-                  team1Score,
-                  team2Score,
-                  description,
-                  start,
-                  ended,
-                  started,
-                  winner,
-                  loserBetsSum,
-                  winnerBetsSum,
-                }}
+                userGains={userGains}
+                game={game}
                 competition={competition}
               />
 
-              <GameCardMedia
-                game={{
-                  id,
-                  team1Logo,
-                  team2Logo,
-                  team1Name,
-                  team2Name,
-                  team1Score,
-                  team2Score,
-                  description,
-                  start,
-                  ended,
-                  started,
-                  winner,
-                  loserBetsSum,
-                  winnerBetsSum,
-                }}
-              />
+              <GameCardMedia game={game} />
 
-              <GameCardContent
-                game={{
-                  id,
-                  team1Logo,
-                  team2Logo,
-                  team1Name,
-                  team2Name,
-                  team1Score,
-                  team2Score,
-                  description,
-                  start,
-                  ended,
-                  started,
-                  winner,
-                  loserBetsSum,
-                  winnerBetsSum,
-                }}
-              />
+              <GameCardContent game={game} />
+
               <CardActionBar
-                handleAddFavorite={handleAddFavorite}
-                isFavorite={isFavorite}
-                handleExpandClick={handleExpandClick}
-                expanded={expanded}
                 gameId={id}
-              />
-              <GameCardCollapse
-                setAlert={setAlert}
-                competition={competition}
+                isFavorite={isFavorite}
+                handleAddFavorite={handleAddFavorite}
                 expanded={expanded}
-                setModalToogled={setModalToogled}
+                handleExpandClick={handleExpandClick}
+              />
+
+              <GameCardCollapse
+                game={game}
+                betStats={bets?.betStats}
+                userGains={userGains}
                 accounts={accounts}
                 bettingContract={bettingContract}
-                userProfits={userProfits}
-                game={{
-                  id,
-                  team1Logo,
-                  team2Logo,
-                  team1Name,
-                  team2Name,
-                  team1Score,
-                  team2Score,
-                  description,
-                  start,
-                  ended,
-                  started,
-                  winner,
-                  loserBetsSum,
-                  winnerBetsSum,
-                }}
-                betStats={bets?.betStats}
+                competition={competition}
+                expanded={expanded}
+                setAlert={(alert) => setAlert(alert)}
+                setModalToogled={setModalToogled}
               />
             </>
           ) : (
@@ -243,20 +201,7 @@ const GameCard = ({
               title={`Place a bet on :`}
               buttonLabel="confirm"
               setModalToogled={setModalToogled}
-              game={{
-                team1Logo,
-                team2Logo,
-                description,
-                ended,
-                started,
-                team1Name,
-                team1Score,
-                team2Name,
-                team2Score,
-                winner,
-                start,
-                id,
-              }}
+              game={game}
               bettingContract={bettingContract}
               accounts={accounts}
             />,

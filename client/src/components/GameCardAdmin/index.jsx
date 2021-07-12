@@ -38,12 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GameCardAdmin = ({
-  isPresentInContract,
-  createNewGame,
-  setAlert,
-  isFilterGameToActive,
-  competition,
-  accounts,
   game: {
     team1Logo,
     team2Logo,
@@ -58,6 +52,10 @@ const GameCardAdmin = ({
     start,
     id,
   },
+  competition,
+  isPresentInContract,
+  createNewGame,
+  setAlert,
 }) => {
   const classes = useStyles();
   // access component hooks to deal with favorites actions
@@ -75,60 +73,31 @@ const GameCardAdmin = ({
 
   if (state.status === "loading") return <LoadingAnimation />;
   else {
+    const game = {
+      team1Logo,
+      team2Logo,
+      description,
+      ended,
+      started,
+      team1Name,
+      team1Score,
+      team2Name,
+      team2Score,
+      winner,
+      start,
+      id,
+    };
     return (
       <Card className={classes.root}>
         {state.status === "loaded" ? (
           <>
             <GameCardHeader
-              game={{
-                team1Logo,
-                team2Logo,
-                description,
-                ended,
-                started,
-                team1Name,
-                team1Score,
-                team2Name,
-                team2Score,
-                winner,
-                start,
-                id,
-              }}
+              game={game}
               competition={competition}
               isPresentInContract={isPresentInContract}
             />
-            <GameCardMedia
-              game={{
-                team1Logo,
-                team2Logo,
-                description,
-                ended,
-                started,
-                team1Name,
-                team1Score,
-                team2Name,
-                team2Score,
-                winner,
-                start,
-                id,
-              }}
-            />
-            <GameCardContent
-              game={{
-                team1Logo,
-                team2Logo,
-                description,
-                ended,
-                started,
-                team1Name,
-                team1Score,
-                team2Name,
-                team2Score,
-                winner,
-                start,
-                id,
-              }}
-            />
+            <GameCardMedia game={game} />
+            <GameCardContent game={game} />
             <CardActionBar
               handleAddFavorite={handleAddFavorite}
               isFavorite={isFavorite}
@@ -142,20 +111,7 @@ const GameCardAdmin = ({
               createNewGame={createNewGame}
               expanded={expanded}
               setAlert={setAlert}
-              game={{
-                team1Logo,
-                team2Logo,
-                description,
-                ended,
-                started,
-                team1Name,
-                team1Score,
-                team2Name,
-                team2Score,
-                winner,
-                start,
-                id,
-              }}
+              game={game}
               isPresentInContract={isPresentInContract}
             />
           </>

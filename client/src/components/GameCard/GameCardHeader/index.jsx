@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import moment from "moment";
 import AccessTimeRoundedIcon from "@material-ui/icons/AccessTimeRounded";
 import { Chip, makeStyles } from "@material-ui/core";
@@ -17,15 +17,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const GameCardHeader = ({
-  userProfits,
+  competition,
+  game: { started, ended, start },
+  userGains,
   newBetPresent,
   cardAlertMessage,
-  game: { started, ended, start },
-  competition,
   isPresentInContract,
 }) => {
   const classes = useStyles();
-  
+
   return (
     <div className={classes.cardHeader}>
       {cardAlertMessage && newBetPresent && (
@@ -37,11 +37,9 @@ const GameCardHeader = ({
         />
       )}
 
-      {ended && userProfits > 0 && (
+      {ended && userGains > 0 && (
         <CardAlert
-          message={
-            `Congratulations, the odds were in your favor ! Please retrieve your gains: ${userProfits} ETH`
-          }
+          message={`Congratulations, the odds were in your favor ! Please retrieve your gains: ${userGains} ETH`}
           autoUnmount={false}
         />
       )}
