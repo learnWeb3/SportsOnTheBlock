@@ -3,6 +3,7 @@ import { Grid, makeStyles, Typography, Button } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import clsx from "clsx";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   gradient: {
@@ -51,12 +52,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 8,
     marginBottom: 8,
   },
+  link:{
+    marginLeft: 8
+  }
 }));
 
 const PanelIcon = ({
   icon: Icon,
   title,
   text,
+  infoLink,
   call2ActionLink,
   call2ActionLabel,
   call2ActionExternalLink,
@@ -86,6 +91,18 @@ const PanelIcon = ({
         </Typography>
         <Typography variant="body1" component="p">
           {text}
+
+          <Link
+            variant="contained"
+            size="large"
+            color="secondary"
+            onClick={() => history.push(infoLink.url)}
+            className={
+              classes.link
+            }
+          >
+            {infoLink.label}
+          </Link>
         </Typography>
         <Button
           variant="contained"

@@ -102,10 +102,15 @@ contract BettingContract is Owner, isCommon {
 
     function claimProfits(uint256 gameId) external payable gameExists(gameId) {
         Game memory _game = GameIdToGame[gameId];
-        uint256 userInitialBetSumWei = this.getUserInitialBetSum(gameId);
+        uint256 userInitialBetSumWei = UserBetSumByGameAndOutcome[msg.sender][gameId][_game.winner];
         uint256 userProfitsWei = (((((userInitialBetSumWei) * 100) /
-            _game.winnerBetsSum) * _game.loserBetsSum) / 100) - 20000000000 wei;
-        payable(msg.sender).transfer(userProfitsWei + userInitialBetSumWei);
+            _game.winnerBetsSum) * _game.loserBetsSum) / 100);
+        UserBetSumByGameAndOutcome[msg.sender][gameId][_game.winner] = 0;
+        uint userGains = userProfitsWei + userInitialBetSumWei;
+        (bool success, ) = msg.sender.call{
+            value: userGains
+        }("");
+        require(success, "gains transfer failed");
     }
 
     function getUserInitialBetSum(uint256 gameId)

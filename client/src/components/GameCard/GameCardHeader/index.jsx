@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const GameCardHeader = ({
   competition,
-  game: { started, ended, start },
+  game: { started, ended, start, id },
   userGains,
   newBetPresent,
   cardAlertMessage,
@@ -43,6 +43,12 @@ const GameCardHeader = ({
           autoUnmount={false}
         />
       )}
+
+      <Chip
+        className={classes.badge}
+        color={"secondary"}
+        label={`#${id}`}
+      />
 
       {isPresentInContract && (
         <Chip
