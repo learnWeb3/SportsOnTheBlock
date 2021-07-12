@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GameCard = ({
+  setAlert,
   newBetPresent,
   refreshGamesCounter,
   competition,
@@ -74,8 +75,25 @@ const GameCard = ({
   const { favorites, setFavorites, isFavorite, handleAddFavorite } =
     useFavorites(id);
 
-  const [bets, setBets] = useState(null);
+  const [userProfits, setUserProfits] = useState(0);
+  useEffect(() => {
+    console.log(id)
+    const fetchAndSetUserProfits = async (id) => {
+      try {
+        const { dueProfits, _winnerBetsSum, _loserBetsSum } =
+          await bettingContract.methods.getUserProfits(id).call();
+        console.log(dueProfits, _winnerBetsSum, _loserBetsSum);
+        //setUserProfits(dueProfits);
+      } catch (error) {
+        console.log(error)
+        setUserProfits(0);
+      }
+    };
 
+    fetchAndSetUserProfits();
+  }, []);
+
+  const [bets, setBets] = useState(null);
   useEffect(() => {
     const getAndSetBets = async (bettingContract, id) => {
       try {
@@ -115,6 +133,8 @@ const GameCard = ({
               <GameCardHeader
                 newBetPresent={newBetPresent}
                 cardAlertMessage={cardAlertMessage}
+                bettingContract={bettingContract}
+                userProfits={userProfits}
                 game={{
                   team1Logo,
                   team2Logo,
@@ -173,9 +193,13 @@ const GameCard = ({
                 gameId={id}
               />
               <GameCardCollapse
+                setAlert={setAlert}
                 competition={competition}
                 expanded={expanded}
                 setModalToogled={setModalToogled}
+                accounts={accounts}
+                bettingContract={bettingContract}
+                userProfits={userProfits}
                 game={{
                   team1Logo,
                   team2Logo,

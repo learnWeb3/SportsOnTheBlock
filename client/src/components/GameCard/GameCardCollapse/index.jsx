@@ -7,6 +7,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import capitalize from "capitalize";
+import CardAlert from "../../CardAlert/index";
 
 const useStyles = makeStyles((theme) => ({
   collapse: {
@@ -23,8 +24,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const GameCardCollapse = ({ expanded, setModalToogled, game, betStats }) => {
+const GameCardCollapse = ({
+  bettingContract,
+  accounts,
+  setAlert,
+  expanded,
+  setModalToogled,
+  game,
+  betStats,
+  userProfits,
+}) => {
   const classes = useStyles();
+
+  const handleUserProfits = async (game) => {
+    try {
+      const tx = await bettingContract.methods
+        .claimProfits(game.id)
+        .send({ from: accounts[0], gas: 200000 });
+      setAlert({
+        toogled: true,
+        message: "funds have been successfully sent to your address",
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        toogled: true,
+        message: "error when sending funds back to your address",
+        type: "error",
+      });
+    }
+  };
   return (
     <Collapse
       className={classes.collapse}
@@ -33,6 +62,26 @@ const GameCardCollapse = ({ expanded, setModalToogled, game, betStats }) => {
       unmountOnExit
     >
       <Grid container spacing={2} className={classes.betStats}>
+        {game.ended && userProfits > 0 && (
+          <Grid item xs={12}>
+            <CardAlert
+              message={
+                "Congratulations, the odds were in your favor ! Please retrieve your profits"
+              }
+              autoUnmount={false}
+            />
+
+            <Button
+              className={classes.betButton}
+              size="large"
+              color="secondary"
+              variant="contained"
+              onClick={() => handleUserProfits(game)}
+            >
+              get my profits
+            </Button>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Typography variant="body1" component="p">
             Current value locked
@@ -72,7 +121,7 @@ const GameCardCollapse = ({ expanded, setModalToogled, game, betStats }) => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          {!game?.started && (
+          {!game?.started && !game?.ended && (
             <Button
               className={classes.betButton}
               size="large"

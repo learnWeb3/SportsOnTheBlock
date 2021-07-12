@@ -27,8 +27,35 @@ contract isCommon {
     event GameStarted(bool);
     event GameEnded(bool);
 
+    modifier competitionExists(uint256 competitionId) {
+        bool exists = false;
+        for (uint256 i; i < competitions.length; i++) {
+            if (competitions[i] == competitionId) {
+                exists = true;
+            }
+        }
+        require(exists, "competition does not exists");
+        _;
+    }
+
+    modifier competitionDoesNotExists(uint256 competitionId) {
+        bool exists = false;
+        for (uint256 i; i < competitions.length; i++) {
+            if (competitions[i] == competitionId) {
+                exists = true;
+            }
+        }
+        require(!exists, "competition already exists");
+        _;
+    }
+
     modifier gameExists(uint256 gameId) {
         require(GameIdToGame[gameId].exists, "Game does not exists");
+        _;
+    }
+
+    modifier gameDoesNotExists(uint256 gameId) {
+        require(!GameIdToGame[gameId].exists, "Game aleready exists");
         _;
     }
     modifier betOutcomeIsValid(uint256 outcome) {
@@ -41,6 +68,10 @@ contract isCommon {
             GameIdToGame[gameId].started == false,
             "game has already started"
         );
+        _;
+    }
+    modifier gameEnded(uint256 gameId) {
+        require(GameIdToGame[gameId].ended == true, "game must have ended");
         _;
     }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import AccessTimeRoundedIcon from "@material-ui/icons/AccessTimeRounded";
 import { Chip, makeStyles } from "@material-ui/core";
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const GameCardHeader = ({
+  userProfits,
   newBetPresent,
   cardAlertMessage,
   game: { started, ended, start },
@@ -24,11 +25,27 @@ const GameCardHeader = ({
   isPresentInContract,
 }) => {
   const classes = useStyles();
+  
   return (
     <div className={classes.cardHeader}>
       {cardAlertMessage && newBetPresent && (
-        <CardAlert message={cardAlertMessage} />
+        <CardAlert
+          message={cardAlertMessage}
+          autoUnmount={true}
+          unmountTimeout={3000}
+          absolute={true}
+        />
       )}
+
+      {ended && userProfits > 0 && (
+        <CardAlert
+          message={
+            "Congratulations, the odds were in your favor ! Please retrieve your profits"
+          }
+          autoUnmount={false}
+        />
+      )}
+
       {isPresentInContract && (
         <Chip
           className={classes.badge}

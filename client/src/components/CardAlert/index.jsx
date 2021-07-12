@@ -6,10 +6,8 @@ import clsx from "clsx";
 const useStyles = makeStyles(() => ({
   root: {
     transition: "opacity 1s ease-in-out",
-    position: "absolute",
-    top: 0,
-    left: 0,
     width: "90%",
+    marginBottom: 16
   },
   opacity0: {
     opacity: 0,
@@ -17,8 +15,13 @@ const useStyles = makeStyles(() => ({
   opacity1: {
     opacity: 1,
   },
+  absolute: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
 }));
-const CardAlert = ({ message }) => {
+const CardAlert = ({ message, autoUnmount, unmountTimeout, absolute }) => {
   const classes = useStyles();
   const [opacity, setOpacity] = useState(false);
   useEffect(() => {
@@ -26,9 +29,11 @@ const CardAlert = ({ message }) => {
       setOpacity(true);
     }, 1000);
 
-    setTimeout(() => {
-      setOpacity(false);
-    }, 3000);
+    autoUnmount &&
+      unmountTimeout &&
+      setTimeout(() => {
+        setOpacity(false);
+      }, unmountTimeout);
   }, []);
   return (
     <Alert
@@ -36,7 +41,8 @@ const CardAlert = ({ message }) => {
       severity={"success"}
       className={clsx(
         classes.root,
-        opacity ? classes.opacity1 : classes.opacity0
+        opacity ? classes.opacity1 : classes.opacity0,
+        absolute && classes.absolute
       )}
     >
       {message}
