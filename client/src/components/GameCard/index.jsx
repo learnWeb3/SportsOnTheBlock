@@ -40,6 +40,7 @@ const GameCard = ({
   setAlert,
   newBetPresent,
   refreshGamesCounter,
+  setRefresGamesCounter,
   competition,
   bettingContract,
   accounts,
@@ -188,6 +189,8 @@ const GameCard = ({
                 expanded={expanded}
                 setAlert={(alert) => setAlert(alert)}
                 setModalToogled={setModalToogled}
+                refreshGamesCounter={refreshGamesCounter}
+                setRefresGamesCounter={setRefresGamesCounter}
               />
             </>
           ) : (

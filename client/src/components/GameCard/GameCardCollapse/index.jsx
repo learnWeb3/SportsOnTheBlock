@@ -33,6 +33,8 @@ const GameCardCollapse = ({
   game,
   betStats,
   userGains,
+  refreshGamesCounter,
+  setRefresGamesCounter,
 }) => {
   const classes = useStyles();
 
@@ -41,15 +43,17 @@ const GameCardCollapse = ({
       const tx = await bettingContract.methods
         .claimProfits(game.id)
         .send({ from: accounts[0], gas: 200000 });
+
       if (tx.error) {
         throw new Error(`problem sending transaction`);
       }
-      console.log(tx);
+      setRefresGamesCounter(refreshGamesCounter + 1);
       setAlert({
         toogled: true,
         message: "funds have been successfully sent to your address",
         type: "success",
       });
+      setRefresGamesCounter();
     } catch (error) {
       setAlert({
         toogled: true,

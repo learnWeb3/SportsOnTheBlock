@@ -179,6 +179,7 @@ const Home = () => {
                             accounts={accounts}
                             bettingContract={bettingContract}
                             refreshGamesCounter={refreshGamesCounter}
+                            setRefresGamesCounter={setRefresGamesCounter}
                             newBetPresent={newBet === parseInt(game.id)}
                             setAlert={(alert) => setAlert(alert)}
                           />
