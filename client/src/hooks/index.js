@@ -81,7 +81,14 @@ const useMediaLoaded = (dependenciesArr) => {
   const [mediaLoaded, setMediaLoaded] = useState(true);
   useEffect(() => {
     if (media1 && media2 && media1.current && media2.current) {
-      setMediaLoaded(media1.current.complete && media2.current.complete);
+      if (
+        !media1.current.complete &&
+        !media2.current.complete &&
+        media1.current.height === 0 &&
+        media2.current.height === 0
+      ) {
+        setMediaLoaded(false);
+      }
     }
   }, [...dependenciesArr, media1, media2]);
 

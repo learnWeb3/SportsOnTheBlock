@@ -13,6 +13,8 @@ contract isCommon {
         uint256 team1Score;
         uint256 team2Score;
         uint256 winner;
+        uint256 winnerBetsSum;
+        uint256 loserBetsSum;
         bool ended;
         bool started;
         bool exists;
@@ -21,33 +23,12 @@ contract isCommon {
     mapping(uint256 => uint256[]) CompetitionIdToGamesIds;
     mapping(uint256 => Bet[]) GameIdToBets;
     mapping(uint256 => Game) GameIdToGame;
+    mapping(address=>mapping(uint=>mapping(uint=>uint))) UserBetSumByGameAndOutcome;
     event NewGame(Game);
     event NewBet(Bet, uint256);
     event NewCompetition(uint256);
     event GameStarted(bool);
     event GameEnded(bool);
-
-    modifier competitionExists(uint256 competitionId) {
-        bool exists = false;
-        for (uint256 i; i < competitions.length; i++) {
-            if (competitions[i] == competitionId) {
-                exists = true;
-            }
-        }
-        require(exists, "competition does not exists");
-        _;
-    }
-
-    modifier competitionDoesNotExists(uint256 competitionId) {
-        bool exists = false;
-        for (uint256 i; i < competitions.length; i++) {
-            if (competitions[i] == competitionId) {
-                exists = true;
-            }
-        }
-        require(!exists, "competition already exists");
-        _;
-    }
 
     modifier gameExists(uint256 gameId) {
         require(GameIdToGame[gameId].exists, "Game does not exists");

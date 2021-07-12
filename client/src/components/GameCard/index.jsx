@@ -44,18 +44,20 @@ const GameCard = ({
   bettingContract,
   accounts,
   game: {
+    id,
     team1Logo,
     team2Logo,
+    team1Name,
+    team2Name,
+    team1Score,
+    team2Score,
     description,
+    start,
     ended,
     started,
-    team1Name,
-    team1Score,
-    team2Name,
-    team2Score,
     winner,
-    start,
-    id,
+    loserBetsSum,
+    winnerBetsSum,
   },
 }) => {
   // component styles
@@ -77,20 +79,25 @@ const GameCard = ({
 
   const [userProfits, setUserProfits] = useState(0);
   useEffect(() => {
-    console.log(id)
     const fetchAndSetUserProfits = async (id) => {
       try {
-        const { dueProfits, _winnerBetsSum, _loserBetsSum } =
-          await bettingContract.methods.getUserProfits(id).call();
-        console.log(dueProfits, _winnerBetsSum, _loserBetsSum);
-        //setUserProfits(dueProfits);
+        const userInitialDepositWei = await bettingContract.methods
+          .getUserInitialBetSum(id)
+          .call();
+        const userProfitsWei =
+          (((parseInt(userInitialDepositWei) * 100) / parseInt(winnerBetsSum)) *
+            parseInt(loserBetsSum)) /
+          100;
+        const sum = parseInt(userInitialDepositWei) + userProfitsWei;
+        const userProfitsEth = bettingContract.utils.fromWei(`${sum}`, "ether");
+        setUserProfits(userProfitsEth);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setUserProfits(0);
       }
     };
 
-    fetchAndSetUserProfits();
+    ended && fetchAndSetUserProfits(id);
   }, []);
 
   const [bets, setBets] = useState(null);
@@ -136,53 +143,59 @@ const GameCard = ({
                 bettingContract={bettingContract}
                 userProfits={userProfits}
                 game={{
+                  id,
                   team1Logo,
                   team2Logo,
+                  team1Name,
+                  team2Name,
+                  team1Score,
+                  team2Score,
                   description,
+                  start,
                   ended,
                   started,
-                  team1Name,
-                  team1Score,
-                  team2Name,
-                  team2Score,
                   winner,
-                  start,
-                  id,
+                  loserBetsSum,
+                  winnerBetsSum,
                 }}
                 competition={competition}
               />
 
               <GameCardMedia
                 game={{
+                  id,
                   team1Logo,
                   team2Logo,
+                  team1Name,
+                  team2Name,
+                  team1Score,
+                  team2Score,
                   description,
+                  start,
                   ended,
                   started,
-                  team1Name,
-                  team1Score,
-                  team2Name,
-                  team2Score,
                   winner,
-                  start,
-                  id,
+                  loserBetsSum,
+                  winnerBetsSum,
                 }}
               />
 
               <GameCardContent
                 game={{
+                  id,
                   team1Logo,
                   team2Logo,
+                  team1Name,
+                  team2Name,
+                  team1Score,
+                  team2Score,
                   description,
+                  start,
                   ended,
                   started,
-                  team1Name,
-                  team1Score,
-                  team2Name,
-                  team2Score,
                   winner,
-                  start,
-                  id,
+                  loserBetsSum,
+                  winnerBetsSum,
                 }}
               />
               <CardActionBar
@@ -201,18 +214,20 @@ const GameCard = ({
                 bettingContract={bettingContract}
                 userProfits={userProfits}
                 game={{
+                  id,
                   team1Logo,
                   team2Logo,
+                  team1Name,
+                  team2Name,
+                  team1Score,
+                  team2Score,
                   description,
+                  start,
                   ended,
                   started,
-                  team1Name,
-                  team1Score,
-                  team2Name,
-                  team2Score,
                   winner,
-                  start,
-                  id,
+                  loserBetsSum,
+                  winnerBetsSum,
                 }}
                 betStats={bets?.betStats}
               />

@@ -40,7 +40,7 @@ const GameCardHeader = ({
       {ended && userProfits > 0 && (
         <CardAlert
           message={
-            "Congratulations, the odds were in your favor ! Please retrieve your profits"
+            `Congratulations, the odds were in your favor ! Please retrieve your gains: ${userProfits} ETH`
           }
           autoUnmount={false}
         />

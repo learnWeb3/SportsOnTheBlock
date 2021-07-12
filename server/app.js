@@ -129,7 +129,7 @@ cron.schedule("59 23 * * *", async () => {
 // scheduled task to fetch data on BettingContract compare it to SportMonk API game status
 // and send an request to create a secured blueprint for request in order to settle games
 // every hours settlement
-cron.schedule("1 * * * *", async () => {
+cron.schedule("45 * * * *", async () => {
   try {
     oracleContract.checkGameEndedAndCreateRequest();
   } catch (error) {
