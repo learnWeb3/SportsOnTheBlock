@@ -103,8 +103,8 @@ contract BettingContract is Owner, isCommon {
     function claimProfits(uint256 gameId) external payable gameExists(gameId) {
         Game memory _game = GameIdToGame[gameId];
         uint256 userInitialBetSumWei = this.getUserInitialBetSum(gameId);
-        uint256 userProfitsWei = ((((userInitialBetSumWei) * 100) /
-            _game.winnerBetsSum) * _game.loserBetsSum) / 100;
+        uint256 userProfitsWei = (((((userInitialBetSumWei) * 100) /
+            _game.winnerBetsSum) * _game.loserBetsSum) / 100) - 20000000000 wei;
         payable(msg.sender).transfer(userProfitsWei + userInitialBetSumWei);
     }
 

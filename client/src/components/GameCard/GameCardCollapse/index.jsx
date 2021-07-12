@@ -41,6 +41,9 @@ const GameCardCollapse = ({
       const tx = await bettingContract.methods
         .claimProfits(game.id)
         .send({ from: accounts[0], gas: 200000 });
+      if (tx.error) {
+        throw new Error(`problem sending transaction`);
+      }
       setAlert({
         toogled: true,
         message: "funds have been successfully sent to your address",

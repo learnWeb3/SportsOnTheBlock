@@ -48,7 +48,9 @@ const Admin = () => {
       const tx = await oracleContract.contract.methods
         .newGame(gameId, competitionId, start)
         .send({ from: accounts[0], gas: 150000 });
-      console.log(tx);
+      if (tx.error) {
+        throw new Error(`problem sending transaction`);
+      }
       setRefreshCounter(refreshCounter + 1);
       setAlert({
         toogled: true,

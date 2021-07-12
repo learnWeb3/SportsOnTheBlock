@@ -177,12 +177,17 @@ const BetForm = ({
   const handleSubmit = async () => {
     if (formData.isValid) {
       try {
-        await bettingContract.methods.bet(id, formData.betSide.value).send({
-          from: accounts[0],
-          value: bettingContract.utils.toWei(
-            formData.betValue.value.toString()
-          ),
-        });
+        const tx = await bettingContract.methods
+          .bet(id, formData.betSide.value)
+          .send({
+            from: accounts[0],
+            value: bettingContract.utils.toWei(
+              formData.betValue.value.toString()
+            ),
+          });
+        if (tx.error) {
+          throw new Error(`problem sending transaction`);
+        }
         setAlert({
           toogled: true,
           message:
