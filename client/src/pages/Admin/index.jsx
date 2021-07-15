@@ -74,12 +74,6 @@ const Admin = () => {
   useEffect(() => {
     const initialContractSet = () => {
       try {
-        !selectedAddress &&
-          setState({
-            status: "error",
-            code: 499,
-            message: "Please authorize our app to interact with your wallet",
-          });
         setState({ status: "loading", code: null });
         setOracleContract(
           new OracleContract(provider, oracle_contract_address, selectedAddress)
@@ -97,10 +91,15 @@ const Admin = () => {
       }
     };
 
-    provider &&
-      oracle_contract_address &&
-      selectedAddress &&
+    if (provider && oracle_contract_address && selectedAddress) {
       initialContractSet();
+    } else {
+      setState({
+        status: "error",
+        code: 499,
+        message: "Please authorize our app to interact with your wallet",
+      });
+    }
   }, [provider, oracle_contract_address, selectedAddress]);
 
   useEffect(() => {
@@ -238,7 +237,7 @@ const Admin = () => {
       </div>
     );
   else {
-    return <ErrorPage code={state.code} height="90vh" />;
+    return <ErrorPage code={state.code} height="90vh" message={state.message} />;
   }
 };
 

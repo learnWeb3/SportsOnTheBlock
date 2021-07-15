@@ -47,12 +47,6 @@ const Home = () => {
   useEffect(() => {
     const fetchAndSetBettingContract = async (provider, selectedAddress) => {
       try {
-        !selectedAddress &&
-          setState({
-            status: "error",
-            code: 499,
-            message: "Please authorize our app to interact with your wallet",
-          });
         setState({ status: "loading", code: null });
         const _bettingContract = new BettingContract(
           provider,
@@ -79,6 +73,12 @@ const Home = () => {
 
     if (provider && selectedAddress) {
       fetchAndSetBettingContract(provider, selectedAddress);
+    } else {
+      setState({
+        status: "error",
+        code: 499,
+        message: "Please authorize our app to interact with your wallet",
+      });
     }
   }, [provider, selectedAddress, refreshCompetitionsCounter]);
 

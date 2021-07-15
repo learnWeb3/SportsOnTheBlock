@@ -20,11 +20,7 @@ const useProvider = (setState) => {
         });
 
         provider.on("disconnect", function () {
-          setState({
-            status: "error",
-            code: 500,
-            message: "Network failure error",
-          });
+          setSelectedAddress(null);
         });
         provider.on("connect", async function () {
           const _accounts = await provider.request({
