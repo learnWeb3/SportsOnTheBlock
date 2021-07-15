@@ -6,11 +6,11 @@
   "directories": {},
   "scripts": {
     "dependencies": "npm i & (cd ./client && npm i) & (cd ./server && npm i)",
-    "truffle-dev": "truffle networks --clean && truffle deploy --network=development",
-    "truffle-ropsten": "truffle networks --clean && truffle deploy --network=ropsten",
+    "truffle-dev": "truffle networks --clean && truffle compile && truffle deploy --network=development",
+    "truffle-ropsten": "truffle networks --clean && truffle compile && truffle deploy --network=ropsten",
     "dev-server": "cd ./server && npm run dev",
     "dev-client": "cd ./client && npm run start",
-    "start": "(truffle networks --clean && truffle deploy --network=ropsten)  & (cd ./server && npm run dev) & (cd ./client && npm run start)",
+    "start": "(truffle networks --clean && truffle compile && truffle deploy --network=ropsten)  & (cd ./server && npm run dev) & (cd ./client && npm run start)",
     "contract-test": "truffle test"
   },
   "author": "Antoine LE GUILLOU",
