@@ -47,6 +47,12 @@ const RoutingMenuContent = () => {
           Setup Guide
         </Typography>
       </Link>
+      <Link className={classes.listItem} to="/admin">
+        <BuildIcon className={classes.icon} />
+        <Typography variant="h5" component="span">
+          Administration
+        </Typography>
+      </Link>
     </List>
   );
 };

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Container, makeStyles } from "@material-ui/core";
 import Menu from "../../components/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
 import RoutingMenuContent from "../RoutingMenuContent";
 import CompetitionFilterMenuContent from "../CompetitonFilterMenuContent";
 
@@ -41,10 +40,6 @@ const Navbar = ({
     <>
       <Container maxWidth="xl" className={classes.root}>
         <MenuIcon onClick={() => setMenuLeftToogled(!menuLeftToogled)} />
-
-        {menuRightDisplayed && (
-          <SearchIcon onClick={() => setMenuRightToogled(!menuRightToogled)} />
-        )}
       </Container>
 
       <Menu
@@ -54,17 +49,6 @@ const Navbar = ({
         menuContent={RoutingMenuContent}
       />
 
-      {menuRightDisplayed && (
-        <Menu
-          menuContent={CompetitionFilterMenuContent}
-          toogled={menuRightToogled}
-          setToogled={setMenuRightToogled}
-          competition={competition}
-          setCompetition={(selectedCompetition) =>
-            setCompetition(selectedCompetition)
-          }
-        />
-      )}
     </>
   );
 };
