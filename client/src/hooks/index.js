@@ -12,32 +12,34 @@ const useProvider = (setState) => {
   const [accounts, setAccounts] = useState();
 
   useEffect(() => {
-    const getAndSetAccounts = async (web3) => {
-      const accounts = await web3.eth.getAccounts();
-      if (accounts.length > 0) {
-        setAccounts(accounts);
-      } else {
-        setState({ status: "error", code: 499 });
-      }
-    };
-
     const getAndSetProvider = async () => {
-      if (process.env.NODE_ENV === "development") {
+      const provider = await detectEthereumProvider();
+      if (provider) {
+        const web3 = new Web3(provider);
+        setProvider(web3);
+        if (web3) {
+          try {
+            const accounts = await provider.request({
+              method: "eth_requestAccounts",
+            });
+            setAccounts(accounts);
+          } catch (error) {
+            setState({
+              status: "error",
+              code: 499,
+              message: "Please authorize our app to interact with your wallet",
+            });
+          }
+        }
+      } else {
         const web3 = new Web3(config.provider_url);
         setProvider(web3);
-        web3 && getAndSetAccounts(web3);
-      } else {
-        const provider = await detectEthereumProvider();
-        if (provider) {
-          const web3 = new Web3(provider);
-          setProvider(web3);
-          web3 && getAndSetAccounts(web3);
-        } else {
-          setState({ status: "error", code: 499 });
-        }
+        const accounts = await web3.eth.getAccounts();
+        accounts.length > 0
+          ? accounts.length > 0 && setAccounts(accounts)
+          : setState({ status: "error", code: 500 });
       }
     };
-
     getAndSetProvider();
   }, [setState]);
 

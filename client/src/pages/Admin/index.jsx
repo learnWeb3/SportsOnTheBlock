@@ -31,7 +31,7 @@ const Admin = () => {
   const classes = useStyles();
   const { state, setState, ErrorPage, LoadingAnimation, alert, setAlert } =
     useComponentState();
-  const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider();
+  const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider(setState);
   const [isFilterGameToActive, setFilterGameToActive] = useState(true);
   const [competition, setCompetition] = useState(null);
   const [competitions, setCompetitions] = useState(null);

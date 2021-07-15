@@ -6,6 +6,7 @@ import PageNotFound from "../icons/PageNotFound";
 import ServerError from "../icons/ServerError";
 import Forbidden from "../icons/Forbidden";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -53,7 +54,7 @@ const ErrorPage = ({
     },
     499: {
       message: "Please install Metamask !",
-      illustration: <MetamaskIcon height="15rem" />,
+      illustration: <MetamaskIcon height="10rem" />,
     },
     500: {
       message: "Internal Server Error",
@@ -68,9 +69,9 @@ const ErrorPage = ({
     >
       {mapCodeToMessage[code].illustration}
       {messageDisplayed && (
-        <Typography variant="h6" component="h6" className={classes.errorCode}>
+       <Alert severity="error" className={classes.errorCode}>
           {message ? message : mapCodeToMessage[code].message}
-        </Typography>
+       </Alert>
       )}
     </Container>
   );
