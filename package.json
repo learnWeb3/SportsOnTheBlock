@@ -5,6 +5,7 @@
   "main": "truffle-config.js",
   "directories": {},
   "scripts": {
+    "dependencies": "npm i & (cd ./client && npm i) & (cd ./server && npm i)",
     "truffle-dev": "truffle networks --clean && truffle deploy --network=development",
     "truffle-ropsten": "truffle networks --clean && truffle deploy --network=ropsten",
     "dev-server": "cd ./server && npm run dev",
