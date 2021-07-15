@@ -50,7 +50,7 @@ export const getUserGains = async (
   bettingContract
 ) => {
   const userInitialDepositWei = await bettingContract.methods
-    .getUserInitialBetSum(gameId)
+    .getUserWinnerBetSum(gameId)
     .call();
   const userProfitsWei =
     (((parseInt(userInitialDepositWei) * 100) / parseInt(winnerBetsSum)) *

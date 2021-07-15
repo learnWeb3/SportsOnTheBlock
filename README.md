@@ -48,6 +48,14 @@ cd ./server && npm i
 cd ./client && npm i
 ```
 
+### Lauch the smart contract test
+
+```bash
+# install client packages
+npm run contract-test
+```
+
+
 #### Running the app (dev only)
 
 ```bash
@@ -118,8 +126,10 @@ cd server/config/index.js
 
 To do : 
 
-- [] Test Betting functions 
-- [] Test Oracle functions
+- [x] Test Betting functions 
+- [x] Test Oracle functions
+- [] Test server functions
+- [] Test client functions
 
 2. Gas fees:
 

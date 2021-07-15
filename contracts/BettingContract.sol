@@ -76,6 +76,7 @@ contract BettingContract is Owner, isCommon {
 
     function setGameToStarted(uint256 gameId) external isOwner() {
         GameIdToGame[gameId].started = true;
+        emit GameStarted(true, gameId);
     }
 
     function settleGame(
@@ -97,23 +98,28 @@ contract BettingContract is Owner, isCommon {
         _game.loserBetsSum = _loserBetsSum;
         _game.winnerBetsSum = _winnerBetsSum;
         GameIdToGame[gameId] = _game;
-        emit GameEnded(true);
+        emit GameEnded(true, gameId);
     }
 
-    function claimProfits(uint256 gameId) external payable gameExists(gameId) {
+    function claimProfits(uint256 gameId)
+        external
+        payable
+        gameExists(gameId)
+        gameEnded(gameId)
+    {
         Game memory _game = GameIdToGame[gameId];
-        uint256 userInitialBetSumWei = UserBetSumByGameAndOutcome[msg.sender][gameId][_game.winner];
+        uint256 userInitialBetSumWei = UserBetSumByGameAndOutcome[msg.sender][
+            gameId
+        ][_game.winner];
         uint256 userProfitsWei = (((((userInitialBetSumWei) * 100) /
             _game.winnerBetsSum) * _game.loserBetsSum) / 100);
         UserBetSumByGameAndOutcome[msg.sender][gameId][_game.winner] = 0;
-        uint userGains = userProfitsWei + userInitialBetSumWei;
-        (bool success, ) = msg.sender.call{
-            value: userGains
-        }("");
+        uint256 userGains = userProfitsWei + userInitialBetSumWei;
+        (bool success, ) = msg.sender.call{value: userGains}("");
         require(success, "gains transfer failed");
     }
 
-    function getUserInitialBetSum(uint256 gameId)
+    function getUserWinnerBetSum(uint256 gameId)
         external
         view
         gameExists(gameId)
@@ -122,6 +128,15 @@ contract BettingContract is Owner, isCommon {
     {
         Game memory _game = GameIdToGame[gameId];
         return UserBetSumByGameAndOutcome[msg.sender][gameId][_game.winner];
+    }
+
+    function getUserInitialBetSum(uint256 gameId, uint256 outcome)
+        external
+        view
+        gameExists(gameId)
+        returns (uint256 betSum)
+    {
+        return UserBetSumByGameAndOutcome[msg.sender][gameId][outcome];
     }
 
     function getWinner(uint256 gameId)

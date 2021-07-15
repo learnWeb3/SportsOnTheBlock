@@ -23,12 +23,12 @@ contract isCommon {
     mapping(uint256 => uint256[]) CompetitionIdToGamesIds;
     mapping(uint256 => Bet[]) GameIdToBets;
     mapping(uint256 => Game) GameIdToGame;
-    mapping(address=>mapping(uint=>mapping(uint=>uint))) UserBetSumByGameAndOutcome;
+    mapping(address => mapping(uint256 => mapping(uint256 => uint256))) UserBetSumByGameAndOutcome;
     event NewGame(Game);
     event NewBet(Bet, uint256);
     event NewCompetition(uint256);
-    event GameStarted(bool);
-    event GameEnded(bool);
+    event GameStarted(bool, uint256);
+    event GameEnded(bool, uint256);
 
     modifier gameExists(uint256 gameId) {
         require(GameIdToGame[gameId].exists, "Game does not exists");

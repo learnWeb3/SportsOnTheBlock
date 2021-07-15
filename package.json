@@ -10,12 +10,15 @@
     "truffle-ropsten": "truffle networks --clean && truffle deploy --network=ropsten",
     "dev-server": "cd ./server && npm run dev",
     "dev-client": "cd ./client && npm run start",
-    "start": "(truffle networks --clean && truffle deploy --network=ropsten)  & (cd ./server && npm run dev) & (cd ./client && npm run start)"
+    "start": "(truffle networks --clean && truffle deploy --network=ropsten)  & (cd ./server && npm run dev) & (cd ./client && npm run start)",
+    "contract-test": "truffle test"
   },
   "author": "Antoine LE GUILLOU",
   "license": "ISC",
   "devDependencies": {
+    "bignumber.js": "^9.0.1",
     "chai": "^4.3.4",
+    "chai-bignumber": "^3.0.0",
     "mocha": "^9.0.2"
   },
   "dependencies": {
