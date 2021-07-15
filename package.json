@@ -5,7 +5,10 @@
   "main": "truffle-config.js",
   "directories": {},
   "scripts": {
-    "dev": "(truffle networks --clean && truffle deploy --network=development) & (cd ./server && npm run dev) & (cd ./client && npm run start)",
+    "truffle-dev": "truffle networks --clean && truffle deploy --network=development",
+    "truffle-ropsten": "truffle networks --clean && truffle deploy --network=ropsten",
+    "dev-server": "cd ./server && npm run dev",
+    "dev-client": "cd ./client && npm run start",
     "start": "(truffle networks --clean && truffle deploy --network=ropsten)  & (cd ./server && npm run dev) & (cd ./client && npm run start)"
   },
   "author": "Antoine LE GUILLOU",
