@@ -16,7 +16,7 @@ const exportContractABIS = () => {
 };
 
 module.exports = async function (deployer, network, accounts) {
-  const owner = selectedAddress;
+  const owner = accounts[0];
   await deployer.deploy(Oracle);
   const oracle = await Oracle.deployed();
   await oracle.deployBettingContract();
