@@ -14,5 +14,11 @@
   },
   "author": "Antoine LE GUILLOU",
   "license": "ISC",
-  "dependencies": {}
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^9.0.2"
+  },
+  "dependencies": {
+    "web3": "^1.4.0"
+  }
 }

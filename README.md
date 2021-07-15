@@ -128,7 +128,7 @@ To do :
 
 3. Metamask interactions
 
-- [] Setup metamask to interact with the application
+- [x] Setup metamask to interact with the application
 
 
 

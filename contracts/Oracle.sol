@@ -77,7 +77,7 @@ contract Oracle is Owner {
         bettingContract.newGame(gameId, competitionId, start);
     }
 
-    function newCompetition(uint256 competitionId) external {
+    function newCompetition(uint256 competitionId) external isOwner() {
         BettingContract bettingContract = BettingContract(
             bettingContractAddress
         );
