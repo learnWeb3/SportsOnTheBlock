@@ -5,7 +5,7 @@ The application is structured around a client and a server communicating via RES
 The exposed endpoints are the following :
 
 - /competitions
-- /competitions/:id/games 
+- /competitions/:id/games
 
 The server talks to the MongoDb collections containing the current competitions and games and automatically updates them on MongoDB Atlas, it also settles and updates status of the games present on the deployed instance of the Betting contract using cron tasks.
 
@@ -20,7 +20,7 @@ We have a free tier plan active on the data provider platform wich limits call n
 
 We currently rely on only one data provider wich is a major flaw (single point of failure) in terms of decentralization and make the contract vulnerable as it is heavely dependent on the data provided by SportsMonk API.
 
-### Warnings 
+### Warnings
 
 Improvements need to be done in order for this project to be live. Please have a look to the related section
 
@@ -55,53 +55,44 @@ cd ./client && npm i
 npm run contract-test
 ```
 
-
 #### Running the app (dev only)
 
 ```bash
 # lauch ganache
 ganache-cli
 ```
+
 ```bash
 # migrate the contract using ganache instance (port: 8545)
 npm run truffle-dev
 ```
+
 ```bash
 # lauch the dev server
 npm run dev-server
 ```
+
 ```bash
 # lauch the dev client
 npm run dev-client
 ```
 
-### Internal Configurations 
+### Internal Configurations and environnement variables
 
-Configurations are available as JSON file under :
+You need to create two .env files referencing the following variables
+
+dev_provider_url="ws://localhost:8545"
+dev_server_root_path="http://localhost:8000"
+prod_provider_url="https://ropsten.infura.io/v3/4c45f4cc5b5b450e8a17ddae01994d56"
+prod_server_root_path= "http://localhost:8000"
+mnemonic="<<YOUR METAMASK MNEMONIC>>"
+api_token="<<YOUR SPORT MONK API TOKEN>>"
 
 ```bash
-cd config/index.js
-```
-
-The configuration object exposes keys for both development and production environnement :
-
-```bash
-const CONFIG = {
-  development: {
-    provider_url: "ws://localhost:8545",
-    server_root_path: "http://localhost:8000",
-    mnemonic:
-      "<<12 words Metamask mnemonic>>",
-  },
-  production: {
-    provider_url:
-      "https://ropsten.infura.io/v3/4c45f4cc5b5b450e8a17ddae01994d56",
-    mnemonic:
-      "<<12 words Metamask mnemonic>>",
-    server_root_path: "http://localhost:8000",
-  },
-  api_token: "<<sports monk api token>>",
-};
+# root directory
+touch .env
+# migrations folder
+touch /migrations/.env
 ```
 
 Configurations are then exported to client and server subfolder as json files providing them live contracts address :
@@ -112,6 +103,7 @@ cd server/config/index.json
 #client generated configuration file
 cd client/src/config/index.json
 ```
+
 Server subfolder have it's own configuration files in order to interact with a mongodb database:
 
 ```bash
@@ -119,14 +111,13 @@ Server subfolder have it's own configuration files in order to interact with a m
 cd server/config/index.js
 ```
 
-
-### Improvements 
+### Improvements
 
 1. Smart contracts unit tests:
 
-To do : 
+To do :
 
-- [x] Test Betting functions 
+- [x] Test Betting functions
 - [x] Test Oracle functions
 - [] Test server functions
 - [] Test client functions
@@ -139,8 +130,6 @@ To do :
 3. Metamask interactions
 
 - [x] Setup metamask to interact with the application
-
-
 
 ### Development environment
 
@@ -166,5 +155,3 @@ truffle version
 2. **Metamask: 5.3.1** - If you need to update Metamask just delete your Metamask extension and install it again.
 
 3. [Ganache](https://www.trufflesuite.com/ganache) - Make sure that your Ganache and Truffle configuration file have the same port.
-
-

@@ -23,13 +23,7 @@
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
-const { CONFIG } = require("./config/index.js");
-
-const MNEMONIC =
-  "surge furnace seek amazing abuse crop orbit slow congress volcano buzz arm";
-const ropsten_provider_url =
-  "https://ropsten.infura.io/v3/4c45f4cc5b5b450e8a17ddae01994d56";
-
+require("dotenv").config();
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -68,8 +62,8 @@ module.exports = {
     ropsten: {
       provider: () =>
         new HDWalletProvider(
-          CONFIG.production.mnemonic,
-          CONFIG.production.provider_url
+          process.env.mnemonic,
+          process.env.prod_provider_url
         ),
       network_id: 3, // Ropsten's id
       gas: 5500000, // Ropsten has a lower block limit than mainnet
