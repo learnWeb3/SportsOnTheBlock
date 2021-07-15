@@ -15,6 +15,24 @@ const useProvider = (setState) => {
     const getAndSetProvider = async () => {
       const provider = await detectEthereumProvider();
       if (provider) {
+        provider.on("accountsChanged", function (accounts) {
+          setSelectedAddress(accounts[0]);
+        });
+
+        provider.on("disconnect", function () {
+          setState({
+            status: "error",
+            code: 500,
+            message: "Network failure error",
+          });
+        });
+        provider.on("connect", async function () {
+          const _accounts = await provider.request({
+            method: "eth_requestAccounts",
+          });
+          setAccounts(_accounts);
+          setSelectedAddress(provider.selectedAddress);
+        });
         const web3 = new Web3(provider);
         setProvider(web3);
         if (web3) {
@@ -44,7 +62,7 @@ const useProvider = (setState) => {
       }
     };
     getAndSetProvider();
-  }, [setState]);
+  }, [setState, selectedAddress]);
 
   return {
     provider,

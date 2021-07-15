@@ -31,10 +31,11 @@ const Admin = () => {
   const classes = useStyles();
   const { state, setState, ErrorPage, LoadingAnimation, alert, setAlert } =
     useComponentState();
-  const { provider, /*setProvider,*/ accounts /*setAccounts*/, selectedAddress } =
-    useProvider(setState);
-
-  console.log(selectedAddress)
+  const {
+    provider,
+    /*setProvider,*/ accounts /*setAccounts*/,
+    selectedAddress,
+  } = useProvider(setState);
   const [isFilterGameToActive, setFilterGameToActive] = useState(true);
   const [competition, setCompetition] = useState(null);
   const [competitions, setCompetitions] = useState(null);
@@ -73,12 +74,22 @@ const Admin = () => {
   useEffect(() => {
     const initialContractSet = () => {
       try {
+        !selectedAddress &&
+          setState({
+            status: "error",
+            code: 499,
+            message: "Please authorize our app to interact with your wallet",
+          });
         setState({ status: "loading", code: null });
         setOracleContract(
           new OracleContract(provider, oracle_contract_address, selectedAddress)
         );
         setBettingContract(
-          new BettingContract(provider, betting_contract_address, selectedAddress)
+          new BettingContract(
+            provider,
+            betting_contract_address,
+            selectedAddress
+          )
         );
       } catch (error) {
         console.log(error);
@@ -86,15 +97,18 @@ const Admin = () => {
       }
     };
 
-    provider && oracle_contract_address && selectedAddress && initialContractSet();
+    provider &&
+      oracle_contract_address &&
+      selectedAddress &&
+      initialContractSet();
   }, [provider, oracle_contract_address, selectedAddress]);
 
   useEffect(() => {
     const fetchAndSetCompetitions = async () => {
       try {
-        const oracleAdminAddress =
-          await oracleContract.contract.methods.owner().call();
-        console.log(oracleAdminAddress)
+        const oracleAdminAddress = await oracleContract.contract.methods
+          .owner()
+          .call();
         if (oracleAdminAddress.toLowerCase() === selectedAddress) {
           const _competitions = await fetchData("/competitions");
           const _currentContractCompetitionsIds =

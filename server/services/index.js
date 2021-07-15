@@ -136,7 +136,7 @@ class OracleContract extends Contract {
           // accessing admin localaccounts
           const accounts = await self.provider.eth.getAccounts();
           // setting up owner account to first one
-          const owner = selectedAddress;
+          const owner = accounts[0];
           const tx = await self.contract.methods
             .updateRequest(
               parseInt(id),
@@ -157,7 +157,7 @@ class OracleContract extends Contract {
     // accessing admin localaccounts
     const accounts = await this.provider.eth.getAccounts();
     // setting up owner account to first one
-    const owner = selectedAddress;
+    const owner = accounts[0];
     // accepted games status
     const finished_status = ["FT", "FT_PEN", "AET"];
     // getGames data on sportMonk API
