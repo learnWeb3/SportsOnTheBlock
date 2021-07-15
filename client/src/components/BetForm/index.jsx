@@ -81,7 +81,7 @@ const BetForm = ({
   buttonLabel,
   setModalToogled,
   bettingContract,
-  accounts,
+  selectedAddress,
   game: {
     team1Logo,
     team2Logo,
@@ -175,12 +175,12 @@ const BetForm = ({
   ];
 
   const handleSubmit = async () => {
-    if (formData.isValid) {
+    if (formData.isValid && selectedAddress) {
       try {
         const tx = await bettingContract.methods
           .bet(id, formData.betSide.value)
           .send({
-            from: accounts[0],
+            from: selectedAddress,
             value: bettingContract.utils.toWei(
               formData.betValue.value.toString()
             ),

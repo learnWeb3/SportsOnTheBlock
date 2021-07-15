@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const CreateCompetitionZone = ({
   refreshCounter,
   setRefreshCounter,
-  accounts,
+  selectedAddress,
   competitions,
   oracleContract,
   bettingContract,
@@ -59,7 +59,7 @@ const CreateCompetitionZone = ({
               key={competition.id}
               competition={competition}
               oracleContract={oracleContract}
-              accounts={accounts}
+              selectedAddress={selectedAddress}
               setAlert={setAlert}
               isPresentInContract={
                 currentContractCompetitionsIds?.includes(competition.id)

@@ -10,7 +10,7 @@ import Context from "../context/index";
 const useProvider = (setState) => {
   const [provider, setProvider] = useState();
   const [accounts, setAccounts] = useState();
-
+  const [selectedAddress, setSelectedAddress] = useState();
   useEffect(() => {
     const getAndSetProvider = async () => {
       const provider = await detectEthereumProvider();
@@ -19,10 +19,11 @@ const useProvider = (setState) => {
         setProvider(web3);
         if (web3) {
           try {
-            const accounts = await provider.request({
+            const _accounts = await provider.request({
               method: "eth_requestAccounts",
             });
-            setAccounts(accounts);
+            setAccounts(_accounts);
+            setSelectedAddress(provider.selectedAddress);
           } catch (error) {
             setState({
               status: "error",
@@ -34,9 +35,11 @@ const useProvider = (setState) => {
       } else {
         const web3 = new Web3(config.provider_url);
         setProvider(web3);
-        const accounts = await web3.eth.getAccounts();
-        accounts.length > 0
-          ? accounts.length > 0 && setAccounts(accounts)
+        const _accounts = await web3.eth.getAccounts();
+        _accounts.length > 0
+          ? _accounts.length > 0 &&
+            setAccounts(_accounts) &&
+            setSelectedAddress(accounts[0])
           : setState({ status: "error", code: 500 });
       }
     };
@@ -48,6 +51,7 @@ const useProvider = (setState) => {
     setProvider,
     accounts,
     setAccounts,
+    selectedAddress,
   };
 };
 

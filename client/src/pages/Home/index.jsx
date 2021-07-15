@@ -19,7 +19,7 @@ import {
 
 const useStyles = makeStyles(() => ({
   gradient: {
-    backgroundImage: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
+    background: "linear-gradient(315deg, #ffffff 0%, #d7e1ec 74%)",
     top: "4rem",
     position: "relative",
     minHeight: "95vh",
@@ -33,7 +33,7 @@ const Home = () => {
   const classes = useStyles();
   const { state, setState, ErrorPage, LoadingAnimation, alert, setAlert } =
     useComponentState();
-  const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider(setState);
+  const { provider, selectedAddress } = useProvider(setState);
   const [isFilterGameToActive, setFilterGameToActive] = useState(true);
 
   const [refreshCompetitionsCounter, setRefresCompetitionsCounter] =
@@ -45,13 +45,13 @@ const Home = () => {
   const [competition, setCompetition] = useState(null);
   const [competitions, setCompetitions] = useState(null);
   useEffect(() => {
-    const fetchAndSetBettingContract = async (provider, accounts) => {
+    const fetchAndSetBettingContract = async (provider, selectedAddress) => {
       try {
         setState({ status: "loading", code: null });
         const _bettingContract = new BettingContract(
           provider,
           config.betting_contract_address,
-          accounts
+          selectedAddress
         );
         setBettingContract(_bettingContract.contract);
         const _competitions = await getCompetitions(_bettingContract);
@@ -71,10 +71,10 @@ const Home = () => {
       }
     };
 
-    if (provider && accounts) {
-      fetchAndSetBettingContract(provider, accounts);
+    if (provider && selectedAddress) {
+      fetchAndSetBettingContract(provider, selectedAddress);
     }
-  }, [provider, accounts, refreshCompetitionsCounter]);
+  }, [provider, selectedAddress, refreshCompetitionsCounter]);
 
   const [contractGames, setContractGames] = useState(null);
   const [games, setGames] = useState(null);
@@ -176,7 +176,7 @@ const Home = () => {
                             competition={competition}
                             game={game}
                             provider={provider}
-                            accounts={accounts}
+                            selectedAddress={selectedAddress}
                             bettingContract={bettingContract}
                             refreshGamesCounter={refreshGamesCounter}
                             setRefresGamesCounter={setRefresGamesCounter}

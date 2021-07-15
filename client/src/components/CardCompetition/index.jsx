@@ -37,7 +37,7 @@ const CardCompetition = ({
   isPresentInContract,
   competition,
   oracleContract,
-  accounts,
+  selectedAddress,
   setAlert,
 }) => {
   const classes = useStyles();
@@ -46,7 +46,7 @@ const CardCompetition = ({
     try {
       const tx = await oracleContract.contract.methods
         .newCompetition(competitionId)
-        .send({ from: accounts[0], gas: 100000 });
+        .send({ from: selectedAddress, gas: 100000 });
       if (tx.error) {
         throw new Error(`problem sending transaction`);
       }

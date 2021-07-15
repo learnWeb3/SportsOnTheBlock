@@ -31,7 +31,10 @@ const Admin = () => {
   const classes = useStyles();
   const { state, setState, ErrorPage, LoadingAnimation, alert, setAlert } =
     useComponentState();
-  const { provider, /*setProvider,*/ accounts /*setAccounts*/ } = useProvider(setState);
+  const { provider, /*setProvider,*/ accounts /*setAccounts*/, selectedAddress } =
+    useProvider(setState);
+
+  console.log(selectedAddress)
   const [isFilterGameToActive, setFilterGameToActive] = useState(true);
   const [competition, setCompetition] = useState(null);
   const [competitions, setCompetitions] = useState(null);
@@ -47,7 +50,7 @@ const Admin = () => {
     try {
       const tx = await oracleContract.contract.methods
         .newGame(gameId, competitionId, start)
-        .send({ from: accounts[0], gas: 150000 });
+        .send({ from: selectedAddress, gas: 150000 });
       if (tx.error) {
         throw new Error(`problem sending transaction`);
       }
@@ -72,10 +75,10 @@ const Admin = () => {
       try {
         setState({ status: "loading", code: null });
         setOracleContract(
-          new OracleContract(provider, oracle_contract_address, accounts)
+          new OracleContract(provider, oracle_contract_address, selectedAddress)
         );
         setBettingContract(
-          new BettingContract(provider, betting_contract_address, accounts)
+          new BettingContract(provider, betting_contract_address, selectedAddress)
         );
       } catch (error) {
         console.log(error);
@@ -83,23 +86,36 @@ const Admin = () => {
       }
     };
 
-    provider && oracle_contract_address && accounts && initialContractSet();
-  }, [provider, oracle_contract_address, accounts]);
+    provider && oracle_contract_address && selectedAddress && initialContractSet();
+  }, [provider, oracle_contract_address, selectedAddress]);
 
   useEffect(() => {
     const fetchAndSetCompetitions = async () => {
       try {
-        const _competitions = await fetchData("/competitions");
-        const _currentContractCompetitionsIds =
-          await bettingContract.contract.methods
-            .getCompetitions()
-            .call()
-            .then((competitionsIds) =>
-              competitionsIds.map((_competitionId) => parseInt(_competitionId))
-            );
-        setCurrentContractCompetitionsIds(_currentContractCompetitionsIds);
-        setCompetitions(_competitions);
-        setCompetition(_competitions[0]);
+        const oracleAdminAddress =
+          await oracleContract.contract.methods.owner().call();
+        console.log(oracleAdminAddress)
+        if (oracleAdminAddress.toLowerCase() === selectedAddress) {
+          const _competitions = await fetchData("/competitions");
+          const _currentContractCompetitionsIds =
+            await bettingContract.contract.methods
+              .getCompetitions()
+              .call()
+              .then((competitionsIds) =>
+                competitionsIds.map((_competitionId) =>
+                  parseInt(_competitionId)
+                )
+              );
+          setCurrentContractCompetitionsIds(_currentContractCompetitionsIds);
+          setCompetitions(_competitions);
+          setCompetition(_competitions[0]);
+        } else {
+          setState({
+            status: "error",
+            code: 403,
+            message: "Forbidden ! you need admin rights",
+          });
+        }
       } catch (error) {
         console.log(error);
         setState({ status: "error", code: 500 });
@@ -142,7 +158,7 @@ const Admin = () => {
             <Grid item xs={12}>
               <CreateCompetitionZone
                 competitions={competitions}
-                accounts={accounts}
+                selectedAddress={selectedAddress}
                 oracleContract={oracleContract}
                 bettingContract={bettingContract}
                 refreshCounter={refreshCounter}

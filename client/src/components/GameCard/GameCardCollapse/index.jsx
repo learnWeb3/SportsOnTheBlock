@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const GameCardCollapse = ({
   bettingContract,
-  accounts,
+  selectedAddress,
   setAlert,
   expanded,
   setModalToogled,
@@ -38,11 +38,11 @@ const GameCardCollapse = ({
 }) => {
   const classes = useStyles();
 
-  const handleUserGains = async (game) => {
+  const handleUserGains = async (game, selectedAddress) => {
     try {
       const tx = await bettingContract.methods
         .claimProfits(game.id)
-        .send({ from: accounts[0], gas: 200000 });
+        .send({ from: selectedAddress, gas: 200000 });
 
       if (tx.error) {
         throw new Error(`problem sending transaction`);
@@ -132,7 +132,7 @@ const GameCardCollapse = ({
               size="large"
               color="secondary"
               variant="contained"
-              onClick={() => handleUserGains(game)}
+              onClick={() => handleUserGains(game, selectedAddress)}
             >
               GET MY GAINS - {userGains} ETH
             </Button>

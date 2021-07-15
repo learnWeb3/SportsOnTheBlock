@@ -2,11 +2,11 @@ import BettingContractABI from "./contracts/BettingContract.json";
 import OracleContractABI from "./contracts/Oracle.json";
 
 class Contract {
-  constructor(provider, address, accounts) {
+  constructor(provider, address, selectedAddress) {
     this.provider = provider;
     this.address = address;
-    this.accounts = accounts;
-    this.defaultAccount = accounts[0];
+    this.selectedAddress = selectedAddress;
+    this.defaultAccount = selectedAddress;
   }
 
   _setContract() {
@@ -27,16 +27,16 @@ class Contract {
 }
 
 class BettingContract extends Contract {
-  constructor(provider, address, accounts) {
-    super(provider, address, accounts);
+  constructor(provider, address, selectedAddress) {
+    super(provider, address, selectedAddress);
     this._abi = BettingContractABI.abi;
     this._setContract();
   }
 }
 
 class OracleContract extends Contract {
-  constructor(provider, address, accounts) {
-    super(provider, address, accounts);
+  constructor(provider, address, selectedAddress) {
+    super(provider, address, selectedAddress);
     this._abi = OracleContractABI.abi;
     this._setContract();
   }

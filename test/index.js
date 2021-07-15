@@ -8,7 +8,7 @@ const assert = require("chai").assert;
 const expect = require("chai").expect;
 
 contract("Oracle", async (accounts) => {
-  const owner = accounts[0];
+  const owner = selectedAddress;
   const userAccount = accounts[1];
   let oracle, bettingContract;
   it("should deploy bettingContract", async () => {

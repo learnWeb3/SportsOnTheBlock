@@ -43,7 +43,7 @@ const GameCard = ({
   setRefresGamesCounter,
   competition,
   bettingContract,
-  accounts,
+  selectedAddress,
   game: {
     id,
     team1Logo,
@@ -183,7 +183,7 @@ const GameCard = ({
                 game={game}
                 betStats={bets?.betStats}
                 userGains={userGains}
-                accounts={accounts}
+                selectedAddress={selectedAddress}
                 bettingContract={bettingContract}
                 competition={competition}
                 expanded={expanded}
@@ -206,7 +206,7 @@ const GameCard = ({
               setModalToogled={setModalToogled}
               game={game}
               bettingContract={bettingContract}
-              accounts={accounts}
+              selectedAddress={selectedAddress}
             />,
             document.querySelector("body")
           )}
