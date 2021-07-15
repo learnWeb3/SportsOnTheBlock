@@ -111,6 +111,11 @@ Server subfolder have it's own configuration files in order to interact with a m
 cd server/config/index.js
 ```
 
+### Administration
+
+In order to access the admin panel to add new games and competitions to the betting contract you will need to add a new account in your metamask wallet using the private keys from the account used on the contract deployment.
+Please have a look to the migrations files if you want to mess around.
+
 ### Improvements
 
 1. Smart contracts unit tests:
