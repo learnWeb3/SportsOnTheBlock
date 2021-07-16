@@ -40,9 +40,9 @@ contract BettingContract is Owner, isCommon {
     }
 
     function newGame(
-        uint256 gameId,
+        uint32 gameId,
         uint256 competitionId,
-        uint256 start
+        uint32 start
     ) external gameDoesNotExists(gameId) isOwner() {
         Game memory _game = Game(
             gameId,
@@ -50,11 +50,11 @@ contract BettingContract is Owner, isCommon {
             0,
             0,
             0,
-            0,
-            0,
             false,
             false,
-            true
+            true,
+            0,
+            0
         );
         GameIdToGame[gameId] = _game;
         CompetitionIdToGamesIds[competitionId].push(_game.id);
@@ -75,14 +75,14 @@ contract BettingContract is Owner, isCommon {
     }
 
     function settleGame(
-        uint256 gameId,
-        uint256 team1Score,
-        uint256 team2Score
+        uint32 gameId,
+        uint32 team1Score,
+        uint32 team2Score
     ) external gameExists(gameId) isOwner() {
         (
             uint256 _winnerBetsSum,
             uint256 _loserBetsSum,
-            uint256 _winner
+            uint32 _winner
         ) = getSettlementData(gameId);
         Game memory _game = GameIdToGame[gameId];
         _game.team1Score = team1Score;
@@ -134,12 +134,7 @@ contract BettingContract is Owner, isCommon {
         return UserBetSumByGameAndOutcome[msg.sender][gameId][outcome];
     }
 
-    function getWinner(uint256 gameId)
-        private
-        view
-        isOwner()
-        returns (uint256)
-    {
+    function getWinner(uint32 gameId) private view isOwner() returns (uint32) {
         Game memory _game = GameIdToGame[gameId];
         if (_game.team1Score > _game.team2Score) {
             return 1;
@@ -150,13 +145,13 @@ contract BettingContract is Owner, isCommon {
         }
     }
 
-    function getSettlementData(uint256 gameId)
+    function getSettlementData(uint32 gameId)
         private
         view
         returns (
             uint256 _winnerBetsSum,
             uint256 _loserBetsSum,
-            uint256 _winner
+            uint32 _winner
         )
     {
         _winner = getWinner(gameId);

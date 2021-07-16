@@ -8,16 +8,16 @@ contract isCommon {
         uint256 outcome;
     }
     struct Game {
-        uint256 id;
-        uint256 start;
-        uint256 team1Score;
-        uint256 team2Score;
-        uint256 winner;
-        uint256 winnerBetsSum;
-        uint256 loserBetsSum;
+        uint32 id;
+        uint32 start;
+        uint32 team1Score;
+        uint32 team2Score;
+        uint32 winner;
         bool ended;
         bool started;
         bool exists;
+        uint256 winnerBetsSum;
+        uint256 loserBetsSum;
     }
     uint256[] competitions;
     mapping(uint256 => uint256[]) CompetitionIdToGamesIds;

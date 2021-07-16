@@ -14,7 +14,9 @@ The server talks to the MongoDb collections containing the current competitions 
 - every hours cron task settles the games in the Betting smart contract through a trusted call (fetch url constructed on chain by the Oracle contract) to the Sports Monk API.
 
 As a source of data we use SportsMonks API in order to offer new games and competitions.
-We have a free tier plan active on the data provider platform wich limits call number to 180/h;
+We have a free tier plan active on the data provider platform wich limits call number to 180/H;
+
+As a proff of our good faith we offer you the ability to verify the data provided for the game settlement process by calling the requests(uint256 gameId) function on the Oracle smart contract
 
 ### Critics
 
@@ -23,6 +25,14 @@ We currently rely on only one data provider wich is a major flaw (single point o
 ### Warnings
 
 Improvements need to be done in order for this project to be live. Please have a look to the related section
+
+The auto setlement of the games is initiated by the checkGameEndedAndCreateRequest() function present in the following file:
+
+```bash
+code ./server/services/index.js
+```
+
+As a proof of concept the game status check is commented out so all the games added to the contract sohould be settled in the following hour.
 
 ### Quickstart
 

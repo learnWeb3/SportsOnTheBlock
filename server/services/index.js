@@ -126,13 +126,15 @@ class OracleContract extends Contract {
           // spliting provable parameters to fetch
           const params = paramsToFetch.split(",");
           // retriving provable parameters to fetch from Oracle in api response
-          let localTeamScore, visitorTeamScore;
+          let localTeamScore, visitorTeamScore, gameStatus;
           localTeamScore = params[0].split(".");
           localTeamScore = parseInt(data[localTeamScore[0]][localTeamScore[1]]);
           visitorTeamScore = params[1].split(".");
           visitorTeamScore = parseInt(
             data[visitorTeamScore[0]][visitorTeamScore[1]]
           );
+          gameStatus = params[2].split(".");
+          gameStatus = data[gameStatus[0]][gameStatus[1]];
           // accessing admin localaccounts
           const accounts = await self.provider.eth.getAccounts();
           // setting up owner account to first one
@@ -141,7 +143,8 @@ class OracleContract extends Contract {
             .updateRequest(
               parseInt(id),
               parseInt(localTeamScore),
-              parseInt(visitorTeamScore)
+              parseInt(visitorTeamScore),
+              gameStatus
             )
             .send({ from: owner, gas: GAS });
           console.log(tx);
