@@ -26,6 +26,8 @@ const GameCardHeader = ({
 }) => {
   const classes = useStyles();
 
+  const hasStarted = start ? new Date(parseInt(start)) > Date.now() : false;
+
   return (
     <div className={classes.cardHeader}>
       {cardAlertMessage && newBetPresent && (
@@ -44,11 +46,7 @@ const GameCardHeader = ({
         />
       )}
 
-      <Chip
-        className={classes.badge}
-        color={"secondary"}
-        label={`#${id}`}
-      />
+      <Chip className={classes.badge} color={"secondary"} label={`#${id}`} />
 
       {isPresentInContract && (
         <Chip
@@ -59,18 +57,18 @@ const GameCardHeader = ({
       )}
       <Chip
         className={classes.badge}
-        color={started ? "secondary" : "primary"}
+        color={hasStarted ? "secondary" : "primary"}
         icon={<AccessTimeRoundedIcon />}
         label={moment(parseInt(start)).format("DD/MM/YY HH:SS")}
       />
       <Chip
         className={classes.badge}
-        color={started ? "secondary" : "primary"}
-        label={ended ? "ended" : started ? "started" : "active"}
+        color={hasStarted ? "secondary" : "primary"}
+        label={ended ? "ended" : hasStarted ? "started" : "active"}
       />
       <Chip
         className={classes.badge}
-        color={started ? "secondary" : "primary"}
+        color={hasStarted ? "secondary" : "primary"}
         label={competition?.name}
       />
     </div>

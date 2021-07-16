@@ -74,11 +74,6 @@ contract BettingContract is Owner, isCommon {
         emit NewBet(newBet, gameId);
     }
 
-    function setGameToStarted(uint256 gameId) external isOwner() {
-        GameIdToGame[gameId].started = true;
-        emit GameStarted(true, gameId);
-    }
-
     function settleGame(
         uint256 gameId,
         uint256 team1Score,

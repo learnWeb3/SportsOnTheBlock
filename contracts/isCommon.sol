@@ -46,7 +46,7 @@ contract isCommon {
 
     modifier checkGameState(uint256 gameId) {
         require(
-            GameIdToGame[gameId].started == false,
+            block.timestamp * 1000 < GameIdToGame[gameId].start,
             "game has already started"
         );
         _;

@@ -62,6 +62,9 @@ const GameCardCollapse = ({
       });
     }
   };
+
+  const hasStarted = game?.start ? new Date(parseInt(game.start)) > Date.now() : false;
+
   return (
     <Collapse
       className={classes.collapse}
@@ -109,7 +112,7 @@ const GameCardCollapse = ({
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          {!game?.started && !game?.ended && (
+          {!hasStarted && !game?.ended && (
             <Button
               className={classes.betButton}
               size="large"
