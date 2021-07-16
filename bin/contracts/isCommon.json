@@ -94,14 +94,14 @@
                 {
                     "components": [
                         {
-                            "internalType": "uint32",
+                            "internalType": "uint96",
                             "name": "id",
-                            "type": "uint32"
+                            "type": "uint96"
                         },
                         {
-                            "internalType": "uint32",
+                            "internalType": "uint56",
                             "name": "start",
-                            "type": "uint32"
+                            "type": "uint56"
                         },
                         {
                             "internalType": "uint32",
@@ -154,9 +154,9 @@
             "type": "event"
         }
     ],
-    "metadata": "{\"compiler\":{\"version\":\"0.8.6+commit.11564f7e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"GameEnded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"GameStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"outcome\",\"type\":\"uint256\"}],\"indexed\":false,\"internalType\":\"struct isCommon.Bet\",\"name\":\"\",\"type\":\"tuple\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"NewBet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"NewCompetition\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"uint32\",\"name\":\"id\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"start\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"team1Score\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"team2Score\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"winner\",\"type\":\"uint32\"},{\"internalType\":\"bool\",\"name\":\"ended\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"started\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"winnerBetsSum\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"loserBetsSum\",\"type\":\"uint256\"}],\"indexed\":false,\"internalType\":\"struct isCommon.Game\",\"name\":\"\",\"type\":\"tuple\"}],\"name\":\"NewGame\",\"type\":\"event\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kstwa/Documents/SportsOnTheBlock/contracts/isCommon.sol\":\"isCommon\"},\"evmVersion\":\"berlin\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/kstwa/Documents/SportsOnTheBlock/contracts/isCommon.sol\":{\"keccak256\":\"0xd8b2fac883ef5dee587c5b9f0277709e792173c2ff2535ebbdbf041093909596\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://c54224ed06253e1ed5b0d7cdd2e63a3550a6bf29791e074712ed668b74de1188\",\"dweb:/ipfs/QmPWaATg1hMveTWtdCBwW5UVpryPW38ie1pbkkemkNJcUo\"]}},\"version\":1}",
-    "bytecode": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122065c5852d60048fab5eca091d9fc76d8300cdf617817b4519417cc00c65e8e89764736f6c63430008060033",
-    "deployedBytecode": "6080604052600080fdfea264697066735822122065c5852d60048fab5eca091d9fc76d8300cdf617817b4519417cc00c65e8e89764736f6c63430008060033",
+    "metadata": "{\"compiler\":{\"version\":\"0.8.6+commit.11564f7e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"GameEnded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"GameStarted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"outcome\",\"type\":\"uint256\"}],\"indexed\":false,\"internalType\":\"struct isCommon.Bet\",\"name\":\"\",\"type\":\"tuple\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"NewBet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"NewCompetition\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"uint96\",\"name\":\"id\",\"type\":\"uint96\"},{\"internalType\":\"uint56\",\"name\":\"start\",\"type\":\"uint56\"},{\"internalType\":\"uint32\",\"name\":\"team1Score\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"team2Score\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"winner\",\"type\":\"uint32\"},{\"internalType\":\"bool\",\"name\":\"ended\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"started\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"exists\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"winnerBetsSum\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"loserBetsSum\",\"type\":\"uint256\"}],\"indexed\":false,\"internalType\":\"struct isCommon.Game\",\"name\":\"\",\"type\":\"tuple\"}],\"name\":\"NewGame\",\"type\":\"event\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/kstwa/Documents/SportsOnTheBlock/contracts/isCommon.sol\":\"isCommon\"},\"evmVersion\":\"berlin\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/kstwa/Documents/SportsOnTheBlock/contracts/isCommon.sol\":{\"keccak256\":\"0xe62908767214b25a443302a1b818c379dd56f0562e2298a1f7492f251eabe96f\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://dcb4a75ce0033b0f1f93a92baf45a8dac6b72a41d763ad9acf0c52b97620f794\",\"dweb:/ipfs/QmaFjKRhHVqbFP5aE9CM7mzyde87ihCdWreH7d468pbRQn\"]}},\"version\":1}",
+    "bytecode": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212203207b8b21a76dea777340709ceb417dff0c4eb1c75a50e4437126da8d50867ce64736f6c63430008060033",
+    "deployedBytecode": "6080604052600080fdfea26469706673582212203207b8b21a76dea777340709ceb417dff0c4eb1c75a50e4437126da8d50867ce64736f6c63430008060033",
     "sourceMap": "64:1556:3:-:0;;;;;;;;;;;;;;;;;;;",
     "deployedSourceMap": "64:1556:3:-:0;;;;;",
     "sourcePath": "/home/kstwa/Documents/SportsOnTheBlock/contracts/isCommon.sol",
@@ -310,17 +310,17 @@
                                 "stateVariable": false,
                                 "storageLocation": "default",
                                 "typeDescriptions": {
-                                    "typeIdentifier": "t_uint32",
-                                    "typeString": "uint32"
+                                    "typeIdentifier": "t_uint96",
+                                    "typeString": "uint96"
                                 },
                                 "typeName": {
                                     "id": 773,
-                                    "name": "uint32",
+                                    "name": "uint96",
                                     "nodeType": "ElementaryTypeName",
                                     "src": "204:6:3",
                                     "typeDescriptions": {
-                                        "typeIdentifier": "t_uint32",
-                                        "typeString": "uint32"
+                                        "typeIdentifier": "t_uint96",
+                                        "typeString": "uint96"
                                     }
                                 },
                                 "visibility": "internal"
@@ -337,17 +337,17 @@
                                 "stateVariable": false,
                                 "storageLocation": "default",
                                 "typeDescriptions": {
-                                    "typeIdentifier": "t_uint32",
-                                    "typeString": "uint32"
+                                    "typeIdentifier": "t_uint56",
+                                    "typeString": "uint56"
                                 },
                                 "typeName": {
                                     "id": 775,
-                                    "name": "uint32",
+                                    "name": "uint56",
                                     "nodeType": "ElementaryTypeName",
                                     "src": "223:6:3",
                                     "typeDescriptions": {
-                                        "typeIdentifier": "t_uint32",
-                                        "typeString": "uint32"
+                                        "typeIdentifier": "t_uint56",
+                                        "typeString": "uint56"
                                     }
                                 },
                                 "visibility": "internal"
@@ -1894,8 +1894,8 @@
                                                     "referencedDeclaration": 776,
                                                     "src": "1389:26:3",
                                                     "typeDescriptions": {
-                                                        "typeIdentifier": "t_uint32",
-                                                        "typeString": "uint32"
+                                                        "typeIdentifier": "t_uint56",
+                                                        "typeString": "uint56"
                                                     }
                                                 },
                                                 "src": "1364:51:3",

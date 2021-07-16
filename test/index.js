@@ -70,7 +70,9 @@ contract("Oracle", async (accounts) => {
   });
 
   it("should create a game", async () => {
-    const tx = await oracle.newGame(1, 1, 1, { from: owner });
+    const tx = await oracle.newGame(1, 1, Date.now() + 1000 * 60 * 60 * 24, {
+      from: owner,
+    });
     assert.notProperty(tx, "error", "tx successFull");
     assert.hasAllKeys(tx, ["logs", "receipt", "tx"], "transaction successfull");
   });
@@ -217,7 +219,7 @@ contract("Oracle", async (accounts) => {
       "NewRequest event succesfully emitted"
     );
 
-    tx = await oracle.updateRequest(1, 0, 0);
+    tx = await oracle.updateRequest(1, 0, 0, "FT");
     assert.notProperty(tx, "error", "tx successFull");
     assert.hasAllKeys(tx, ["logs", "receipt", "tx"], "transaction successful");
 

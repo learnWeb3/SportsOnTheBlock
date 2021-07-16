@@ -10,8 +10,8 @@ contract Oracle is Owner {
     struct Request {
         string rootUrl;
         string paramsToFetch;
-        bytes16 endpoint;
-        bytes16 gameStatus;
+        string endpoint;
+        string gameStatus;
         uint192 id;
         uint32 team1Score;
         uint32 team2Score;
@@ -51,7 +51,7 @@ contract Oracle is Owner {
         uint192 gameId,
         uint32 team1Score,
         uint32 team2Score,
-        bytes16 gameStatus
+        string calldata gameStatus
     ) external isOwner() {
         if (requests[gameId].exists) {
             Request memory request = requests[gameId];
@@ -71,9 +71,9 @@ contract Oracle is Owner {
     }
 
     function newGame(
-        uint32 gameId,
+        uint96 gameId,
         uint256 competitionId,
-        uint32 start
+        uint56 start
     ) external isOwner() {
         BettingContract bettingContract = BettingContract(
             bettingContractAddress

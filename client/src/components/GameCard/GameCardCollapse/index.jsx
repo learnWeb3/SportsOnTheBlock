@@ -63,7 +63,7 @@ const GameCardCollapse = ({
     }
   };
 
-  const hasStarted = game?.start ? new Date(parseInt(game.start)) > Date.now() : false;
+  const hasStarted = game?.start ? parseInt(game.start) < Date.now() : false;
 
   return (
     <Collapse

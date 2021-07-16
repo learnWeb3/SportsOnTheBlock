@@ -40,9 +40,9 @@ contract BettingContract is Owner, isCommon {
     }
 
     function newGame(
-        uint32 gameId,
+        uint96 gameId,
         uint256 competitionId,
-        uint32 start
+        uint56 start
     ) external gameDoesNotExists(gameId) isOwner() {
         Game memory _game = Game(
             gameId,

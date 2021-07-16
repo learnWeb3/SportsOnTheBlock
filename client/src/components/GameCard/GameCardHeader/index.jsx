@@ -26,7 +26,7 @@ const GameCardHeader = ({
 }) => {
   const classes = useStyles();
 
-  const hasStarted = start ? new Date(parseInt(start)) > Date.now() : false;
+  const hasStarted = start ? parseInt(start) < Date.now() : false;
 
   return (
     <div className={classes.cardHeader}>

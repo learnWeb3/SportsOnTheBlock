@@ -8,8 +8,8 @@ contract isCommon {
         uint256 outcome;
     }
     struct Game {
-        uint32 id;
-        uint32 start;
+        uint96 id;
+        uint56 start;
         uint32 team1Score;
         uint32 team2Score;
         uint32 winner;

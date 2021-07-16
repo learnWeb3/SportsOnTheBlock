@@ -43,7 +43,7 @@ const GameCardAdminCollapse = ({
       }
     }
   };
-  const hasStarted = start ? new Date(parseInt(start)) > Date.now() : false;
+  const hasStarted = start ? parseInt(start) < Date.now() : false;
   return (
     <Collapse
       className={classes.collapse}
