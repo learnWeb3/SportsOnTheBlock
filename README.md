@@ -134,13 +134,14 @@ To do :
 
 - [x] Test Betting functions
 - [x] Test Oracle functions
-- [] Test server functions
-- [] Test client functions
+- [ ] Test server functions
+- [ ] Test client functions
 
 2. Gas fees:
 
-- [] Gas limits provided for contract call needs to be refined
-- [] Deploy contracts on Optimism network (layer 2)
+- [x] Packing storage state variable to optimise slot usage 
+- [ ] Gas limits provided for contract call needs to be refined
+- [ ] Deploy contracts on Optimism network (layer 2)
 
 3. Metamask interactions
 
